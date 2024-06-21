@@ -6,14 +6,18 @@ const guests = document.getElementById("l-guests"),
     lHour2 = document.getElementById("l-hour2"),
     cHour1 = document.getElementById("hour1"),
     cHour2 = document.getElementById("hour2"),
+    xwyz = document.getElementById("xwyz").getAttribute("data-id"),
     radioHours = document.querySelectorAll('input[name="c-hour"]');
 priceShoe = 8;
-let selectedButtonId = null;
+let selectedButtonId = null,
+    selectedPrice,
+    line = 1;
+
 
 generateRadioButtons(calendarItems);
 
-function priceLeft(lane, shoe, cPrice, cShoe) {
-    const plane = lane * cPrice;
+function priceLeft(lane, shoe, cPrice, cShoe, lines) {
+    const plane = (lane * cPrice) * line;
     const pShoe = shoe * cShoe;
     const pTotal = plane + pShoe;
 
@@ -29,13 +33,8 @@ function formatTime(timeString) {
     const intMinutes = parseInt(minutes);
     const period = intHour >= 12 ? "PM" : "AM";
     const formattedHour = intHour % 12 === 0 ? 12 : intHour % 12;
-    return `${formattedHour}:${
-        intMinutes < 10 ? "0" + intMinutes : intMinutes
-    } ${period}`;
-}
-
-function getButtonNumber(buttonId) {
-    return parseInt(buttonId.replace("time", ""));
+    return `${formattedHour}:${intMinutes < 10 ? "0" + intMinutes : intMinutes
+        } ${period}`;
 }
 
 function formatTime12h(time24h) {
@@ -47,10 +46,16 @@ function formatTime12h(time24h) {
         .padStart(2, "0")} ${period}`;
 }
 
-function formatTime12Hours(hours) {
+function formatTime24Hours(timeString) {
+    const [hour, minutes] = timeString.split(":").slice(0, 2);
+    return `${hour}:${minutes}:00`;
+}
+
+function formatTime12Hours(hours, minutes = 0) {
     const period = hours >= 12 ? "PM" : "AM";
-    const hour12 = hours % 12 || 12;
-    return `${hour12}:00 ${period}`;
+    const formattedHour = hours % 12 === 0 ? 12 : hours % 12;
+    return `${formattedHour}:${minutes < 10 ? "0" + minutes : minutes
+        } ${period}`;
 }
 
 function formatDateTime(dateString, timeString) {
@@ -83,48 +88,134 @@ function formatDateTime(dateString, timeString) {
     const day = date.getDate();
     const year = date.getFullYear();
     const time12h = formatTime12h(timeString);
-    return `${
-        dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)
-    }, ${day} de ${
-        month.charAt(0).toUpperCase() + month.slice(1)
-    } de ${year} <br> ${time12h}`;
+    return `${dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)
+        }, ${day} de ${month.charAt(0).toUpperCase() + month.slice(1)
+        } de ${year} <br> ${time12h}`;
 }
 
 function formatHourRange(timeString, duration) {
-    const date = new Date(`2000-01-01T${timeString}`);
-    const startHour = formatTime12Hours(date.getHours());
-    const endDate = new Date(date.getTime() + duration * 60 * 60 * 1000);
-    const endHour = formatTime12Hours(endDate.getHours());
+    // Parsear el tiempo inicial en una fecha
+    const startTime = new Date(`2000-01-01T${timeString}`);
+
+    // Calcular la fecha final sumando la duración en milisegundos
+    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
+
+    // Formatear las horas de inicio y fin en formato de 12 horas con AM/PM
+    const startHour = formatTime12Hours(
+        startTime.getHours(),
+        startTime.getMinutes()
+    );
+    const endHour = formatTime12Hours(endTime.getHours(), endTime.getMinutes());
+
     return `${startHour} hasta ${endHour}`;
 }
 
-function getNextHours(value) {
-    const [hour, minute, second] = value.split(":").map(Number);
-    const baseDate = new Date();
-    baseDate.setHours(hour, minute, second, 0);
+function getNextHalfHours(timeString) {
+    const [hour, minutes] = timeString.split(":").slice(0, 2);
+    const intHour = parseInt(hour);
+    const intMinutes = parseInt(minutes);
 
-    const oneHourLater = new Date(baseDate);
-    oneHourLater.setHours(baseDate.getHours() + 1);
+    const now = new Date();
+    now.setHours(intHour);
+    now.setMinutes(intMinutes);
+    now.setSeconds(0);
 
-    const twoHoursLater = new Date(baseDate);
-    twoHoursLater.setHours(baseDate.getHours() + 2);
+    const oneHalfHourLater = new Date(now);
+    const twoHalfHoursLater = new Date(now);
+    const threeHalfHoursLater = new Date(now);
 
-    function formatTime(date) {
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = date.getSeconds().toString().padStart(2, "0");
-        return `${hours}:${minutes}:${seconds}`;
+    // Agregar 30 minutos para obtener la siguiente media hora
+    oneHalfHourLater.setMinutes(now.getMinutes() + 30);
+
+    // Manejar el desbordamiento de los minutos
+    if (oneHalfHourLater.getMinutes() >= 60) {
+        oneHalfHourLater.setHours(now.getHours() + 1);
+        oneHalfHourLater.setMinutes(now.getMinutes() - 30);
     }
 
-    return [formatTime(oneHourLater), formatTime(twoHoursLater)];
+    // Agregar 1 hora y 30 minutos para obtener 2 horas después
+    twoHalfHoursLater.setHours(now.getHours() + 1);
+
+    // Manejar el desbordamiento de los minutos para twoHalfHoursLater
+    if (twoHalfHoursLater.getMinutes() >= 60) {
+        twoHalfHoursLater.setHours(now.getHours() + 1);
+    }
+
+
+    // Agregar 1 hora y 30 minutos para obtener 2 horas después
+    threeHalfHoursLater.setHours(now.getHours() + 1);
+    threeHalfHoursLater.setMinutes(now.getMinutes() + 30);
+    // Manejar el desbordamiento de los minutos para twoHalfHoursLater
+    if (threeHalfHoursLater.getMinutes() >= 60) {
+        threeHalfHoursLater.setHours(now.getHours() + 1);
+        threeHalfHoursLater.setMinutes(now.getMinutes() + 30);
+    }
+
+    const formattedOneHalfHourLater = formatTime24Hours(
+        oneHalfHourLater.toTimeString().split(" ")[0]
+    );
+    const formattedTwoHalfHoursLater = formatTime24Hours(
+        twoHalfHoursLater.toTimeString().split(" ")[0]
+    );
+    const formattedThreeHalfHoursLater = formatTime24Hours(
+        threeHalfHoursLater.toTimeString().split(" ")[0]
+    );
+
+    return [formattedOneHalfHourLater, formattedTwoHalfHoursLater, formattedThreeHalfHoursLater];
 }
+
+const updateHourLabelsAndStatus = (
+    buttonNumber,
+    oneHourLater,
+    twoHoursLater,
+    threeHoursLater
+) => {
+
+
+    const isOneHourLaterAvailable = checkRadioButtonStatus(oneHourLater);
+    const isTwoHoursLaterAvailable = checkRadioButtonStatus(twoHoursLater);
+    const isThreeHoursLaterAvailable = checkRadioButtonStatus(threeHoursLater);
+
+    const hour1Label = document.getElementById("hour1");
+    const hour2Label = document.getElementById("hour2");
+
+    // Update for one hour later
+    if (isOneHourLaterAvailable) {
+        lHour1.innerHTML = formatHourRange(buttonNumber, 1);
+        hour1Label.checked = true;
+        hour1Label.disabled = false;
+    } else {
+        lHour1.innerHTML = `<del>${formatHourRange(buttonNumber, 1)}</del>`;
+        hour1Label.disabled = true;
+        lHour2.innerHTML = `<del>${formatHourRange(buttonNumber, 2)}</del>`;
+        hour2Label.disabled = true;
+    }
+
+    // Update for two hours later
+    if (isTwoHoursLaterAvailable && isOneHourLaterAvailable) {
+        lHour2.innerHTML = formatHourRange(buttonNumber, 2);
+        hour2Label.disabled = false;
+    } else {
+        lHour2.innerHTML = `<del>${formatHourRange(buttonNumber, 2)}</del>`;
+        hour2Label.disabled = true;
+    }
+
+    // Update for three hours later
+    if (isTwoHoursLaterAvailable && isOneHourLaterAvailable && isThreeHoursLaterAvailable) {
+        lHour2.innerHTML = formatHourRange(buttonNumber, 2);
+        hour2Label.disabled = false;
+    } else {
+        lHour2.innerHTML = `<del>${formatHourRange(buttonNumber, 2)}</del>`;
+        hour2Label.disabled = true;
+    }
+};
 
 function handleRadioChange(selectedRadio) {
     const selectedDate = document.getElementById("c-date").value;
     const selectGuests = document.getElementById("c-guests").value;
     selectedButtonId = selectedRadio.id;
     const buttonNumber = selectedRadio.value;
-    const selectedPrice = selectedRadio.getAttribute("data-price");
+    selectedPrice = selectedRadio.getAttribute("data-price");
     const dateTime = formatDateTime(selectedDate, buttonNumber);
 
     document.getElementById("l-date").innerHTML = dateTime;
@@ -133,21 +224,11 @@ function handleRadioChange(selectedRadio) {
         "l-guests"
     ).innerHTML = ` X ${selectGuests} Invitados`;
 
-    priceLeft(1, selectGuests, selectedPrice, priceShoe);
+    priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 
-    const [oneHourLater, twoHoursLater] = getNextHours(buttonNumber);
+    const [oneHourLater, twoHoursLater, threeHoursLater] = getNextHalfHours(buttonNumber);
 
-    lHour1.innerHTML = formatHourRange(buttonNumber, 1);
-    cHour1.checked = true;
-    document.getElementById("hour1").disabled = false;
-
-    if (checkRadioButtonStatus(oneHourLater)) {
-        lHour2.innerHTML = formatHourRange(buttonNumber, 2);
-        document.getElementById("hour2").disabled = false;
-    } else {
-        lHour2.innerHTML = `<del>${formatHourRange(buttonNumber, 2)}</del>`;
-        document.getElementById("hour2").disabled = true;
-    }
+    updateHourLabelsAndStatus(buttonNumber, oneHourLater, twoHoursLater, threeHoursLater);
 }
 
 function checkRadioButtonStatus(value) {
@@ -168,10 +249,6 @@ function generateRadioButtons(calendarItems) {
     const container = document.getElementById("radioContainer");
     container.innerHTML = "";
 
-    document.getElementById(
-        "l-lane"
-    ).innerHTML = `Pista Bowling <strong id='l-hours'></strong>`;
-
     calendarItems.forEach((item) => {
         const formattedTime = formatTime(item.hour);
 
@@ -180,8 +257,9 @@ function generateRadioButtons(calendarItems) {
         radioInput.className = "btn-check";
         radioInput.id = `time${item.hour}`;
         radioInput.name = "time";
-        radioInput.value = item.hour; // Mantener el valor original para procesamiento posterior
+        radioInput.value = item.hour;
         radioInput.setAttribute("data-price", item.price);
+        radioInput.setAttribute("data-subcategory", item.subcategory);
         if (item.available === 0) radioInput.disabled = true;
 
         const radioLabel = document.createElement("label");
@@ -206,9 +284,9 @@ function generateRadioButtons(calendarItems) {
     });
 }
 
-const getProductCalendar = async (productId, date) => {
+const getProductCalendar = async (subcategory, date) => {
     try {
-        const response = await fetch(`/updateUI/${productId}/${date}`);
+        const response = await fetch(`/updateUI/${subcategory}/${date}`);
         if (!response.ok) {
             throw new Error("No se pudo obtener la data");
         }
@@ -224,7 +302,7 @@ const updateUI = async () => {
         const selectedDate = document.getElementById("c-date").value;
         document.getElementById("l-date").innerHTML = "----------------";
 
-        priceLeft(0, 0, 0, 0);
+        priceLeft(0, 0, 0, 0, 1);
 
         lHour1.innerHTML = "1 Hora";
         cHour1.checked = false;
@@ -234,7 +312,10 @@ const updateUI = async () => {
         cHour2.checked = false;
         cHour2.disabled = true;
 
+        const hours = await getProductCalendar(xwyz, selectedDate);
+
         generateRadioButtons(hours);
+        console.log(hours);
     } catch (error) {
         console.error("Error al actualizar la interfaz de usuario:", error);
     }
@@ -243,29 +324,57 @@ const updateUI = async () => {
 document.getElementById("c-date").addEventListener("change", updateUI);
 
 document.getElementById("c-guests").addEventListener("change", (e) => {
+
     guests.innerHTML = ` X ${e.target.value} Invitados`;
     const selectGuests = e.target.value;
 
     if (selectedButtonId) {
-        const selectedPrice = document
+        selectedPrice = document
             .getElementById(selectedButtonId)
             .getAttribute("data-price");
-        priceLeft(1, selectGuests, selectedPrice, priceShoe);
+        if (selectGuests > 5) {
+            line = 2;
+            document.getElementById("n-lane").innerHTML = "2";
+            priceLeft(selectHour, selectGuests, selectedPrice, priceShoe);
+
+        } else {
+            line = 1;
+            document.getElementById("n-lane").innerHTML = "";
+            priceLeft(selectHour, selectGuests, selectedPrice, priceShoe);
+
+        }
     } else {
         console.error("No se ha seleccionado ningún botón de tiempo.");
     }
+
 });
 
-let selectHour = null;
+let selectHour = 1;
 
 radioHours.forEach((hours) => {
     hours.addEventListener("input", function () {
         if (this.checked) {
-            const selectHour = parseInt(this.value);
+            selectHour = parseInt(this.value);
+            const selectGuests = parseInt(document.getElementById("c-guests").value);
+
+            // Update the hours label
             const pluralSuffix = selectHour > 1 ? "s" : "";
-            document.getElementById(
-                "l-hours"
-            ).innerHTML = ` X ${selectHour} Hora${pluralSuffix}`;
+            document.getElementById("l-hours").innerHTML = ` X ${selectHour} Hora${pluralSuffix}`;
+
+            if (selectedButtonId) {
+                const selectedPrice = document.getElementById(selectedButtonId).getAttribute("data-price");
+                if (selectGuests > 5) {
+                    document.getElementById("n-lane").innerHTML = "2";
+                    line = 2;
+                    priceLeft(selectHour, selectGuests, selectedPrice, priceShoe); // 2 lanes
+                } else {
+                    document.getElementById("n-lane").innerHTML = "";
+                    line = 1;
+                    priceLeft(selectHour, selectGuests, selectedPrice, priceShoe); // 1 lane
+                }
+            } else {
+                console.error("No se ha seleccionado ningún botón de tiempo.");
+            }
         }
     });
 });

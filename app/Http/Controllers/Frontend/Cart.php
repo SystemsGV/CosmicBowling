@@ -34,7 +34,7 @@ class Cart extends Controller
             $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory->id_subcategory, $tomorrow);
 
             // return response()->json($hours);
-            
+
             // Return the view with the subcategory, associated products, enabled product, and hours data
             return view('frontend.cart.cart', compact('subcategory', 'hours'));
         } catch (\Exception $e) {
@@ -67,9 +67,9 @@ class Cart extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($product, $date)
+    public function show($subcategory, $date)
     {
-        $hours = calendarItem::groupProductCalendar($product,  $date);
+        $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory, $date);
         return response()->json($hours);
     }
 

@@ -19,5 +19,5 @@ Route::get('/', [Home::class, 'index'])->name('home.index');
 
 Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
-  Route::get('/updateUI/{product}/{date}', 'show');
+  Route::get('/updateUI/{subcategory}/{date}', 'show');
 });

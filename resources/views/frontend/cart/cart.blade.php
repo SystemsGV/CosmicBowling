@@ -3,25 +3,26 @@
 @section('content')
     <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
         <h2 class="h1 text-center pt-2 pt-sm-3">COMIENZE SU RESERVA DE CARRIL</h2>
-        <p class="text-center pb-3 mb-3 mb-lg-4">{{ $subcategory->name_subcategory }}</p>
+        <p class="text-center pb-3 mb-3 mb-lg-4" id="xwyz" data-id={{ $subcategory->id_subcategory }}>
+            {{ $subcategory->name_subcategory }}</p>
 
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap align-content-center w-100 mx-auto pb-3 mb-3 mb-lg-4 fs-5" role="tablist"
-        style="max-width: 600px;">
-        <li class="nav-item mb-0">
-            <a class="nav-link active" href="#beginners" data-bs-toggle="tab" role="tab">
-                <i class="ai-calendar-plus me-2"></i>
-                Reserva de Carril</a>
-        </li>
-        <li class="nav-item mb-0">
-            <a id="tabBilling" class="nav-link disabled" href="#stretching" data-bs-toggle="tab" role="tab"><i
-                    class="ai-card me-2"></i> Facturación</a>
-        </li>
-        <li class="nav-item mb-0">
-            <a id="tabPayment" class="nav-link disabled" href="#fly-yoga" data-bs-toggle="tab" role="tab"><i
-                    class="ai-wallet me-2"></i> Pago</a>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap align-content-center w-100 mx-auto pb-3 mb-3 mb-lg-4 fs-5"
+            role="tablist" style="max-width: 600px;">
+            <li class="nav-item mb-0">
+                <a class="nav-link active" href="#beginners" data-bs-toggle="tab" role="tab">
+                    <i class="ai-calendar-plus me-2"></i>
+                    Reserva de Carril</a>
+            </li>
+            <li class="nav-item mb-0">
+                <a id="tabBilling" class="nav-link disabled" href="#stretching" data-bs-toggle="tab" role="tab"><i
+                        class="ai-card me-2"></i> Facturación</a>
+            </li>
+            <li class="nav-item mb-0">
+                <a id="tabPayment" class="nav-link disabled" href="#fly-yoga" data-bs-toggle="tab" role="tab"><i
+                        class="ai-wallet me-2"></i> Pago</a>
+            </li>
+        </ul>
 
         <!-- Tab content -->
         <div class="tab-content">
@@ -146,7 +147,8 @@
                                 </div>
                                 <ul class="list-unstyled py-3 mb-0">
                                     <li class="d-flex justify-content-between mb-2">
-                                        <span id="l-lane"> </span>
+                                        <span><strong id="n-lane"></strong> {{ $subcategory->name_subcategory }} <strong
+                                                id='l-hours'></strong></span>
                                         <span class="fw-semibold ms-2" id="lp-lane">S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">

@@ -39,7 +39,6 @@ class CalendarController extends Controller
             $d = $request->input('eventEndDate');
             $e = $request->input('data-id');
 
-            // Crear una nueva instancia del modelo Calendar
             $calendar = new Calendar();
             $calendar->subcategory_id = $e;
             $calendar->name_calendar = $a;

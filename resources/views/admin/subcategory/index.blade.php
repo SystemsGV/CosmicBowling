@@ -34,7 +34,7 @@
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList"
                 aria-labelledby="offcanvasEcommerceCategoryListLabel">
                 <!-- Offcanvas Header -->
-                <div class=false,nvas-header py-4">
+                <div class="offcanvas-header py-4">
                     <h5 id="offcanvasEcommerceCategoryListLabel" class="offcanvas-title" data-i18n=""></h5>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
