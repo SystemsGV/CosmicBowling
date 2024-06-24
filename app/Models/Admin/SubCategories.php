@@ -24,6 +24,11 @@ class SubCategories extends Model
         return $this->hasMany(Products::class, 'subcategory_id');
     }
 
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupons::class, 'subcategory_coupon', 'subcategory_id', 'coupon_id');
+    }
+
     public static function getAllSubcategories()
     {
         $subcategories = self::all();
