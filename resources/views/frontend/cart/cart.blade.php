@@ -6,23 +6,25 @@
         <p class="text-center pb-3 mb-3 mb-lg-4" id="xwyz" data-id={{ $subcategory->id_subcategory }}>
             {{ $subcategory->name_subcategory }}</p>
 
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap align-content-center w-100 mx-auto pb-3 mb-3 mb-lg-4 fs-5"
-            role="tablist" style="max-width: 600px;">
-            <li class="nav-item mb-0">
-                <a class="nav-link active" href="#beginners" data-bs-toggle="tab" role="tab">
-                    <i class="ai-calendar-plus me-2"></i>
-                    Reserva de Carril</a>
-            </li>
-            <li class="nav-item mb-0">
-                <a id="tabBilling" class="nav-link disabled" href="#stretching" data-bs-toggle="tab" role="tab"><i
-                        class="ai-card me-2"></i> Facturación</a>
-            </li>
-            <li class="nav-item mb-0">
-                <a id="tabPayment" class="nav-link disabled" href="#fly-yoga" data-bs-toggle="tab" role="tab"><i
-                        class="ai-wallet me-2"></i> Pago</a>
-            </li>
-        </ul>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap align-content-center w-100 mx-auto pb-3 mb-3 mb-lg-4 fs-5"
+    role="tablist" style="max-width: 600px;">
+    <li class="nav-item mb-0">
+        <a id="tabReservation" class="nav-link active" href="#beginners" data-bs-toggle="tab" role="tab">
+            <i class="ai-calendar-plus me-2"></i> Reserva de Carril
+        </a>
+    </li>
+    <li class="nav-item mb-0">
+        <a id="tabBilling" class="nav-link disabled" href="#stretching" data-bs-toggle="tab" role="tab">
+            <i class="ai-card me-2"></i> Facturación
+        </a>
+    </li>
+    <li class="nav-item mb-0">
+        <a id="tabPayment" class="nav-link disabled" href="#fly-yoga" data-bs-toggle="tab" role="tab">
+            <i class="ai-wallet me-2"></i> Pago
+        </a>
+    </li>
+</ul>
 
         <!-- Tab content -->
         <div class="tab-content">
@@ -177,7 +179,7 @@
             <div class="tab-pane fade" id="stretching" role="tabpanel">
                 <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
                     <div class="row">
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
                             <h1 class="h2 pb-3">Checkout</h1>
                             <!-- Checkout form fields -->
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">

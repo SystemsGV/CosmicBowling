@@ -378,3 +378,49 @@ radioHours.forEach((hours) => {
         }
     });
 });
+
+
+
+document.getElementById("btnNext").addEventListener("click", function () {
+    // Get all tab elements
+    const reservationTab = document.getElementById("tabReservation");
+    const billingTab = document.getElementById("tabBilling");
+    const paymentTab = document.getElementById("tabPayment");
+
+    // Get all tab-pane content elements
+    const beginnersPane = document.getElementById("beginners");
+    const stretchingPane = document.getElementById("stretching");
+    const flyYogaPane = document.getElementById("fly-yoga");
+
+    // Check if the current active tab is Reserva de Carril
+    if (reservationTab.classList.contains("active")) {
+        // Move from Reserva de Carril to Facturación
+        reservationTab.classList.remove("active");
+        billingTab.classList.remove("disabled");
+        billingTab.classList.add("active");
+
+        // Hide Reserva de Carril pane and show Facturación pane
+        beginnersPane.classList.remove("show", "active");
+        stretchingPane.classList.add("show", "active");
+
+        // Switch tab
+        new bootstrap.Tab(billingTab).show();
+    } else if (billingTab.classList.contains("active")) {
+        // Move from Facturación to Pago
+        billingTab.classList.remove("active");
+        billingTab.classList.add("disabled");
+        paymentTab.classList.remove("disabled");
+        paymentTab.classList.add("active");
+
+        // Hide Facturación pane and show Pago pane
+        stretchingPane.classList.remove("show", "active");
+        flyYogaPane.classList.add("show", "active");
+
+        // Hide the button as there's no next step
+        this.style.display = 'none';
+
+        // Switch tab
+        new bootstrap.Tab(paymentTab).show();
+    }
+});
+
