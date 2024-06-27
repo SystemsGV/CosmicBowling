@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id('id_coupon');
+            $table->string('type_coupon')->nullable();
+            $table->enum('discount_type', ['fixed', 'percentage']); // Tipo de descuento
             $table->string('code')->unique(); // Código único del cupón
             $table->text('description')->nullable(); // Descripción del cupón
             $table->decimal('discount_amount', 8, 2)->nullable(); // Monto de descuento
-            $table->enum('discount_type', ['fixed', 'percentage']); // Tipo de descuento
             $table->integer('usage_limit')->nullable(); // Límite de uso del cupón
             $table->integer('used_count')->default(0); // Conteo de veces usado
             $table->date('valid_from')->nullable(); // Fecha de inicio de validez
@@ -49,7 +50,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_coupon');
+        Schema::dropIfExists('subcategory_coupon');
         Schema::dropIfExists('coupons');
     }
 };

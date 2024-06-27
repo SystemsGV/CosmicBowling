@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SubCategoriesController;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\Admin\Coupons;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,9 +65,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CalendarController::class)->group(function ($route) {
 
         Route::get('calendario', 'index')->name('calendar.index');
-        Route::get('schemaEvents','show');
+        Route::get('schemaEvents', 'show');
         Route::post('insertHours', 'store');
     });
+
+    Route::controller(CouponsController::class)->group(function ($route) {
+
+        Route::get('cupones', 'index')->name('coupons.index');
+        Route::post('createCoupon', 'create');
+        Route::get('CodeCoupon', 'codeCoupon');
+    });
+
 
     Route::resource('Usuarios', UserController::class)->names('admin.users');
 });

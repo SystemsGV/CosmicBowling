@@ -26,7 +26,8 @@ class SubCategories extends Model
 
     public function coupons()
     {
-        return $this->belongsToMany(Coupons::class, 'subcategory_coupon', 'subcategory_id', 'coupon_id');
+        return $this->belongsToMany(Coupons::class, 'subcategory_coupon', 'subcategory_id', 'coupon_id')
+                    ->withTimestamps();
     }
 
     public static function getAllSubcategories()

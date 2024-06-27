@@ -11,11 +11,12 @@ class Coupons extends Model
 
     protected $table = 'coupons';
     protected $primaryKey = 'id_coupon';
-    protected $fillable = ['code', 'description', 'discount_amount', 'discount_type', 'usage_limit', 'used_count', 'valid_from', 'valid_until', 'is_active'];
+    protected $fillable = ['type_coupon', 'discount_type', 'code', 'description', 'discount_amount',  'usage_limit', 'used_count', 'valid_from', 'valid_until', 'is_active'];
 
     public function subcategories()
     {
-        return $this->belongsToMany(SubCategories::class, 'category_coupon', 'coupon_id', 'category_id');
+        return $this->belongsToMany(subcategories::class, 'subcategory_coupon', 'coupon_id', 'subcategory_id')
+                    ->withTimestamps();
     }
 
     public static function show()

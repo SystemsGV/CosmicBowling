@@ -145,7 +145,7 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{ route('calendar.index') }}" class="menu-link">
+                        <a href="{{ route('coupons.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi mdi-sale"></i>
                             <div data-i18n="Coupons">Cupones</div>
                         </a>
