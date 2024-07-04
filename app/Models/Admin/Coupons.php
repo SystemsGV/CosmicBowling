@@ -16,7 +16,7 @@ class Coupons extends Model
     public function subcategories()
     {
         return $this->belongsToMany(subcategories::class, 'subcategory_coupon', 'coupon_id', 'subcategory_id')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public static function show()
@@ -26,17 +26,29 @@ class Coupons extends Model
         $data = [];
 
         foreach ($rows as $row) {
+
+            $subcategories = $row->subcategories->pluck('name_subcategory');
+            $subcategory_ids = $row->subcategories->pluck('id_subcategory');
             $data[] = [
-                'id' => $row->id_cupon,
+                'code' => $row->code,
                 'description' => $row->description,
                 'd_amount' => $row->discount_amount,
                 'd_type' => $row->discount_type,
                 'u_limit' => $row->usage_limit,
-                'u_count' => $row->usage_count,
+                'u_count' => $row->used_count,
                 'init' => $row->valid_from,
                 'finish' => $row->valid_until,
-                'status' => $row->is_active
+                'status' => $row->is_active,
+                'subcategories_ids' => $subcategory_ids,
+                'subcategories_names' => $subcategories
             ];
         }
+
+        return $data;
+    }
+
+    public function attachSubcategories($coupon, $subcategories)
+    {
+        $coupon->subcategories()->attach($subcategories);
     }
 }

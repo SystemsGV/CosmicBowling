@@ -3,7 +3,21 @@ $(function () {
     var a,
         e = $(".invoice-list-table"),
         csrf_token = $('meta[name="csrf-token"]').attr("content"),
-        o = $(".select2");
+        o = $(".select2"),
+        type = {
+            percentage: {
+                text: "Porcentaje",
+                symbol: "%",
+            },
+            fixed: {
+                text: "Efectivo",
+                symbol: "S/. ",
+            },
+        },
+        status = {
+            1: { title: "Activo", color: "success" },
+            0: { title: "Inactivo", color: "danger" },
+        };
     o.length &&
         o.each(function () {
             var t = $(this);
@@ -15,18 +29,17 @@ $(function () {
         }),
         e.length &&
             (a = e.DataTable({
-                ajax: assetsPath + "json/invoice-list.json",
+                ajax: "tableCoupon",
                 columns: [
                     { data: "" },
-                    { data: "invoice_id" },
-                    { data: "invoice_id" },
-                    { data: "invoice_status" },
-                    { data: "issued_date" },
-                    { data: "client_name" },
-                    { data: "total" },
-                    { data: "balance" },
-                    { data: "invoice_status" },
-                    { data: "action" },
+                    { data: "code" },
+                    { data: "description" },
+                    { data: "d_type" },
+                    { data: "d_amount" },
+                    { data: "u_limit" },
+                    { data: "init" },
+                    { data: "status" },
+                    { data: "" },
                 ],
                 columnDefs: [
                     {
@@ -38,98 +51,65 @@ $(function () {
                             return "";
                         },
                     },
+
                     {
                         targets: 1,
-                        orderable: !1,
-                        render: function () {
-                            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-                        },
-                        checkboxes: {
-                            selectAllRender:
-                                '<input type="checkbox" class="form-check-input">',
-                        },
-                    },
-                    {
-                        targets: 2,
                         render: function (a, e, t, s) {
                             return (
-                                '<a href="app-invoice-preview.html"><span>#' +
-                                t.invoice_id +
+                                '<a href="javascript:void(0)"><span>' +
+                                a +
                                 "</span></a>"
                             );
                         },
                     },
                     {
-                        targets: 3,
+                        targets: 2,
                         render: function (a, e, t, s) {
-                            var n = t.invoice_status,
-                                i = t.due_date;
-                            return (
-                                "<div class='d-inline-flex' data-bs-toggle='tooltip' data-bs-html='true' title='<span>" +
-                                n +
-                                '<br> <span class="fw-medium">Balance:</span> ' +
-                                t.balance +
-                                '<br> <span class="fw-medium">Due Date:</span> ' +
-                                i +
-                                "</span>'>" +
-                                {
-                                    Sent: '<span class="avatar avatar-sm"> <span class="avatar-initial rounded-circle bg-label-secondary"><i class="mdi mdi-email-outline"></i></span></span>',
-                                    Draft: '<span class="avatar avatar-sm"> <span class="avatar-initial rounded-circle bg-label-primary"><i class="mdi mdi-folder-outline"></i></span></span>',
-                                    "Past Due":
-                                        '<span class="avatar avatar-sm"> <span class="avatar-initial rounded-circle bg-label-danger"><i class="mdi mdi-alert-circle-outline"></i></span></span>',
-                                    "Partial Payment":
-                                        '<span class="avatar avatar-sm"> <span class="avatar-initial rounded-circle bg-label-success"><i class="mdi mdi-check"></i></span></span>',
-                                    Paid: '<span class="avatar avatar-sm"> <span class="avatar-initial rounded-circle bg-label-warning"><i class="mdi mdi-chart-pie-outline"></i></span></span>',
-                                    Downloaded:
-                                        '<span class="avatar avatar-sm"> <span class="avatar-initial rounded-circle bg-label-info"><i class="mdi mdi-arrow-down"></i></span></span>',
-                                }[n] +
-                                "</div>"
-                            );
+                            return a;
+                        },
+                    },
+                    {
+                        targets: 3,
+                        responsivePriority: 4,
+                        render: function (a, e, t, s) {
+                            return `<span>${[type[a].text]}</span>`;
                         },
                     },
                     {
                         targets: 4,
-                        responsivePriority: 4,
                         render: function (a, e, t, s) {
-                            return "as";
+                            return `<span>${[
+                                type[t.d_type].symbol,
+                            ]} ${a}</span>`;
                         },
                     },
                     {
                         targets: 5,
                         render: function (a, e, t, s) {
-                            return "<span>$" + t.total + "</span>";
+                            return `<span class="badge rounded-pill bg-label-success me-1 fs-6">${t.u_limit}</span><span class="badge rounded-pill bg-label-danger me-1 fs-6">${t.u_count}</span>`;
                         },
                     },
                     {
                         targets: 6,
+                        orderable: !1,
                         render: function (a, e, t, s) {
-                            t = new Date(t.due_date);
-                            return (
-                                '<span class="d-none">' +
-                                moment(t).format("YYYYMMDD") +
-                                "</span>" +
-                                moment(t).format("DD MMM YYYY")
-                            );
+                            return a;
                         },
                     },
                     {
                         targets: 7,
-                        orderable: !1,
                         render: function (a, e, t, s) {
-                            t = t.balance;
-                            return 0 === t
-                                ? '<span class="badge rounded-pill bg-label-success" text-capitalized> Paid </span>'
-                                : '<span class="text-heading">' + t + "</span>";
+                            return `<span class="badge rounded-pill bg-label-${status[a].color} me-1">${status[a].title}</span>`;
                         },
                     },
-                    { targets: 8, visible: !1 },
                     {
                         targets: -1,
-                        title: "Actions",
+                        title: "Acciones",
                         searchable: !1,
                         orderable: !1,
+                        className: "text-center",
                         render: function (a, e, t, s) {
-                            return '<div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="text-body delete-record" data-bs-placement="top" title="Delete Invoice"><i class="mdi mdi-delete-outline mdi-20px mx-1"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="text-body" data-bs-placement="top" title="Preview Invoice"><i class="mdi mdi-eye-outline mdi-20px mx-1"></i></a><div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow text-body p-0" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical mdi-20px"></i></a><div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div></div></div>';
+                            return '<a href="javascript:;" data-bs-toggle="tooltip" class="text-body btn-edit" data-bs-placement="top" title="Editar Cupón"><i class="mdi mdi-square-edit-outline mdi-20px mx-1"></i></a>';
                         },
                     },
                 ],
@@ -153,13 +133,13 @@ $(function () {
                     details: {
                         display: $.fn.dataTable.Responsive.display.modal({
                             header: function (a) {
-                                return "Details of " + a.data().full_name;
+                                return "Detalles Cupon " + a.data().code;
                             },
                         }),
                         type: "column",
                         renderer: function (a, e, t) {
                             t = $.map(t, function (a, e) {
-                                return "" !== a.title
+                                return "" !== a.d_type
                                     ? '<tr data-dt-row="' +
                                           a.rowIndex +
                                           '" data-dt-column="' +
@@ -180,11 +160,11 @@ $(function () {
                 },
                 initComplete: function () {
                     this.api()
-                        .columns(8)
+                        .columns(7)
                         .every(function () {
                             var e = this,
                                 t = $(
-                                    '<select id="UserRole" class="form-select"><option value=""> Select Status </option></select>'
+                                    '<select id="UserRole" class="form-select"><option value=""> Filtrar Por Estado </option></select>'
                                 )
                                     .appendTo(".invoice_status")
                                     .on("change", function () {
@@ -203,9 +183,9 @@ $(function () {
                                 .each(function (a, e) {
                                     t.append(
                                         '<option value="' +
-                                            a +
+                                            status[a].title +
                                             '" class="text-capitalize">' +
-                                            a +
+                                            status[a].title +
                                             "</option>"
                                     );
                                 });
@@ -278,10 +258,6 @@ $(function () {
 
     $("#typeC").on("change", function () {
         updateIcon(this.value);
-    });
-
-    $("#coupon-modal").on("hidden.bs.modal", function () {
-        resetForm();
     });
 
     const f = document.getElementById("coupon-form");
@@ -360,6 +336,16 @@ $(function () {
         sendDataServe(urlMap[method]);
     });
 
+    $("#coupon-modal").on("hidden.bs.modal", function () {
+        fv.resetForm(true);
+        $("#coupon-form")[0].reset();
+    });
+
+    a.on("click", ".btn-edit", function () {
+
+        $("#coupon-modal").modal("show");
+    });
+
     /**
      * Envía datos al servidor mediante una solicitud POST.
      * @param {string} url - La URL del servidor al que se enviarán los datos.
@@ -403,8 +389,6 @@ $(function () {
                 $.unblockUI();
             });
     }
-
-    function resetForm() {}
 
     function updateIcon(value) {
         if (iconMap.hasOwnProperty(value)) {

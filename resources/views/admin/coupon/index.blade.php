@@ -84,15 +84,14 @@
                     <thead class="table-light">
                         <tr>
                             <th></th>
-                            <th></th>
                             <th>Código</th>
-                            <th>Detalles</th>
-                            <th>Client</th>
-                            <th>Total</th>
-                            <th class="text-truncate">Issued Date</th>
-                            <th>Balance</th>
-                            <th>Invoice Status</th>
-                            <th class="cell-fit">Actions</th>
+                            <th>Descripción</th>
+                            <th>Disponibles</th>
+                            <th>Descuento</th>
+                            <th>Cantidad</th>
+                            <th class="text-truncate">Fecha Limite</th>
+                            <th>Estado</th>
+                            <th class="cell-fit">Acciones</th>
                         </tr>
                     </thead>
                 </table>
@@ -112,7 +111,7 @@
                     <div class="text-center mb-4">
                         <h3 class="mb-2" id="titleModal">Crear Cupón</h3>
                     </div>
-                    <form id="coupon-form" class="row g-4" onsubmit="return false">
+                    <form id="coupon-form" class="row g-4">
                         @csrf
                         <input type="hidden" name="idCoupon" id="idCoupon">
                         <div class="col-12 col-md-5">
@@ -127,7 +126,7 @@
                         <div class="col-12 col-md-7">
                             <div class="form-floating form-floating-outline">
                                 <select id="subcategories" name="subcategories[]" class="select2 form-select"
-                                    data-placeholder="Selecciona Subcategorias" multiple>
+                                    data-placeholder="Selecciona Subcategorias" multiple data-allow-clear="true">
                                     @foreach ($categories as $category)
                                         <optgroup label="{{ $category->name_category }}">
                                             @foreach ($category->subcategories as $subcategory)
@@ -137,15 +136,14 @@
                                         </optgroup>
                                     @endforeach
                                 </select>
-                                <label for="modalEditUserLanguage">Subcategorias</label>
+                                <label for="subcategories">Subcategorias</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="input-group input-group-merge">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" class="form-control" id="code" name="code" placeholder=""
-                                        aria-describedby="basic-default-password12">
-                                    <label for="basic-default-password12">Código de cupón</label>
+                                    <input type="text" class="form-control" id="code" name="code" placeholder="">
+                                    <label for="code">Código de cupón</label>
                                 </div>
                                 <span class="input-group-text cursor-pointer btn-codeCoupon"><i
                                         class="mdi mdi-sync"></i></span>
@@ -159,7 +157,7 @@
 
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" id="quantity" name="quantity"
-                                        placeholder="" aria-describedby="quantity">
+                                        placeholder="">
                                     <label for="quantity">Cantidad Cupones</label>
                                 </div>
                             </div>
@@ -230,5 +228,5 @@
     <!-- Page JS -->
     <script src="{{ asset('vendor/libs/autosize/autosize.js') }}"></script>
     <script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
-    <script src="{{ asset('js/app-invoice-list.js') }}"></script>
+    <script src="{{ asset('js/pages/coupon.js') }}"></script>
 @endsection

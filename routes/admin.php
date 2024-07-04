@@ -72,7 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CouponsController::class)->group(function ($route) {
 
         Route::get('cupones', 'index')->name('coupons.index');
+        Route::get('tableCoupon', 'show');
         Route::post('createCoupon', 'create');
+        Route::post('updateCoupon', 'update');
         Route::get('CodeCoupon', 'codeCoupon');
     });
 
