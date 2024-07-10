@@ -85,6 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('tableHolidays', 'show');
         Route::post('createHoliday', 'create');
         Route::post('updateHoliday', 'update');
+        Route::post('statusHoliday', 'store');
     });
 
 

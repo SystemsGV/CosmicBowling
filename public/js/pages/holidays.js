@@ -50,7 +50,12 @@ $(function () {
                         orderable: !1,
                         className: "text-center",
                         render: function (e, t, a, n) {
-                            return e;
+                            const checkedAttribute = e === 1 ? "checked" : "";
+                            return (
+                                '<label class="switch switch-lg"><input type="checkbox" class="switch-input btn-status" ' +
+                                checkedAttribute +
+                                '><span class="switch-toggle-slider"><span class="switch-on"></span><span class="switch-off"></span></span></label>'
+                            );
                         },
                     },
                     {
@@ -178,8 +183,39 @@ $(function () {
         $("#nameH").val(row.name);
         $("#dateH").val(row.holiday);
         m.modal("show");
+    });
 
-        console.log(row);
+    e.on("click", ".btn-status", function () {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data(),
+            isChecked = $(this).prop("checked");
+
+        let id = rowData.id,
+            status = isChecked ? "1" : "0";
+
+        let csrfToken = $('meta[name="csrf-token"]').attr("content");
+        let formData = {
+            id: id,
+            status: status,
+            _token: csrfToken, // Agregar el token CSRF aquí
+        };
+
+        $.ajax({
+            url: "statusHoliday",
+            method: "POST",
+            data: formData,
+            dataType: "json",
+        })
+            .done(function (response) {
+                Toast.fire({
+                    icon: response.icon,
+                    title: response.message,
+                });
+
+            })
+            .fail(function (xhr, status, error) {
+                console.error("Hubo un error en la solicitud AJAX:", error);
+            });
     });
 
     const f = document.getElementById("formHoliday"),

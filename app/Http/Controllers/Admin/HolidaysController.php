@@ -52,6 +52,18 @@ class HolidaysController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            $id = $request->input('id');
+            $status = $request->input('status');
+
+            $holiday = Holidays::findOrFail($id);
+            $holiday->status_holiday = $status;
+            $holiday->save();
+
+            return response()->json(['success' => true, 'icon' => 'success', 'message' => 'Estado del feriado actualizado']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => 'No se pudo actualizar el feriado.'], 404);
+        }
     }
 
     /**
