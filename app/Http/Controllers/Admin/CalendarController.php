@@ -80,8 +80,6 @@ class CalendarController extends Controller
     {
         $start = new DateTime($start);
         $end = new DateTime($end);
-
-        // Convert the interval string to a proper format for DateInterval
         $intervalParts = explode(' ', $interval);
         $intervalValue = $intervalParts[0];
         $intervalUnit = strtoupper(substr($intervalParts[1], 0, 1));
@@ -93,8 +91,6 @@ class CalendarController extends Controller
         foreach ($period as $time) {
             $times[] = $time->format('H:i');
         }
-
-        // Incluir la hora final
         if ($end->format('H:i') != end($times)) {
             $times[] = $end->format('H:i');
         }

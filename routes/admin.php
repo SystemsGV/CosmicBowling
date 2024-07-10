@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HolidaysController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SubCategoriesController;
 use App\Http\Controllers\Admin\UserController;
@@ -76,6 +77,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('createCoupon', 'create');
         Route::post('updateCoupon', 'update');
         Route::get('CodeCoupon', 'codeCoupon');
+    });
+
+    Route::controller(HolidaysController::class)->group(function ($route) {
+
+        Route::get('feriados', 'index')->name('holidays.index');
+        Route::get('tableHolidays', 'show');
+        Route::post('createHoliday', 'create');
+        Route::post('updateHoliday', 'update');
     });
 
 

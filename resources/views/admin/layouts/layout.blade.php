@@ -159,6 +159,13 @@
                         </a>
                     </li>
 
+                    <li class="menu-item">
+                        <a href="{{ route('holidays.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-calendar-star-outline"></i>
+                            <div data-i18n="Holidays">Feriados</div>
+                        </a>
+                    </li>
+
 
                     <!-- Reports -->
                     <li class="menu-header fw-medium mt-4">
