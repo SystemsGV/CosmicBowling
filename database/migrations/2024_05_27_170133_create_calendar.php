@@ -25,23 +25,6 @@ return new class extends Migration
             // Foreign key constraints
             $table->foreign('subcategory_id')->references('id_subcategory')->on('subcategories')->onDelete('cascade');
         });
-
-        Schema::create('calendar_items', function (Blueprint $table) {
-            $table->id('id_citem');
-            $table->unsignedBigInteger('subcategory_id_citem');
-            $table->unsignedBigInteger('calendar_id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('hour_citem');
-            $table->integer('date_citem');
-            $table->decimal('price_citem', 8, 2);
-            $table->integer('status_citem')->default(1);
-            $table->timestamps();
-
-            // Foreign key constraints
-            $table->foreign('subcategory_id_citem')->references('id_subcategory')->on('subcategories')->onDelete('cascade');
-            $table->foreign('calendar_id')->references('id_calendar')->on('calendar')->onDelete('cascade');
-            $table->foreign('product_id')->references('id_product')->on('products')->onDelete('cascade');
-        });
     }
 
     /**
@@ -51,7 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('calendar_items');
         Schema::dropIfExists('calendar');
     }
 };
