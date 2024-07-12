@@ -339,7 +339,7 @@ class ProductSeeder extends Seeder
             [
                 'id_product' => 21,
                 'category_id' => 2,
-                'subcategory_id' => 5,
+                'subcategory_id' =>4,
                 'name_product' => 'Billar N1',
                 'descr_product' => '<p><br></p>',
                 'img_product' => NULL,
@@ -355,7 +355,7 @@ class ProductSeeder extends Seeder
             [
                 'id_product' => 22,
                 'category_id' => 2,
-                'subcategory_id' => 5,
+                'subcategory_id' =>4,
                 'name_product' => 'Billar N2',
                 'descr_product' => '<p><br></p>',
                 'img_product' => NULL,
@@ -371,7 +371,7 @@ class ProductSeeder extends Seeder
             [
                 'id_product' => 23,
                 'category_id' => 2,
-                'subcategory_id' => 5,
+                'subcategory_id' =>4,
                 'name_product' => 'Billar N3',
                 'descr_product' => '<p><br></p>',
                 'img_product' => NULL,
@@ -387,7 +387,7 @@ class ProductSeeder extends Seeder
             [
                 'id_product' => 24,
                 'category_id' => 2,
-                'subcategory_id' => 5,
+                'subcategory_id' =>4,
                 'name_product' => 'Billar N4',
                 'descr_product' => '<p><br></p>',
                 'img_product' => NULL,
@@ -403,7 +403,7 @@ class ProductSeeder extends Seeder
             [
                 'id_product' => 25,
                 'category_id' => 1,
-                'subcategory_id' => 3,
+                'subcategory_id' => 2,
                 'name_product' => 'Pista VIP 1',
                 'descr_product' => '<p><br></p>',
                 'img_product' => NULL,
@@ -419,7 +419,7 @@ class ProductSeeder extends Seeder
             [
                 'id_product' => 26,
                 'category_id' => 1,
-                'subcategory_id' => 4,
+                'subcategory_id' => 3,
                 'name_product' => 'Pista Easy Duo VIP',
                 'descr_product' => '<p><br></p>',
                 'img_product' => NULL,

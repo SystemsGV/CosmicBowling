@@ -17,7 +17,6 @@ class SubCategorySeeder extends Seeder
     {
         $subcategories = [
             [
-                'id_subcategory' => 1,
                 'category_id' => 1,
                 'name_subcategory' => 'Pistas General',
                 'descr_subcategory' => '<p>Ninguna Descripcion</p>',
@@ -25,6 +24,7 @@ class SubCategorySeeder extends Seeder
                 'time_finish' => '22:00:00',
                 'price_sublj' => 120.00,
                 'price_subfds' => 150.00,
+                'limit_subcategory' => 5,
                 'img_subcategory' => '66608dca4fddf.png',
                 'color_subcategory' => 'success',
                 'extend_subcategory' => 'Holiday',
@@ -33,7 +33,6 @@ class SubCategorySeeder extends Seeder
                 'updated_at' => '2024-06-10 16:19:54',
             ],
             [
-                'id_subcategory' => 3,
                 'category_id' => 1,
                 'name_subcategory' => 'Pistas VIP',
                 'descr_subcategory' => '<p><br></p>',
@@ -41,6 +40,7 @@ class SubCategorySeeder extends Seeder
                 'time_finish' => '22:00:00',
                 'price_sublj' => 180.00,
                 'price_subfds' => 220.00,
+                'limit_subcategory' => 5,
                 'img_subcategory' => '66608e3d65066.jpg',
                 'color_subcategory' => 'danger',
                 'extend_subcategory' => 'Personal',
@@ -49,7 +49,6 @@ class SubCategorySeeder extends Seeder
                 'updated_at' => '2024-06-10 16:20:07',
             ],
             [
-                'id_subcategory' => 4,
                 'category_id' => 1,
                 'name_subcategory' => 'Pistas Duo VIP',
                 'descr_subcategory' => '<p><br></p>',
@@ -57,6 +56,7 @@ class SubCategorySeeder extends Seeder
                 'time_finish' => '22:00:00',
                 'price_sublj' => 280.00,
                 'price_subfds' => 340.00,
+                'limit_subcategory' => 10,
                 'img_subcategory' => '66608e6eefdab.png',
                 'color_subcategory' => 'warning',
                 'extend_subcategory' => 'Family',
@@ -65,7 +65,6 @@ class SubCategorySeeder extends Seeder
                 'updated_at' => '2024-06-10 16:20:13',
             ],
             [
-                'id_subcategory' => 5,
                 'category_id' => 2,
                 'name_subcategory' => 'Billares',
                 'descr_subcategory' => '<p><br></p>',
@@ -73,6 +72,7 @@ class SubCategorySeeder extends Seeder
                 'time_finish' => '22:00:00',
                 'price_sublj' => 40.00,
                 'price_subfds' => 55.00,
+                'limit_subcategory' => 3,
                 'img_subcategory' => '66608e5148a3c.png',
                 'color_subcategory' => 'info',
                 'extend_subcategory' => 'ETC',

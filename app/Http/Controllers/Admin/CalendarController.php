@@ -30,38 +30,36 @@ class CalendarController extends Controller
         return response()->json(['data' => $products]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Products $products)
     {
         try {
-            $a = $request->input('eventTitle');
-            $b = $request->input('eventLabel');
-            $c = $request->input('eventStartDate');
-            $d = $request->input('eventEndDate');
-            $e = $request->input('data-id');
-            $f = $request->input('eventPrice');
-
             $calendar = new Calendar();
-            $calendar->subcategory_id = $e;
-            $calendar->name_calendar = $a;
-            $calendar->price_calendar = $f;
-            $calendar->extent_calendar = $b;
-            $calendar->start_calendar = $c;
-            $calendar->end_calendar = $d;
+            $calendar->subcategory_id = $request->input('data-id');
+            $calendar->name_calendar = $request->input('eventTitle');
+            $calendar->price_calendar = $request->input('eventPrice');
+            $calendar->extent_calendar = $request->input('eventLabel');
+            $calendar->start_calendar = $request->input('eventStartDate');
+            $calendar->end_calendar = $request->input('eventEndDate');
             $calendar->save();
 
             $calendarId = $calendar->id_calendar;
 
-            $availableQuantity = Products::where('subcategory_id', $e)->where('status_product', 1)->count();
-            $timeIntervals = $this->getTimeIntervals($c, $d);
+            $availableQuantity = $products->where('subcategory_id', $request->input('data-id'))
+                ->where('status_product', 1)
+                ->count();
+
+            $timeIntervals = $this->getTimeIntervals($request->input('eventStartDate'), $request->input('eventEndDate'));
 
             foreach ($timeIntervals as $time) {
+                $quantity = $time === '23:00' ? 0 : $availableQuantity;
+
                 calendarIntervals::create([
-                    'subcategory_id' => $e,
+                    'subcategory_id' => $request->input('data-id'),
                     'calendar_id' => $calendarId,
-                    'date_citem' => (new DateTime($c))->format('Y-m-d'),
+                    'date_citem' => (new DateTime($request->input('eventStartDate')))->format('Y-m-d'),
                     'time_interval' => $time,
-                    'available_quantity' => $availableQuantity,
-                    'price_citem' => $f,
+                    'available_quantity' => $quantity,
+                    'price_citem' => $request->input('eventPrice'),
                 ]);
             }
 

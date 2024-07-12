@@ -342,7 +342,7 @@ $(function () {
         $("#endDate").flatpickr().setDate(rowData.finish, true, "Y-m-dTH");
         $("#status").prop("checked", rowData.status);
 
-        $("#coupon-modal").modal("show");
+        $("#coupon-modal").modal("show")
     });
 
     /**

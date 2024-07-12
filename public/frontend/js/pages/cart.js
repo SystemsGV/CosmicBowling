@@ -13,11 +13,10 @@ let selectedButtonId = null,
     selectedPrice,
     line = 1;
 
-
 generateRadioButtons(calendarItems);
 
 function priceLeft(lane, shoe, cPrice, cShoe, lines) {
-    const plane = (lane * cPrice) * line;
+    const plane = lane * cPrice * line;
     const pShoe = shoe * cShoe;
     const pTotal = plane + pShoe;
 
@@ -33,8 +32,9 @@ function formatTime(timeString) {
     const intMinutes = parseInt(minutes);
     const period = intHour >= 12 ? "PM" : "AM";
     const formattedHour = intHour % 12 === 0 ? 12 : intHour % 12;
-    return `${formattedHour}:${intMinutes < 10 ? "0" + intMinutes : intMinutes
-        } ${period}`;
+    return `${formattedHour}:${
+        intMinutes < 10 ? "0" + intMinutes : intMinutes
+    } ${period}`;
 }
 
 function formatTime12h(time24h) {
@@ -54,8 +54,9 @@ function formatTime24Hours(timeString) {
 function formatTime12Hours(hours, minutes = 0) {
     const period = hours >= 12 ? "PM" : "AM";
     const formattedHour = hours % 12 === 0 ? 12 : hours % 12;
-    return `${formattedHour}:${minutes < 10 ? "0" + minutes : minutes
-        } ${period}`;
+    return `${formattedHour}:${
+        minutes < 10 ? "0" + minutes : minutes
+    } ${period}`;
 }
 
 function formatDateTime(dateString, timeString) {
@@ -88,9 +89,11 @@ function formatDateTime(dateString, timeString) {
     const day = date.getDate();
     const year = date.getFullYear();
     const time12h = formatTime12h(timeString);
-    return `${dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)
-        }, ${day} de ${month.charAt(0).toUpperCase() + month.slice(1)
-        } de ${year} <br> ${time12h}`;
+    return `${
+        dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)
+    }, ${day} de ${
+        month.charAt(0).toUpperCase() + month.slice(1)
+    } de ${year} <br> ${time12h}`;
 }
 
 function formatHourRange(timeString, duration) {
@@ -141,7 +144,6 @@ function getNextHalfHours(timeString) {
         twoHalfHoursLater.setHours(now.getHours() + 1);
     }
 
-
     // Agregar 1 hora y 30 minutos para obtener 2 horas después
     threeHalfHoursLater.setHours(now.getHours() + 1);
     threeHalfHoursLater.setMinutes(now.getMinutes() + 30);
@@ -161,7 +163,11 @@ function getNextHalfHours(timeString) {
         threeHalfHoursLater.toTimeString().split(" ")[0]
     );
 
-    return [formattedOneHalfHourLater, formattedTwoHalfHoursLater, formattedThreeHalfHoursLater];
+    return [
+        formattedOneHalfHourLater,
+        formattedTwoHalfHoursLater,
+        formattedThreeHalfHoursLater,
+    ];
 }
 
 const updateHourLabelsAndStatus = (
@@ -170,30 +176,33 @@ const updateHourLabelsAndStatus = (
     twoHoursLater,
     threeHoursLater
 ) => {
-
-
-    const isOneHourLaterAvailable = checkRadioButtonStatus(oneHourLater);
-    const isTwoHoursLaterAvailable = checkRadioButtonStatus(twoHoursLater);
-    const isThreeHoursLaterAvailable = checkRadioButtonStatus(threeHoursLater);
-
-    const hour1Label = document.getElementById("hour1");
-    const hour2Label = document.getElementById("hour2");
+    const isOneHourLaterAvailable = checkRadioButtonStatus(oneHourLater),
+        isTwoHoursLaterAvailable = checkRadioButtonStatus(twoHoursLater),
+        isThreeHoursLaterAvailable = checkRadioButtonStatus(threeHoursLater),
+        hour1Label = document.getElementById("hour1"),
+        hour2Label = document.getElementById("hour2");
 
     // Update for one hour later
     if (isOneHourLaterAvailable) {
         lHour1.innerHTML = formatHourRange(buttonNumber, 1);
+        cHour1.setAttribute("data-one", buttonNumber);
+        cHour1.setAttribute("data-two", oneHourLater);
         hour1Label.checked = true;
         hour1Label.disabled = false;
     } else {
         lHour1.innerHTML = `<del>${formatHourRange(buttonNumber, 1)}</del>`;
         hour1Label.disabled = true;
-        lHour2.innerHTML = `<del>${formatHourRange(buttonNumber, 2)}</del>`;
+        lHour2.innerHTML = `<del>${formatHourRange(oneHourLater, 2)}</del>`;
         hour2Label.disabled = true;
     }
 
     // Update for two hours later
     if (isTwoHoursLaterAvailable && isOneHourLaterAvailable) {
         lHour2.innerHTML = formatHourRange(buttonNumber, 2);
+        cHour2.setAttribute("data-one", buttonNumber);
+        cHour2.setAttribute("data-two", oneHourLater);
+        cHour2.setAttribute("data-three", twoHoursLater);
+        cHour2.setAttribute("data-four", threeHoursLater);
         hour2Label.disabled = false;
     } else {
         lHour2.innerHTML = `<del>${formatHourRange(buttonNumber, 2)}</del>`;
@@ -201,7 +210,11 @@ const updateHourLabelsAndStatus = (
     }
 
     // Update for three hours later
-    if (isTwoHoursLaterAvailable && isOneHourLaterAvailable && isThreeHoursLaterAvailable) {
+    if (
+        isTwoHoursLaterAvailable &&
+        isOneHourLaterAvailable &&
+        isThreeHoursLaterAvailable
+    ) {
         lHour2.innerHTML = formatHourRange(buttonNumber, 2);
         hour2Label.disabled = false;
     } else {
@@ -213,6 +226,9 @@ const updateHourLabelsAndStatus = (
 function handleRadioChange(selectedRadio) {
     const selectedDate = document.getElementById("c-date").value;
     const selectGuests = document.getElementById("c-guests").value;
+
+    console.log(selectedDate);
+
     selectedButtonId = selectedRadio.id;
     const buttonNumber = selectedRadio.value;
     selectedPrice = selectedRadio.getAttribute("data-price");
@@ -226,9 +242,15 @@ function handleRadioChange(selectedRadio) {
 
     priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 
-    const [oneHourLater, twoHoursLater, threeHoursLater] = getNextHalfHours(buttonNumber);
+    const [oneHourLater, twoHoursLater, threeHoursLater] =
+        getNextHalfHours(buttonNumber);
 
-    updateHourLabelsAndStatus(buttonNumber, oneHourLater, twoHoursLater, threeHoursLater);
+    updateHourLabelsAndStatus(
+        buttonNumber,
+        oneHourLater,
+        twoHoursLater,
+        threeHoursLater
+    );
 }
 
 function checkRadioButtonStatus(value) {
@@ -249,7 +271,12 @@ function generateRadioButtons(calendarItems) {
     const container = document.getElementById("radioContainer");
     container.innerHTML = "";
 
-    calendarItems.forEach((item) => {
+    // Filtra los elementos para excluir aquellos con la hora '23:00:00'
+    const filteredItems = calendarItems.filter(
+        (item) => item.hour !== "23:00:00"
+    );
+
+    filteredItems.forEach((item) => {
         const formattedTime = formatTime(item.hour);
 
         const radioInput = document.createElement("input");
@@ -324,7 +351,6 @@ const updateUI = async () => {
 document.getElementById("c-date").addEventListener("change", updateUI);
 
 document.getElementById("c-guests").addEventListener("change", (e) => {
-
     guests.innerHTML = ` X ${e.target.value} Invitados`;
     const selectGuests = e.target.value;
 
@@ -336,41 +362,54 @@ document.getElementById("c-guests").addEventListener("change", (e) => {
             line = 2;
             document.getElementById("n-lane").innerHTML = "2";
             priceLeft(selectHour, selectGuests, selectedPrice, priceShoe);
-
         } else {
             line = 1;
             document.getElementById("n-lane").innerHTML = "";
             priceLeft(selectHour, selectGuests, selectedPrice, priceShoe);
-
         }
     } else {
         console.error("No se ha seleccionado ningún botón de tiempo.");
     }
-
 });
 
 let selectHour = 1;
 
 radioHours.forEach((hours) => {
     hours.addEventListener("input", function () {
+        console.log("hola");
         if (this.checked) {
             selectHour = parseInt(this.value);
-            const selectGuests = parseInt(document.getElementById("c-guests").value);
+            const selectGuests = parseInt(
+                document.getElementById("c-guests").value
+            );
 
-            // Update the hours label
             const pluralSuffix = selectHour > 1 ? "s" : "";
-            document.getElementById("l-hours").innerHTML = ` X ${selectHour} Hora${pluralSuffix}`;
+            document.getElementById(
+                "l-hours"
+            ).innerHTML = ` X ${selectHour} Hora${pluralSuffix}`;
 
             if (selectedButtonId) {
-                const selectedPrice = document.getElementById(selectedButtonId).getAttribute("data-price");
+                const selectedPrice = document
+                    .getElementById(selectedButtonId)
+                    .getAttribute("data-price");
                 if (selectGuests > 5) {
                     document.getElementById("n-lane").innerHTML = "2";
                     line = 2;
-                    priceLeft(selectHour, selectGuests, selectedPrice, priceShoe); // 2 lanes
+                    priceLeft(
+                        selectHour,
+                        selectGuests,
+                        selectedPrice,
+                        priceShoe
+                    ); // 2 lanes
                 } else {
                     document.getElementById("n-lane").innerHTML = "";
                     line = 1;
-                    priceLeft(selectHour, selectGuests, selectedPrice, priceShoe); // 1 lane
+                    priceLeft(
+                        selectHour,
+                        selectGuests,
+                        selectedPrice,
+                        priceShoe
+                    ); // 1 lane
                 }
             } else {
                 console.error("No se ha seleccionado ningún botón de tiempo.");
@@ -378,8 +417,6 @@ radioHours.forEach((hours) => {
         }
     });
 });
-
-
 
 document.getElementById("btnNext").addEventListener("click", function () {
     // Get all tab elements
@@ -417,10 +454,9 @@ document.getElementById("btnNext").addEventListener("click", function () {
         flyYogaPane.classList.add("show", "active");
 
         // Hide the button as there's no next step
-        this.style.display = 'none';
+        this.style.display = "none";
 
         // Switch tab
         new bootstrap.Tab(paymentTab).show();
     }
 });
-
