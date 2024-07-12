@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('id_calendar');
             $table->unsignedBigInteger('subcategory_id');
             $table->string('name_calendar');
+            $table->decimal('price_calendar', 8, 2);
             $table->string('extent_calendar');
             $table->dateTime('start_calendar');
             $table->dateTime('end_calendar');

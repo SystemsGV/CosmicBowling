@@ -23,7 +23,7 @@ isRtl && (direction = "rtl"),
                 k = document.querySelector("#eventStartDate"),
                 w = document.querySelector("#eventEndDate"),
                 q = $("#eventLabel"),
-                //M = document.querySelector("#eventDescription"),
+                M = document.querySelector("#eventPrice"),
                 A = document.querySelector(".select-all"),
                 F = [].slice.call(document.querySelectorAll(".input-filter")),
                 Y = document.querySelector(".inline-calendar");
@@ -71,7 +71,7 @@ isRtl && (direction = "rtl"),
             q.length &&
                 (select2Focus(q),
                 q.wrap('<div class="position-relative"></div>').select2({
-                    placeholder: "Seleccionar Grupo",
+                    placeholder: "Seleccionar Subcategoria",
                     dropdownParent: q.parent(),
                     templateResult: t,
                     templateSelection: t,
@@ -103,6 +103,44 @@ isRtl && (direction = "rtl"),
                         monthSelectorType: "static",
                         inline: !0,
                     }));
+            q.on("input", function () {
+                let option = $(this).find("option:selected"),
+                    lj = option.data("lj"),
+                    fds = option.data("fds");
+
+                let selectedDate = new Date(k.value);
+                let dayOfWeek = selectedDate.getDay();
+
+                blockUI();
+
+                let promise;
+                if (isWeekend(dayOfWeek)) {
+                    promise = Promise.resolve(fds);
+                } else {
+                    promise = checkHoliday(k.value).then((isHoliday) =>
+                        isHoliday ? fds : lj
+                    );
+                }
+
+                promise
+                    .then((price) => {
+                        M.value = price;
+                        console.log(price);
+                    })
+                    .catch((error) => {
+                        console.error(
+                            "Error al verificar el día feriado:",
+                            error
+                        );
+                    })
+                    .finally(() => {
+                        $.unblockUI();
+                    });
+            });
+
+            function isWeekend(dayOfWeek) {
+                return dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0;
+            }
 
             let i = new Calendar(v, {
                 initialView: "dayGridMonth",
@@ -205,10 +243,9 @@ isRtl && (direction = "rtl"),
                         null !== a.end
                             ? o.setDate(a.end, !0, "Y-m-d")
                             : o.setDate(a.start, !0, "Y-m-d"),
-                        q.val(a.extendedProps.calendar).trigger("change");
-
-                    //void 0 !== a.extendedProps.description &&
-                    //   (M.value = a.extendedProps.description);
+                        q.val(a.extendedProps.calendar).trigger("change"),
+                        void 0 !== a.extendedProps.price &&
+                            (M.value = a.extendedProps.price);
                 },
                 datesSet: function () {
                     s();
@@ -220,21 +257,28 @@ isRtl && (direction = "rtl"),
             i.render(), s();
             var c = document.getElementById("eventForm");
             function u() {
+                fv.resetForm();
+                q.val(0).trigger("change");
                 w.value = "";
                 k.value = "";
                 E.value = "";
-                // M.value = "";
+                M.value = "";
             }
+
             (fv = FormValidation.formValidation(c, {
                 fields: {
                     eventTitle: {
                         validators: {
-                            notEmpty: { message: "Please enter event title " },
+                            notEmpty: {
+                                message: "Obligatorio ingresar un titulo",
+                            },
                         },
                     },
                     eventStartDate: {
                         validators: {
-                            notEmpty: { message: "Please enter start date " },
+                            notEmpty: {
+                                message: "Please enter start date ",
+                            },
                         },
                     },
                     eventEndDate: {
@@ -280,7 +324,7 @@ isRtl && (direction = "rtl"),
                                     display: "block",
                                     extendedProps: {
                                         calendar: q.val(),
-                                        //  description: M.value,
+                                        price: M.value,
                                     },
                                 };
                                 l.push(n);
@@ -296,7 +340,7 @@ isRtl && (direction = "rtl"),
                                 end: w.value,
                                 extendedProps: {
                                     calendar: q.val(),
-                                    //description: M.value,
+                                    price: M.value,
                                 },
                                 display: "block",
                                 allDay: "0",
@@ -362,17 +406,18 @@ isRtl && (direction = "rtl"),
                         f.classList.remove("show");
                 });
         }
+        let csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
         function insert() {
             return new Promise((resolve, reject) => {
-                let csrfToken = document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content");
-                let eventLabelSelect = document.getElementById("eventLabel");
-                let dataId =
-                    eventLabelSelect.selectedOptions[0].getAttribute("data-id");
+                let eventLabelSelect = document.getElementById("eventLabel"),
+                    dataId =
+                        eventLabelSelect.selectedOptions[0].getAttribute(
+                            "data-id"
+                        );
 
                 let formData = new FormData(c);
-                formData.append("_token", csrfToken);
                 formData.append("data-id", dataId);
 
                 fetch("insertHours", {
@@ -408,5 +453,44 @@ isRtl && (direction = "rtl"),
         }
         function update(id) {
             console.log(id);
+        }
+
+        function checkHoliday(date) {
+            return new Promise((resolve, reject) => {
+                fetch("validateHoliday", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                    body: JSON.stringify({ date: date }),
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            return response.json().then((errorData) => {
+                                throw new Error(
+                                    errorData.message || "Error en la solicitud"
+                                );
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        resolve(data);
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error.message);
+                        reject(error);
+                    });
+            });
+        }
+
+        function blockUI() {
+            $.blockUI({
+                message:
+                    '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+                css: { backgroundColor: "transparent", border: "0" },
+                overlayCSS: { opacity: 0.5 },
+            });
         }
     });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Holidays;
+use DateTime;
 use Illuminate\Http\Request;
 
 class HolidaysController extends Controller
@@ -77,15 +78,12 @@ class HolidaysController extends Controller
         return response()->json(['data' => $holidays]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function validateHoliday(Request $request)
     {
-        //
+        $date = new DateTime($request->input('date'));
+        $dateIn = $date->format('Y-m-d');
+        $isHoliday = Holidays::where('date_holiday',  $dateIn)->where('status_holiday', 1)->exists();
+        return response()->json($isHoliday);
     }
 
     /**

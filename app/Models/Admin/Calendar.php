@@ -22,6 +22,7 @@ class Calendar extends Model
             $data[] = [
                 'id' => $row->id_calendar,
                 'title' => $row->name_calendar,
+                'price' => $row->price_calendar,
                 'start' => $row->start_calendar,
                 'end' => $row->end_calendar,
                 'calendar' => $row->extent_calendar,

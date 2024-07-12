@@ -38,10 +38,12 @@ class CalendarController extends Controller
             $c = $request->input('eventStartDate');
             $d = $request->input('eventEndDate');
             $e = $request->input('data-id');
+            $f = $request->input('eventPrice');
 
             $calendar = new Calendar();
             $calendar->subcategory_id = $e;
             $calendar->name_calendar = $a;
+            $calendar->price_calendar = $f;
             $calendar->extent_calendar = $b;
             $calendar->start_calendar = $c;
             $calendar->end_calendar = $d;
@@ -59,7 +61,7 @@ class CalendarController extends Controller
                     'date_citem' => (new DateTime($c))->format('Y-m-d'),
                     'time_interval' => $time,
                     'available_quantity' => $availableQuantity,
-                    'price_citem' => 0.00,
+                    'price_citem' => $f,
                 ]);
             }
 

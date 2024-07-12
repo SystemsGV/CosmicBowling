@@ -49,10 +49,10 @@
                             </div>
 
                             <!-- <div class="form-check mb-3">
-                                                                                                        <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                                                                                            data-value="business" checked="">
-                                                                                                        <label class="form-check-label" for="select-business">Business</label>
-                                                                                                    </div>-->
+                                                                                                                            <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                                                                                                                data-value="business" checked="">
+                                                                                                                            <label class="form-check-label" for="select-business">Business</label>
+                                                                                                                        </div>-->
 
                             <div class="form-check form-check-warning mb-3">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-family"
@@ -89,6 +89,7 @@
                         </div>
                         <div class="offcanvas-body">
                             <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+                                @csrf
                                 <div class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="eventTitle" name="eventTitle"
                                         placeholder="Event Title">
@@ -100,7 +101,8 @@
                                         <option value="">-----</option>
                                         @foreach ($subcategories as $row)
                                             <option data-label={{ $row->color_subcategory }}
-                                                data-id={{ $row->id_subcategory }} value={{ $row->extend_subcategory }}>
+                                                data-id={{ $row->id_subcategory }} data-lj={{ $row->price_sublj }}
+                                                data-fds={{ $row->price_subfds }} value={{ $row->extend_subcategory }}>
                                                 {{ $row->name_subcategory }}</option>
                                         @endforeach
                                     </select>
@@ -117,10 +119,11 @@
                                     <label for="eventEndDate">Hora Fin</label>
                                 </div>
 
-                                <!--<div class="form-floating form-floating-outline mb-4">
-                                        <textarea class="form-control" name="eventDescription" id="eventDescription"></textarea>
-                                        <label for="eventDescription">Description</label>
-                                    </div>-->
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <input type="text" class="form-control" id="eventPrice" name="eventPrice"
+                                        placeholder="00.00">
+                                    <label for="eventTitle">Precio</label>
+                                </div>
 
                                 <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4 gap-2">
                                     <div class="d-flex">

@@ -11,6 +11,6 @@ $.ajax({
         title: event.title,
         start: new Date(event.start),
         end: new Date(event.end),
-        extendedProps: { calendar: event.calendar },
+        extendedProps: { calendar: event.calendar, price: event.price },
     }));
 });
