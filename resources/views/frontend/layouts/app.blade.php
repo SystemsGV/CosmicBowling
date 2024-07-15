@@ -7,6 +7,7 @@
     <!-- Viewport -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SEO meta tags -->
     <title>Around | Product Landing</title>
@@ -395,7 +396,7 @@
             <div class="container">
 
                 <!-- Navbar brand (Logo) -->
-                <a class="navbar-brand pe-sm-3" href="index.html">
+                <a class="navbar-brand pe-sm-3" href="{{ route('home.index') }}">
                     <span class="text-primary flex-shrink-0 me-2">
                         <svg width="35" height="32" viewbox="0 0 36 33" xmlns="http://www.w3.org/2000/svg">
                             <path fill="currentColor"

@@ -7,7 +7,11 @@ const guests = document.getElementById("l-guests"),
     cHour1 = document.getElementById("hour1"),
     cHour2 = document.getElementById("hour2"),
     xwyz = document.getElementById("xwyz").getAttribute("data-id"),
-    radioHours = document.querySelectorAll('input[name="c-hour"]');
+    csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+
+radioHours = document.querySelectorAll('input[name="c-hour"]');
 priceShoe = 8;
 let selectedButtonId = null,
     selectedPrice,
@@ -225,22 +229,11 @@ const updateHourLabelsAndStatus = (
 
 function handleRadioChange(selectedRadio) {
     const selectedDate = document.getElementById("c-date").value;
-    const selectGuests = document.getElementById("c-guests").value;
-
-    console.log(selectedDate);
 
     selectedButtonId = selectedRadio.id;
     const buttonNumber = selectedRadio.value;
     selectedPrice = selectedRadio.getAttribute("data-price");
     const dateTime = formatDateTime(selectedDate, buttonNumber);
-
-    document.getElementById("l-date").innerHTML = dateTime;
-    document.getElementById("l-hours").innerHTML = " X 1 hora:";
-    document.getElementById(
-        "l-guests"
-    ).innerHTML = ` X ${selectGuests} Invitados`;
-
-    priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 
     const [oneHourLater, twoHoursLater, threeHoursLater] =
         getNextHalfHours(buttonNumber);
@@ -251,6 +244,25 @@ function handleRadioChange(selectedRadio) {
         twoHoursLater,
         threeHoursLater
     );
+
+    console.log(
+        updateGuests(
+            selectedDate,
+            buttonNumber,
+            oneHourLater,
+            twoHoursLater,
+            threeHoursLater
+        )
+    );
+
+    const selectGuests = document.getElementById("c-guests").value;
+    document.getElementById("l-date").innerHTML = dateTime;
+    document.getElementById("l-hours").innerHTML = " X 1 hora:";
+    document.getElementById(
+        "l-guests"
+    ).innerHTML = ` X ${selectGuests} Invitados`;
+
+    priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 }
 
 function checkRadioButtonStatus(value) {
@@ -348,14 +360,40 @@ const updateUI = async () => {
     }
 };
 
+const updateGuests = async (date, one, two, three, four) => {
+    try {
+        const response = await fetch(`/updateGuests`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify({ date, one, two, three, four }),
+        });
+
+        if (!response.ok) {
+            throw new Error("No se pudo obtener la data");
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        return data.calculated;
+    } catch (error) {
+        console.error("Error al obtener la data:", error);
+    }
+};
+
 document.getElementById("c-date").addEventListener("change", updateUI);
 
-document.getElementById("c-guests").addEventListener("change", (e) => {
+const inputGuests = document.getElementById("c-guests");
+
+const LabelGuests = (e) => {
     guests.innerHTML = ` X ${e.target.value} Invitados`;
     const selectGuests = e.target.value;
 
     if (selectedButtonId) {
-        selectedPrice = document
+        const selectedPrice = document
             .getElementById(selectedButtonId)
             .getAttribute("data-price");
         if (selectGuests > 5) {
@@ -370,13 +408,24 @@ document.getElementById("c-guests").addEventListener("change", (e) => {
     } else {
         console.error("No se ha seleccionado ningún botón de tiempo.");
     }
-});
+};
+
+inputGuests.addEventListener("change", LabelGuests);
 
 let selectHour = 1;
 
 radioHours.forEach((hours) => {
     hours.addEventListener("input", function () {
-        console.log("hola");
+        const selectedDate = document.getElementById("c-date").value,
+            oneHour = this.getAttribute("data-one"),
+            twoHour = this.getAttribute("data-two"),
+            threeHour = this.getAttribute("data-three"),
+            fourHour = this.getAttribute("data-four");
+
+        console.log(
+            updateGuests(selectedDate, oneHour, twoHour, threeHour, fourHour)
+        );
+
         if (this.checked) {
             selectHour = parseInt(this.value);
             const selectGuests = parseInt(

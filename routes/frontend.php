@@ -20,4 +20,5 @@ Route::get('/', [Home::class, 'index'])->name('home.index');
 Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
   Route::get('/updateUI/{subcategory}/{date}', 'show');
+  Route::post('updateGuests', 'guests');
 });

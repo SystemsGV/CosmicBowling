@@ -100,13 +100,14 @@
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">5. Seleccionar Integrantes</h4>
-                                <span class="text-body-secondary">Añade hasta 5 jugadores. Proporcione un recuento exacto de
+                                <span class="text-body-secondary">Añade hasta 5 jugadores por pista. Proporcione un recuento exacto de
                                     invitados. No podemos garantizar alojamiento para cambios en el tamaño del grupo.
                                 </span>
-
-                                <select class="form-select form-select-lg mt-4" required="" id="c-guests">
-
-                                </select>
+                                <div class="count-input bg-gray rounded-3">
+                                    <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement="">-</button>
+                                    <input class="form-control" type="number" value="0" id="c-guests">
+                                    <button class="btn btn-icon btn-lg fs-xl" type="button" data-increment="">+</button>
+                                </div>
                             </h3>
 
                         </div>

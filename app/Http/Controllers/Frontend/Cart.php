@@ -9,6 +9,7 @@ use App\Models\Admin\Products;
 use App\Models\Admin\calendarItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Redis;
 
 class Cart extends Controller
 {
@@ -29,6 +30,8 @@ class Cart extends Controller
 
             // Find the subcategory corresponding to the provided formatted name
             $subcategory = SubCategories::where('name_subcategory', $formattedName)->firstOrFail();
+            session(['limit' => $subcategory->limit_subcategory]);
+            session(['subcategory' => $subcategory->id_subcategory]);
 
             // Get enabled items grouped by product and date for the selected subcategory
             $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory->id_subcategory, $tomorrow);
@@ -42,13 +45,40 @@ class Cart extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function guests(Request $request)
     {
+        $date = $request->input('date'); // Fecha proporcionada en la solicitud
+        $hours = [
+            $request->input('one'),   // Primera hora
+            $request->input('two'),   // Segunda hora
+            $request->input('three'), // Tercera hora
+            $request->input('four')   // Cuarta hora
+        ];
+
+        // Obtener el límite de la sesión
+        $limit = session('limit');
+
+        // Consultar todos los intervalos de tiempo a la vez
+        $intervals = CalendarIntervals::where('date_citem', $date)
+            ->where('subcategory_id', session('subcategory'))
+            ->whereIn('time_interval', array_filter($hours)) // Filtrar nulls
+            ->get();
+
+        // Filtrar los intervalos nulos
+        $intervals = $intervals->filter();
+
+        // Encontrar el intervalo con la menor cantidad disponible
+        $minAvailable = $intervals->min('available_quantity');
+
+        // Calcular el resultado
+        $result = $minAvailable * $limit;
+
+
+        return response()->json([
+            'min_available' => $minAvailable,
+            'calculated' => $result,
+            'intervals' => $intervals
+        ]);
     }
 
     /**
