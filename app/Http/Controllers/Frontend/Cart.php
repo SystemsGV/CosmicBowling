@@ -76,8 +76,8 @@ class Cart extends Controller
 
         return response()->json([
             'min_available' => $minAvailable,
+            'limit' =>    $limit,
             'calculated' => $result,
-            'intervals' => $intervals
         ]);
     }
 

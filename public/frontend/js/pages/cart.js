@@ -9,10 +9,15 @@ const guests = document.getElementById("l-guests"),
     xwyz = document.getElementById("xwyz").getAttribute("data-id"),
     csrfToken = document
         .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content");
+        .getAttribute("content"),
+    inputGuests = document.getElementById("c-guests"),
+    limitRound = "",
+    labelLine = document.getElementById("n-lane");
+localStorage.setItem("limit", "");
 
-radioHours = document.querySelectorAll('input[name="c-hour"]');
-priceShoe = 8;
+const radioHours = document.querySelectorAll('input[name="c-hour"]'),
+    priceShoe = xwyz === "4" ? 0 : 8,
+    typeLane = xwyz == 4 ? "" : "Alquiler Calzado";
 let selectedButtonId = null,
     selectedPrice,
     line = 1;
@@ -255,12 +260,12 @@ function handleRadioChange(selectedRadio) {
         )
     );
 
-    const selectGuests = document.getElementById("c-guests").value;
+    const selectGuests = inputGuests.value;
     document.getElementById("l-date").innerHTML = dateTime;
     document.getElementById("l-hours").innerHTML = " X 1 hora:";
     document.getElementById(
         "l-guests"
-    ).innerHTML = ` X ${selectGuests} Invitados`;
+    ).innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados </strong>`;
 
     priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 }
@@ -376,41 +381,82 @@ const updateGuests = async (date, one, two, three, four) => {
         }
 
         const data = await response.json();
-        console.log(data);
+        localStorage.setItem("limit", data.limit);
+        inputGuests.max = data.calculated;
+        if (parseInt(inputGuests.value) > data.calculated) {
+            inputGuests.value = data.calculated;
+            guests.innerHTML = ` ${typeLane} <strong> X ${data.calculated} Invitados </strong>`;
+            line = Math.ceil(inputGuests.value / data.limit);
+            labelLine.innerHTML = line;
 
-        return data.calculated;
+            const selectedPrice = document
+                .getElementById(selectedButtonId)
+                .getAttribute("data-price");
+
+            priceLeft(
+                selectHour,
+                data.calculated,
+                selectedPrice,
+                priceShoe,
+                line
+            );
+        }
+        limitRound;
+        return data;
     } catch (error) {
         console.error("Error al obtener la data:", error);
     }
 };
 
-document.getElementById("c-date").addEventListener("change", updateUI);
-
-const inputGuests = document.getElementById("c-guests");
-
-const LabelGuests = (e) => {
-    guests.innerHTML = ` X ${e.target.value} Invitados`;
-    const selectGuests = e.target.value;
+const LabelGuests = () => {
+    const selectGuests = parseInt(inputGuests.value) || 0; // Asegúrate de que sea un número
+    guests.innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados</strong>`;
 
     if (selectedButtonId) {
         const selectedPrice = document
             .getElementById(selectedButtonId)
             .getAttribute("data-price");
-        if (selectGuests > 5) {
-            line = 2;
-            document.getElementById("n-lane").innerHTML = "2";
-            priceLeft(selectHour, selectGuests, selectedPrice, priceShoe);
-        } else {
-            line = 1;
-            document.getElementById("n-lane").innerHTML = "";
-            priceLeft(selectHour, selectGuests, selectedPrice, priceShoe);
-        }
+        line = Math.ceil(selectGuests / localStorage.getItem("limit"));
+        labelLine.innerHTML = line;
+        priceLeft(selectHour, selectGuests, selectedPrice, priceShoe, line); // Calcula el precio
     } else {
         console.error("No se ha seleccionado ningún botón de tiempo.");
     }
 };
 
-inputGuests.addEventListener("change", LabelGuests);
+document.getElementById("increment-btn").addEventListener("click", () => {
+    let currentValue = parseInt(inputGuests.value) || 1; // Cambiado a 1 como valor inicial
+    const maxGuests = parseInt(inputGuests.max) || 100; // Obtener el máximo actual
+    if (currentValue < maxGuests) {
+        inputGuests.value = currentValue + 1; // Aumenta el valor en 1
+        LabelGuests(); // Llama a LabelGuests para actualizar la UI
+    }
+});
+
+// Decrementar el valor del input
+document.getElementById("decrement-btn").addEventListener("click", () => {
+    let currentValue = parseInt(inputGuests.value) || 1; // Cambiado a 1 como valor inicial
+    if (currentValue > 1) {
+        // Asegúrate de que el valor no baje de 1
+        inputGuests.value = currentValue - 1;
+        LabelGuests(); // Llama a LabelGuests para actualizar la UI
+    }
+});
+
+// Validar el valor del input directamente
+inputGuests.addEventListener("input", () => {
+    let currentValue = parseInt(inputGuests.value) || 1; // Cambiado a 1 como valor inicial
+    const maxGuests = parseInt(inputGuests.max) || 100;
+    if (currentValue > maxGuests) {
+        inputGuests.value = maxGuests; // Restablecer al máximo si se excede
+    } else if (currentValue < 1) {
+        // Cambiado a 1 como mínimo
+        inputGuests.value = 1; // No permitir valores menores a 1
+    }
+    LabelGuests(); // Llama a LabelGuests para actualizar la UI
+});
+
+document.getElementById("c-date").addEventListener("change", updateUI);
 
 let selectHour = 1;
 
@@ -428,40 +474,43 @@ radioHours.forEach((hours) => {
 
         if (this.checked) {
             selectHour = parseInt(this.value);
-            const selectGuests = parseInt(
-                document.getElementById("c-guests").value
-            );
 
             const pluralSuffix = selectHour > 1 ? "s" : "";
             document.getElementById(
                 "l-hours"
             ).innerHTML = ` X ${selectHour} Hora${pluralSuffix}`;
 
-            if (selectedButtonId) {
-                const selectedPrice = document
-                    .getElementById(selectedButtonId)
-                    .getAttribute("data-price");
-                if (selectGuests > 5) {
-                    document.getElementById("n-lane").innerHTML = "2";
-                    line = 2;
+            if (this.checked) {
+                const selectGuests = parseInt(inputGuests.value);
+
+                const pluralSuffix = selectHour > 1 ? "s" : "";
+                document.getElementById(
+                    "l-hours"
+                ).innerHTML = ` X ${selectHour} Hora${pluralSuffix}`;
+
+                if (selectedButtonId) {
+                    const selectedPrice = document
+                        .getElementById(selectedButtonId)
+                        .getAttribute("data-price");
+
+                    // Calcular el número de pistas basado en la cantidad de invitados
+                    line = Math.ceil(selectGuests / 5); // Divide por 5 y redondea hacia arriba
+
+                    // Actualizar el número de pistas en el DOM
+                    labelLine.innerHTML = line;
+
+                    // Calcular el precio
                     priceLeft(
                         selectHour,
                         selectGuests,
                         selectedPrice,
                         priceShoe
-                    ); // 2 lanes
+                    ); // Llamar a la función con el número de pistas
                 } else {
-                    document.getElementById("n-lane").innerHTML = "";
-                    line = 1;
-                    priceLeft(
-                        selectHour,
-                        selectGuests,
-                        selectedPrice,
-                        priceShoe
-                    ); // 1 lane
+                    console.error(
+                        "No se ha seleccionado ningún botón de tiempo."
+                    );
                 }
-            } else {
-                console.error("No se ha seleccionado ningún botón de tiempo.");
             }
         }
     });

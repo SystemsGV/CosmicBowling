@@ -100,13 +100,16 @@
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">5. Seleccionar Integrantes</h4>
-                                <span class="text-body-secondary">Añade hasta 5 jugadores por pista. Proporcione un recuento exacto de
+                                <span class="text-body-secondary">Añade hasta 5 jugadores por pista. Proporcione un recuento
+                                    exacto de
                                     invitados. No podemos garantizar alojamiento para cambios en el tamaño del grupo.
                                 </span>
                                 <div class="count-input bg-gray rounded-3">
-                                    <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement="">-</button>
-                                    <input class="form-control" type="number" value="0" id="c-guests">
-                                    <button class="btn btn-icon btn-lg fs-xl" type="button" data-increment="">+</button>
+                                    <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement=""
+                                        id="decrement-btn">-</button>
+                                    <input class="form-control" type="number" value="1" id="c-guests">
+                                    <button class="btn btn-icon btn-lg fs-xl" type="button" data-increment=""
+                                        id="increment-btn">+</button>
                                 </div>
                             </h3>
 
@@ -152,7 +155,7 @@
                                         <span class="fw-semibold ms-2" id="lp-lane">S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">
-                                        <span id="l-shoe">Alquiler Calzado<strong id="l-guests"></strong></span> <span
+                                        <span id="l-guests"></span> <span
                                             class="fw-semibold ms-2" id="lp-guests">S/. 0.00</span>
                                     </li>
                                 </ul>
