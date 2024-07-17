@@ -34,94 +34,6 @@ function priceLeft(lane, shoe, cPrice, cShoe, lines) {
     lTotal.innerHTML = `S/. ${pTotal}.00`;
 }
 
-// ----------------///
-function formatTime(timeString) {
-    const [hour, minutes] = timeString.split(":").slice(0, 2);
-    const intHour = parseInt(hour);
-    const intMinutes = parseInt(minutes);
-    const period = intHour >= 12 ? "PM" : "AM";
-    const formattedHour = intHour % 12 === 0 ? 12 : intHour % 12;
-    return `${formattedHour}:${
-        intMinutes < 10 ? "0" + intMinutes : intMinutes
-    } ${period}`;
-}
-
-function formatTime12h(time24h) {
-    const [hours, minutes, seconds] = time24h.split(":").map(Number);
-    const period = hours >= 12 ? "PM" : "AM";
-    const adjustedHours = hours % 12 || 12;
-    return `${adjustedHours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")} ${period}`;
-}
-
-function formatTime24Hours(timeString) {
-    const [hour, minutes] = timeString.split(":").slice(0, 2);
-    return `${hour}:${minutes}:00`;
-}
-
-function formatTime12Hours(hours, minutes = 0) {
-    const period = hours >= 12 ? "PM" : "AM";
-    const formattedHour = hours % 12 === 0 ? 12 : hours % 12;
-    return `${formattedHour}:${
-        minutes < 10 ? "0" + minutes : minutes
-    } ${period}`;
-}
-
-function formatDateTime(dateString, timeString) {
-    const date = new Date(`${dateString}T${timeString}`);
-    const daysOfWeek = [
-        "domingo",
-        "lunes",
-        "martes",
-        "miércoles",
-        "jueves",
-        "viernes",
-        "sábado",
-    ];
-    const months = [
-        "enero",
-        "febrero",
-        "marzo",
-        "abril",
-        "mayo",
-        "junio",
-        "julio",
-        "agosto",
-        "septiembre",
-        "octubre",
-        "noviembre",
-        "diciembre",
-    ];
-    const dayOfWeek = daysOfWeek[date.getDay()];
-    const month = months[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const time12h = formatTime12h(timeString);
-    return `${
-        dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)
-    }, ${day} de ${
-        month.charAt(0).toUpperCase() + month.slice(1)
-    } de ${year} <br> ${time12h}`;
-}
-
-function formatHourRange(timeString, duration) {
-    // Parsear el tiempo inicial en una fecha
-    const startTime = new Date(`2000-01-01T${timeString}`);
-
-    // Calcular la fecha final sumando la duración en milisegundos
-    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
-
-    // Formatear las horas de inicio y fin en formato de 12 horas con AM/PM
-    const startHour = formatTime12Hours(
-        startTime.getHours(),
-        startTime.getMinutes()
-    );
-    const endHour = formatTime12Hours(endTime.getHours(), endTime.getMinutes());
-
-    return `${startHour} hasta ${endHour}`;
-}
-
 function getNextHalfHours(timeString) {
     const [hour, minutes] = timeString.split(":").slice(0, 2);
     const intHour = parseInt(hour);
@@ -250,14 +162,12 @@ function handleRadioChange(selectedRadio) {
         threeHoursLater
     );
 
-    console.log(
-        updateGuests(
-            selectedDate,
-            buttonNumber,
-            oneHourLater,
-            twoHoursLater,
-            threeHoursLater
-        )
+    updateGuests(
+        selectedDate,
+        buttonNumber,
+        oneHourLater,
+        twoHoursLater,
+        threeHoursLater
     );
 
     const selectGuests = inputGuests.value;
@@ -359,7 +269,6 @@ const updateUI = async () => {
         const hours = await getProductCalendar(xwyz, selectedDate);
 
         generateRadioButtons(hours);
-        console.log(hours);
     } catch (error) {
         console.error("Error al actualizar la interfaz de usuario:", error);
     }
@@ -468,9 +377,7 @@ radioHours.forEach((hours) => {
             threeHour = this.getAttribute("data-three"),
             fourHour = this.getAttribute("data-four");
 
-        console.log(
-            updateGuests(selectedDate, oneHour, twoHour, threeHour, fourHour)
-        );
+        updateGuests(selectedDate, oneHour, twoHour, threeHour, fourHour);
 
         if (this.checked) {
             selectHour = parseInt(this.value);
@@ -515,6 +422,108 @@ radioHours.forEach((hours) => {
         }
     });
 });
+
+/**
+ * Converts a time string in HH:MM format to 12-hour format with AM/PM.
+ * @param {string} timeString - The time string in HH:MM format.
+ * @returns {string} - The formatted time in 12-hour format with AM/PM.
+ */
+function formatTime(timeString) {
+    const [hour, minutes] = timeString.split(":").map(Number);
+    const period = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    return `${formattedHour}:${minutes.toString().padStart(2, "0")} ${period}`;
+}
+
+/**
+ * Converts a time string in HH:MM:SS format to 12-hour format with AM/PM.
+ * @param {string} time24h - The time string in HH:MM:SS format.
+ * @returns {string} - The formatted time in 12-hour format with AM/PM.
+ */
+function formatTime12h(time24h) {
+    const [hours, minutes] = time24h.split(":").map(Number);
+    const period = hours >= 12 ? "PM" : "AM";
+    const adjustedHours = hours % 12 || 12;
+    return `${adjustedHours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")} ${period}`;
+}
+
+/**
+ * Converts a time string in HH:MM format to 24-hour format with seconds.
+ * @param {string} timeString - The time string in HH:MM format.
+ * @returns {string} - The formatted time in 24-hour format with seconds.
+ */
+function formatTime24Hours(timeString) {
+    const [hour, minutes] = timeString.split(":").map(Number);
+    return `${hour.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:00`;
+}
+
+/**
+ * Converts given hours and minutes to 12-hour format with AM/PM.
+ * @param {number} hours - The hour in 24-hour format.
+ * @param {number} [minutes=0] - The minutes.
+ * @returns {string} - The formatted time in 12-hour format with AM/PM.
+ */
+function formatTime12Hours(hours, minutes = 0) {
+    const period = hours >= 12 ? "PM" : "AM";
+    const formattedHour = hours % 12 === 0 ? 12 : hours % 12;
+    return `${formattedHour}:${minutes.toString().padStart(2, "0")} ${period}`;
+}
+
+// Function: Formats a date and time string to a readable datetime format in Spanish.
+function formatDateTime(dateString, timeString) {
+    const date = new Date(`${dateString}T${timeString}`);
+    const daysOfWeek = [
+        "domingo",
+        "lunes",
+        "martes",
+        "miércoles",
+        "jueves",
+        "viernes",
+        "sábado",
+    ];
+    const months = [
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
+    ];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const time12h = formatTime12h(timeString);
+    return `${
+        dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)
+    }, ${day} de ${
+        month.charAt(0).toUpperCase() + month.slice(1)
+    } de ${year} <br> ${time12h}`;
+}
+
+// Function: Formats a time string and duration to a readable hour range in 12-hour format with AM/PM.
+function formatHourRange(timeString, duration) {
+    const startTime = new Date(`2000-01-01T${timeString}`);
+    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
+
+    const startHour = formatTime12Hours(
+        startTime.getHours(),
+        startTime.getMinutes()
+    );
+    const endHour = formatTime12Hours(endTime.getHours(), endTime.getMinutes());
+
+    return `${startHour} hasta ${endHour}`;
+}
 
 document.getElementById("btnNext").addEventListener("click", function () {
     // Get all tab elements

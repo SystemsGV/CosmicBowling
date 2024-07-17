@@ -144,8 +144,9 @@
                                 <div class="border-top pt-4 mt-2 mb-4">
                                     <div class="input-group input-group-sm border-dashed" style="max-width: 410px;">
                                         <input class="form-control text-uppercase" type="text"
-                                            placeholder="Código promocional">
-                                        <button class="btn btn-secondary" type="button">APLICAR CUPÓN</button>
+                                            placeholder="Código promocional" name="couponCode">
+                                        <button class="btn btn-secondary" type="button" id="btnCoupon">APLICAR
+                                            CUPÓN</button>
                                     </div>
                                 </div>
                                 <ul class="list-unstyled py-3 mb-0">
@@ -155,8 +156,8 @@
                                         <span class="fw-semibold ms-2" id="lp-lane">S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">
-                                        <span id="l-guests"></span> <span
-                                            class="fw-semibold ms-2" id="lp-guests">S/. 0.00</span>
+                                        <span id="l-guests"></span> <span class="fw-semibold ms-2" id="lp-guests">S/.
+                                            0.00</span>
                                     </li>
                                 </ul>
                                 <div class="d-flex align-items-center justify-content-between border-top fs-xl pt-4">
