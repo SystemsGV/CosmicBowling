@@ -15,7 +15,7 @@ class Categories extends Model
 
     public function subcategories()
     {
-        return $this->hasMany(Subcategories::class, 'category_id', 'id_category');
+        return $this->hasMany(SubCategories::class, 'category_id', 'id_category');
     }
 
     public static function getAllCategories()
