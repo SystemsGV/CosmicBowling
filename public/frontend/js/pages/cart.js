@@ -7,6 +7,8 @@ const guests = document.getElementById("l-guests"),
     cHour1 = document.getElementById("hour1"),
     cHour2 = document.getElementById("hour2"),
     xwyz = document.getElementById("xwyz").getAttribute("data-id"),
+    btnCoupon = document.getElementById("btnCoupon"),
+    inputCoupon = document.getElementById("couponCode"),
     csrfToken = document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
@@ -20,12 +22,13 @@ const radioHours = document.querySelectorAll('input[name="c-hour"]'),
     typeLane = xwyz == 4 ? "" : "Alquiler Calzado";
 let selectedButtonId = null,
     selectedPrice,
-    line = 1;
+    line = 1,
+    plane = "";
 
 generateRadioButtons(calendarItems);
 
 function priceLeft(lane, shoe, cPrice, cShoe, lines) {
-    const plane = lane * cPrice * line;
+    plane = lane * cPrice * line;
     const pShoe = shoe * cShoe;
     const pTotal = plane + pShoe;
 
@@ -317,6 +320,69 @@ const updateGuests = async (date, one, two, three, four) => {
     }
 };
 
+const getCoupon = async (code) => {
+    if (!code) {
+        console.error("El código de cupón no está definido.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/coupon/${code}`);
+
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.error("Cupón no encontrado.");
+                alert("Cupón no encontrado.");
+                return { error: "Cupón no encontrado." };
+            } else {
+                throw new Error("Error en la respuesta de la API.");
+            }
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        // Verificar si el cupón está activo
+        if (!data.is_active) {
+            alert("El cupón no está activo.");
+            return { error: "El cupón no está activo." };
+        }
+
+        // Verificar la validez de la fecha
+        const inputDate = new Date(document.getElementById("c-date").value);
+        const startDate = new Date(data.valid_from);
+        const endDate = new Date(data.valid_until);
+
+        if (inputDate < startDate || inputDate > endDate) {
+            alert("La fecha no está dentro del rango de validez del cupón.");
+            return { error: "La fecha no es válida." };
+        }
+
+        // Verificar si el cupón ha alcanzado su límite de uso
+        if (data.usage_limit !== null && data.used_count >= data.usage_limit) {
+            alert("Este cupón ya ha sido usado el número máximo de veces.");
+            return { error: "Límite de uso alcanzado." };
+        }
+
+        // Verificar si 'xwyz' se encuentra en 'subcategory_ids'
+        const xwyz = "4"; // Ejemplo de cupón como cadena
+        const xwyzNumber = parseInt(xwyz, 10); // Convertir a número
+        if (!data.subcategory_ids.includes(xwyzNumber)) {
+            alert("Este cupón no es válido para este producto.");
+            return { error: "Cupón no válido para este producto." };
+        }
+
+        // Devolver el tipo de descuento y el monto
+        const discountType = data.discount_type; // "percentage"
+        const discountAmount = data.discount_amount; // "20.00"
+
+        return { discountType, discountAmount };
+    } catch (error) {
+        console.error("Error al obtener la data:", error);
+        alert("Error al obtener los datos del cupón.");
+        return { error: "Error al obtener los datos del cupón." };
+    }
+};
 const LabelGuests = () => {
     const selectGuests = parseInt(inputGuests.value) || 0; // Asegúrate de que sea un número
     guests.innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados</strong>`;
@@ -421,6 +487,26 @@ radioHours.forEach((hours) => {
             }
         }
     });
+});
+
+btnCoupon.addEventListener("click", async () => {
+    const couponData = await  getCoupon(inputCoupon.value);
+
+    if (couponData && !couponData.error) {
+        // Si no hay error, mostrar los datos en la consola
+        console.log("Tipo de descuento:", couponData.discountType);
+        console.log("Monto de descuento:", couponData.discountAmount);
+    } else {
+        console.error("Error al obtener el cupón:", couponData.error);
+    }
+});
+
+inputCoupon.addEventListener("input", function () {
+    if (this.value.length > 5) {
+        btnCoupon.disabled = false;
+    } else {
+        btnCoupon.disabled = true;
+    }
 });
 
 /**

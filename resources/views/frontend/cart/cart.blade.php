@@ -144,8 +144,9 @@
                                 <div class="border-top pt-4 mt-2 mb-4">
                                     <div class="input-group input-group-sm border-dashed" style="max-width: 410px;">
                                         <input class="form-control text-uppercase" type="text"
-                                            placeholder="Código promocional" name="couponCode">
-                                        <button class="btn btn-secondary" type="button" id="btnCoupon">APLICAR
+                                            placeholder="Código promocional" id="couponCode" name="couponCode"
+                                            value="8YTW3KAQNGHV">
+                                        <button class="btn btn-secondary" type="button" id="btnCoupon" disabled>APLICAR
                                             CUPÓN</button>
                                     </div>
                                 </div>

@@ -51,4 +51,11 @@ class Coupons extends Model
     {
         $coupon->subcategories()->attach($subcategories);
     }
+
+    protected $appends = ['subcategory_ids'];
+
+    public function getSubcategoryIdsAttribute()
+    {
+        return $this->subcategories->pluck('id_subcategory');
+    }
 }
