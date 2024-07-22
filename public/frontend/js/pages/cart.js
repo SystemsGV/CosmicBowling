@@ -1,5 +1,6 @@
 const guests = document.getElementById("l-guests"),
     lpLane = document.getElementById("lp-lane"),
+    ldiscount = document.getElementById("l-discount"),
     lpGuests = document.getElementById("lp-guests"),
     lTotal = document.getElementById("l-total"),
     lHour1 = document.getElementById("l-hour1"),
@@ -23,6 +24,8 @@ const radioHours = document.querySelectorAll('input[name="c-hour"]'),
 let selectedButtonId = null,
     selectedPrice,
     line = 1,
+    globalDiscount = 0,
+    globalDiscountType = "",
     plane = "";
 
 generateRadioButtons(calendarItems);
@@ -30,11 +33,22 @@ generateRadioButtons(calendarItems);
 function priceLeft(lane, shoe, cPrice, cShoe, lines) {
     plane = lane * cPrice * line;
     const pShoe = shoe * cShoe;
-    const pTotal = plane + pShoe;
 
-    lpLane.innerHTML = `S/. ${plane}.00`;
-    lpGuests.innerHTML = `S/. ${pShoe}.00`;
-    lTotal.innerHTML = `S/. ${pTotal}.00`;
+    let discountAmount = 0;
+
+    if (globalDiscountType === "percentage") {
+        discountAmount = (plane * globalDiscount) / 100;
+    } else if (globalDiscountType === "fixed") {
+        discountAmount = globalDiscount;
+    }
+
+    discountAmount = discountAmount.toFixed(2);
+    const pTotal = (plane - discountAmount + pShoe).toFixed(2);
+
+    ldiscount.innerHTML = `- S/. ${discountAmount}`;
+    lpLane.innerHTML = `S/. ${plane.toFixed(2)}`;
+    lpGuests.innerHTML = `S/. ${pShoe.toFixed(2)}`;
+    lTotal.innerHTML = `S/. ${pTotal}`;
 }
 
 function getNextHalfHours(timeString) {
@@ -383,6 +397,7 @@ const getCoupon = async (code) => {
         return { error: "Error al obtener los datos del cupón." };
     }
 };
+
 const LabelGuests = () => {
     const selectGuests = parseInt(inputGuests.value) || 0; // Asegúrate de que sea un número
     guests.innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados</strong>`;
@@ -490,12 +505,20 @@ radioHours.forEach((hours) => {
 });
 
 btnCoupon.addEventListener("click", async () => {
-    const couponData = await  getCoupon(inputCoupon.value);
+    const couponData = await getCoupon(inputCoupon.value);
 
     if (couponData && !couponData.error) {
-        // Si no hay error, mostrar los datos en la consola
         console.log("Tipo de descuento:", couponData.discountType);
         console.log("Monto de descuento:", couponData.discountAmount);
+
+        globalDiscountType = couponData.discountType;
+        globalDiscount = parseFloat(couponData.discountAmount);
+
+        console.log("Monto de descuento global:", globalDiscount);
+        console.log("Tipo de descuento global:", globalDiscountType);
+
+        // Aquí puedes actualizar la UI para mostrar el monto descontado y el nuevo monto total al usuario
+        LabelGuests();
     } else {
         console.error("Error al obtener el cupón:", couponData.error);
     }

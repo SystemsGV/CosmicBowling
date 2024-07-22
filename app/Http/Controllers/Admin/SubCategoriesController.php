@@ -73,40 +73,31 @@ class SubCategoriesController extends Controller
         try {
             $categoryId = $request->input('categoryId');
 
-            // Buscar la categoría existente en la base de datos
             $subcategory = SubCategories::findOrFail($categoryId);
 
-            // Obtener otros datos del formulario
             $nameCategory = $request->input('categoryTitle');
             $descriptionCategory = $request->input('description');
             $category_id = $request->input('category_id');
             $tinit = $request->input('time_init');
             $tfinish = $request->input('time_finish');
 
-            // Verificar si se ha cargado una nueva imagen
             if ($request->hasFile('categoryImage')) {
-                // Obtener el nombre del archivo de imagen
                 $file = $request->file('categoryImage');
                 $uniqueFileName = uniqid() . '.' . $file->getClientOriginalExtension();
 
-                // Guardar el archivo de imagen en el sistema de archivos
                 $file->storeAs('public/subcategory', $uniqueFileName);
 
-                // Actualizar la imagen de la categoría
                 $subcategory->img_subcategory = $uniqueFileName;
             }
 
-            // Actualizar otros datos de la categoría
             $subcategory->name_subcategory = $nameCategory;
             $subcategory->category_id  = $category_id;
             $subcategory->descr_subcategory = $descriptionCategory;
             $subcategory->time_init = $tinit;
             $subcategory->time_finish = $tfinish;
 
-            // Guardar los cambios en la base de datos
             $subcategory->save();
 
-            // Retornar una respuesta JSON con los datos actualizados
             return response()->json([
                 'message' => 'Category updated successfully',
                 'data' => [
@@ -141,7 +132,7 @@ class SubCategoriesController extends Controller
     {
         $categoryId = $request->input('category_id');
 
-        $subcategories = Subcategories::sltcsubCategories($categoryId);
+        $subcategories = SubCategories::sltcsubCategories($categoryId);
 
         return response()->json($subcategories);
     }

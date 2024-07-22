@@ -157,6 +157,10 @@
                                         <span class="fw-semibold ms-2" id="lp-lane">S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">
+                                        <span>Descuento Cupón</span>
+                                        <span class="fw-semibold ms-2" id="l-discount">- S/. 0.00</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between mb-2">
                                         <span id="l-guests"></span> <span class="fw-semibold ms-2" id="lp-guests">S/.
                                             0.00</span>
                                     </li>
