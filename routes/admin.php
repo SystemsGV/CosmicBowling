@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HolidaysController;
@@ -87,6 +88,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('updateHoliday', 'update');
         Route::post('statusHoliday', 'store');
         Route::post('validateHoliday', 'validateHoliday');
+    });
+
+    Route::controller(ClientController::class)->group(function ($route) {
+
+        Route::get('Clientes', 'index')->name('clients.index');
+        Route::get('tableClients', 'show');
     });
 
 

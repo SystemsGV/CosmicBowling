@@ -166,6 +166,13 @@
                         </a>
                     </li>
 
+                    <li class="menu-item">
+                        <a href="{{route('clients.index')}}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-account-supervisor-circle"></i>
+                            <div data-i18n="Clients">Clientes</div>
+                        </a>
+                    </li>
+
 
                     <!-- Reports -->
                     <li class="menu-header fw-medium mt-4">

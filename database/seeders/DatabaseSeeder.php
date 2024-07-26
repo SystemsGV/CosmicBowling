@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
        $this->call(SubCategorySeeder::class);
        $this->call(ProductSeeder::class);
        $this->call(HolidaysSeeder::class);
+       $this->call(TypeDocSeeder::class);
 
     }
 }
