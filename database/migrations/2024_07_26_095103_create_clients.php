@@ -15,16 +15,20 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id('id_client');
-            $table->string('district_id');
             $table->string('document_id');
-            $table->string('number_doc');
-            $table->string('lastname_client');
-            $table->string('name_client');
-            $table->string('email_client');
+            $table->string('number_doc')->unique();
+            $table->string('lastname_pat');
+            $table->string('lastname_mat');
+            $table->string('names_client');
+            $table->string('email_client')->unique();
             $table->string('phone_client');
+            $table->date('birthday_client');
+            $table->string('address_client');
             $table->string('password_client');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
-        
+
             // Definir la clave foránea
             $table->foreign('document_id')->references('id_doc')->on('sunat_typedoc');
         });

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\Home;
 use App\Http\Controllers\Frontend\Cart;
+use App\Http\Controllers\Frontend\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,10 @@ Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
   Route::get('/updateUI/{subcategory}/{date}', 'show');
   Route::post('updateGuests', 'guests');
+});
+
+
+Route::controller(Client::class)->group(function () {
+  Route::get('/Registro', 'create')->name('registro');
+  Route::get('/verify', 'verifyEmail');
 });

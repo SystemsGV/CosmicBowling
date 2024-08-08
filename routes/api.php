@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Coupon;
+use App\Http\Controllers\Frontend\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('coupon/{code}', [Coupon::class, 'show']);
+Route::post('client/register', [Client::class, 'store']);
+Route::post('client/login', [Client::class, 'login']);
+Route::middleware('auth:sanctum')->post('client/logout', [Client::class, 'logout']);

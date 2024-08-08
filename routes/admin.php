@@ -91,7 +91,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(ClientController::class)->group(function ($route) {
-
         Route::get('Clientes', 'index')->name('clients.index');
         Route::get('tableClients', 'show');
     });

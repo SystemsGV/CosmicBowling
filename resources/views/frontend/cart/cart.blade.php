@@ -508,6 +508,159 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="modal-login" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Iniciar Session</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="pb-3 mb-3 mb-lg-4">
+                        ¿Aún no tienes una cuenta?&nbsp;&nbsp;<a href="javascript:void(0)" id="btnRegister">Regístrate
+                            aquí!</a></p>
+
+                    <form id="form-login" class="needs-validation" novalidate="">
+                        <div class="pb-3 mb-3">
+                            <div class="position-relative">
+                                <i class="ai-dashboard fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                <input id="number_login" name="number_login" class="form-control form-control-lg ps-5" type="text"
+                                    placeholder="Número de Documento" required="">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="position-relative">
+                                <i
+                                    class="ai-lock-closed fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                <div class="password-toggle">
+                                    <input id="password_login" name="password_login" class="form-control form-control-lg ps-5" type="password"
+                                        placeholder="Contraseña" required="">
+                                    <label class="password-toggle-btn" aria-label="Show/hide password">
+                                        <input class="password-toggle-check" type="checkbox"><span
+                                            class="password-toggle-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center justify-content-between pb-4">
+                            <div class="form-check my-1">
+                                <input class="form-check-input" type="checkbox" id="keep-signedin">
+                                <label class="form-check-label ms-1" for="keep-signedin">Mantenme registrado</label>
+                            </div>
+                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="account-password-recovery.html">
+                                ¿Has olvidado tu contraseña?</a>
+                        </div>
+                        <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-register" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Registrarse</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="pb-3 mb-3 mb-lg-4">Ya tienes una cuenta?&nbsp;&nbsp;<a href="javascript:void(0)"
+                            id="btnLogin">Iniciar sesión
+                            aquí!</a></p>
+
+                    <form class="needs-validation" id="form-register" novalidate="">
+                        <div class="row row-cols-1 row-cols-sm-3">
+                            <div class="col mb-4">
+                                <input class="form-control form-control-lg" name="paternal" type="text"
+                                    placeholder="Apellido Paterno" required="">
+                            </div>
+                            <div class="col mb-4">
+                                <input class="form-control form-control-lg" name="maternal" type="text"
+                                    placeholder="Apellido Materno" required="">
+                            </div>
+                            <div class="col mb-4">
+                                <input class="form-control form-control-lg" name="firstname" type="text"
+                                    placeholder="Nombres" required="">
+                            </div>
+                        </div>
+                        <div class="row row-cols-1">
+                            <div class="col-md-3 mb-4">
+                                <select class="form-select form-select-lg" name="type_doc" id="select-input">
+                                    <option value="01">DNI.</option>
+                                    <option value="04">CARNET EXT.</option>
+                                    <option value="07">PASAPORTE</option>
+                                    <option value="00">OTROS</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <input id="number_doc" class="form-control form-control-lg" name="number_doc"
+                                    type="text" placeholder="Número de Documento" required="">
+                                <div id="number_doc_error" class="invalid-tooltip"></div>
+                            </div>
+                            <div class="col-md-5 mb-4">
+                                <input id="mail_user" class="form-control form-control-lg" name="mail_user"
+                                    type="email" placeholder="Correo Electrónico" required="">
+                                <div id="mail_user_error" class="invalid-tooltip"></div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input class="form-control form-control-lg" name="birthday_user" type="text"
+                                    data-format='{"date": true, "delimiter": "/", "datePattern": ["d", "m", "Y"]}'
+                                    placeholder="Fec. Nacimiento (Dia/Mes/Año)" id="dateFormat" required="">
+                                <div class="invalid-tooltip">Ingrese Fecha de Nacimiento.</div>
+
+                            </div>
+                            <div class="col mb-6">
+                                <input class="form-control form-control-lg" name="phone_user" type="text"
+                                    placeholder="Número de Celular" required="">
+                                <div class="invalid-tooltip">Ingrese Número de Celular.</div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <input class="form-control form-control-lg" name="district_user" type="text"
+                                    placeholder="Distrito" required="">
+                                <div class="invalid-tooltip">Ingrese Distrito.</div>
+
+                            </div>
+                        </div>
+                        <div class="row row-cols-1 row-cols-sm-2">
+                            <div class="password-toggle mb-4">
+                                <input class="form-control form-control-lg" name="current_password" type="password"
+                                    placeholder="Contraseña" required="">
+                                <label class="password-toggle-btn" aria-label="Show/hide password">
+                                    <input class="password-toggle-check" type="checkbox">
+                                    <span class="password-toggle-indicator"></span>
+                                </label>
+                            </div>
+                            <div class="password-toggle mb-4">
+                                <input class="form-control form-control-lg" type="password"
+                                    placeholder="Confirmar contraseña" required="">
+                                <label class="password-toggle-btn" aria-label="Show/hide password">
+                                    <input class="password-toggle-check" type="checkbox">
+                                    <span class="password-toggle-indicator"></span>
+                                </label>
+                            </div>
+                            <div class="pb-4">
+                                <div class="form-check my-2">
+                                    <input class="form-check-input" type="checkbox" id="invalidCheck01" required>
+                                    <label class="form-check-label ms-1" for="invalidCheck01">Acepto los <a
+                                            href="#">Términos y condiciones</a></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection()
 
 @section('styles')
