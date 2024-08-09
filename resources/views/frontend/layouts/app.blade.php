@@ -418,17 +418,14 @@
                 </div>
 
 
-                <!-- Account + Cart -->
+                <!-- Account -->
                 <div class="nav align-items-center order-lg-3 ms-n1 me-3 me-sm-0">
-                    <a class="nav-link fs-4 p-2 mx-sm-1 d-none d-sm-flex" href="account-signin.html"
-                        aria-label="Account">
+                    <a class="nav-link fs-4 p-2 mx-sm-1 d-none d-sm-flex" href="" aria-label="Account">
                         <i class="ai-user"></i>
                     </a>
-                    <a class="nav-link position-relative fs-4 p-2" href="#cartOffcanvas" data-bs-toggle="offcanvas"
-                        aria-label="Shopping cart">
-                        <i class="ai-cart"></i>
-                    </a>
                 </div>
+
+                
 
 
                 <!-- Mobile menu toggler (Hamburger) -->

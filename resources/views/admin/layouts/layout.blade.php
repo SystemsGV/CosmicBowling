@@ -387,7 +387,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block"></span>
+                                                    <span
+                                                        class="fw-medium d-block">{{ Auth::user()->username }}</span>
                                                     <small class="text-muted label-rol"></small>
                                                 </div>
                                             </div>

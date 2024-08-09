@@ -94,12 +94,16 @@ class Client extends Controller
 
         $client = FrontendClient::where('number_doc', $request->input('number'))->first();
 
-        if (!$client || !Hash::check($request->input('password'), $client->password_client)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$client) {
+            return response()->json(['error' => 'Número de documento incorrecto'], 401);
         }
 
+        if (!Hash::check($request->input('password'), $client->password_client)) {
+            return response()->json(['error' => 'Contraseña incorrecta'], 401);
+        }
 
-        return response()->json(['token' => $client], 200);
+        $token = $client->createToken('ClientToken')->plainTextToken;
+        return response()->json(['token' => $token], 200);
     }
 
     public function logout(Request $request)
@@ -148,5 +152,4 @@ class Client extends Controller
 
         return response()->json(['message' => 'Token inválido o expirado.'], 400);
     }
-    
 }

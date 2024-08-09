@@ -565,15 +565,16 @@ document.getElementById("layout-menu") &&
                     overlayCSS: { opacity: 0.5 },
                 });
                 $.ajax({
-                    url: "Logout",
+                    url: "logout",
                     method: "POST",
                     data: { box: cashierValue, _token: csrfToken },
                 })
                     .done((response) => {
-                        console.log(response);
                         localStorage.removeItem("cashier");
-                        window.location.href = "/";
-
+                        window.location.href = "/be";
+                    })
+                    .fail((err) => {
+                        console.log(err.responseText);
                     })
                     .always(() => {
                         $.unblockUI();

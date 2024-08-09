@@ -28,6 +28,7 @@ use App\Models\Admin\Coupons;
 
 Route::get('/', [AuthController::class, 'index'])->name('admin.login');
 Route::post('/auth', [AuthController::class, 'authenticate'])->name('admin.login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rutas protegidas por autenticación
 Route::middleware('auth:sanctum')->group(function () {
