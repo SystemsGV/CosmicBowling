@@ -522,7 +522,6 @@
                             aquí!</a></p>
 
                     <form id="form-login" class="needs-validation" novalidate="">
-
                         <div class="pb-3 mb-3">
                             <div class="position-relative">
                                 <i class="ai-dashboard fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
@@ -575,6 +574,7 @@
                     <p class="pb-3 mb-3 mb-lg-4">Ya tienes una cuenta?&nbsp;&nbsp;<a href="javascript:void(0)"
                             id="btnLogin">Iniciar sesión
                             aquí!</a></p>
+                    <div id="alert-container"></div>
 
                     <form class="needs-validation" id="form-register" novalidate="">
                         <div class="row row-cols-1 row-cols-sm-3">
@@ -601,14 +601,16 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-4">
-                                <input id="number_doc" class="form-control form-control-lg" name="number_doc"
-                                    type="text" placeholder="Número de Documento" required="">
-                                <div id="number_doc_error" class="invalid-tooltip"></div>
+                                <input id="number_doc" class="form-control form-control-lg numeric-input" name="number_doc"
+                                    type="text" placeholder="Número de Documento" required="" >
+                                <div class="invalid-tooltip">Ingrese número de documento.</div>
+
                             </div>
                             <div class="col-md-5 mb-4">
                                 <input id="mail_user" class="form-control form-control-lg" name="mail_user"
                                     type="email" placeholder="Correo Electrónico" required="">
-                                <div id="mail_user_error" class="invalid-tooltip"></div>
+                                <div class="invalid-tooltip">Ingrese correo electronico.</div>
+
                             </div>
 
                         </div>
@@ -621,11 +623,10 @@
 
                             </div>
                             <div class="col mb-6">
-                                <input class="form-control form-control-lg" name="phone_user" type="text"
+                                <input class="form-control form-control-lg numeric-input" name="phone_user" type="text"
                                     placeholder="Número de Celular" required="">
                                 <div class="invalid-tooltip">Ingrese Número de Celular.</div>
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col-md-12 mb-3">
@@ -638,7 +639,7 @@
                         <div class="row row-cols-1 row-cols-sm-2">
                             <div class="password-toggle mb-4">
                                 <input class="form-control form-control-lg" name="current_password" type="password"
-                                    placeholder="Contraseña" required="">
+                                    placeholder="Contraseña" required=""  minlength="8">
                                 <label class="password-toggle-btn" aria-label="Show/hide password">
                                     <input class="password-toggle-check" type="checkbox">
                                     <span class="password-toggle-indicator"></span>
@@ -646,9 +647,9 @@
                             </div>
                             <div class="password-toggle mb-4">
                                 <input class="form-control form-control-lg" type="password"
-                                    placeholder="Confirmar contraseña" required="">
+                                    placeholder="Confirmar contraseña" required="" minlength="8">
                                 <label class="password-toggle-btn" aria-label="Show/hide password">
-                                    <input class="password-toggle-check" type="checkbox">
+                                    <input class="password-toggle-check" type="checkbox" >
                                     <span class="password-toggle-indicator"></span>
                                 </label>
                             </div>
@@ -660,10 +661,24 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Registrarse</button>
+                        <button id="register-button" class="btn btn-lg btn-primary w-100 mb-4"
+                            type="submit">Registrarse</button>
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+            data-bs-delay="300">
+            <div class="toast-header bg-success text-white">
+                <i class="ai-circle-check fs-lg me-2"></i>
+                <span class="me-auto">Reservas Cosmic Bowling</span>
+                <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-success" id="subjectToast"></div>
         </div>
     </div>
 @endsection()

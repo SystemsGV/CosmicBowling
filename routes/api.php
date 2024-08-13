@@ -24,4 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('coupon/{code}', [Coupon::class, 'show']);
 Route::post('client/register', [Client::class, 'store']);
 Route::post('client/login', [Client::class, 'login']);
-Route::middleware('auth:sanctum')->post('client/logout', [Client::class, 'logout']);
+Route::middleware('auth:client')->post('client/logout', [Client::class, 'logout']);
+

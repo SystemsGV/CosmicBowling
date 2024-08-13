@@ -18,6 +18,11 @@ use App\Http\Controllers\Frontend\Client;
 
 Route::get('/', [Home::class, 'index'])->name('home.index');
 
+Route::middleware(['client.auth'])->group(function () {
+  Route::get('/Perfil', [Client::class, 'show']);
+  // Otras rutas protegidas para clientes...
+});
+
 Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
   Route::get('/updateUI/{subcategory}/{date}', 'show');

@@ -354,7 +354,6 @@ const getCoupon = async (code) => {
         }
 
         const data = await response.json();
-        console.log(data);
 
         // Verificar si el cupón está activo
         if (!data.is_active) {
@@ -508,14 +507,8 @@ btnCoupon.addEventListener("click", async () => {
     const couponData = await getCoupon(inputCoupon.value);
 
     if (couponData && !couponData.error) {
-        console.log("Tipo de descuento:", couponData.discountType);
-        console.log("Monto de descuento:", couponData.discountAmount);
-
         globalDiscountType = couponData.discountType;
         globalDiscount = parseFloat(couponData.discountAmount);
-
-        console.log("Monto de descuento global:", globalDiscount);
-        console.log("Tipo de descuento global:", globalDiscountType);
 
         // Aquí puedes actualizar la UI para mostrar el monto descontado y el nuevo monto total al usuario
         LabelGuests();
@@ -582,7 +575,7 @@ function formatTime12Hours(hours, minutes = 0) {
     return `${formattedHour}:${minutes.toString().padStart(2, "0")} ${period}`;
 }
 
-// Function: Formats a date and time string to a readable datetime format in Spanish.
+// Función: Formatea una cadena de fecha y hora a un formato de fecha y hora legible en español.
 function formatDateTime(dateString, timeString) {
     const date = new Date(`${dateString}T${timeString}`);
     const daysOfWeek = [
@@ -620,7 +613,7 @@ function formatDateTime(dateString, timeString) {
     } de ${year} <br> ${time12h}`;
 }
 
-// Function: Formats a time string and duration to a readable hour range in 12-hour format with AM/PM.
+// Función: formatea una cadena de tiempo y una duración en un rango de horas legible en formato de 12 horas con AM/PM
 function formatHourRange(timeString, duration) {
     const startTime = new Date(`2000-01-01T${timeString}`);
     const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
@@ -634,22 +627,298 @@ function formatHourRange(timeString, duration) {
     return `${startHour} hasta ${endHour}`;
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
 
-document.addEventListener('DOMContentLoaded', function() {
-    const loginModal = new bootstrap.Modal(document.getElementById("modal-login"));
-    const registerModal = new bootstrap.Modal(document.getElementById("modal-register"));
+    const loginModalElement = document.getElementById("modal-login");
+    const registerModalElement = document.getElementById("modal-register"),
+        subjectToast = document.getElementById("subjectToast");
+
+    const loginModal = new bootstrap.Modal(loginModalElement);
+    const registerModal = new bootstrap.Modal(registerModalElement);
 
     document.getElementById("btnNext").addEventListener("click", function () {
         loginModal.show();
     });
 
-    document.getElementById("btnRegister").addEventListener("click", function () {
-        loginModal.hide();
-        registerModal.show();
-    });
+    document
+        .getElementById("btnRegister")
+        .addEventListener("click", function () {
+            loginModal.hide();
+            registerModal.show();
+        });
 
     document.getElementById("btnLogin").addEventListener("click", function () {
         registerModal.hide();
         loginModal.show();
     });
+
+    loginModalElement.addEventListener("hidden.bs.modal", function () {
+        const form = loginModalElement.querySelector("form");
+
+        if (form) {
+            form.reset(); // Llamar al método reset del formulario
+            form.classList.remove("was-validated"); // Elimina la clase de validación si existía
+        }
+
+        const alert = loginModalElement.querySelector(".alert");
+        if (alert) {
+            alert.remove(); // Elimina cualquier alerta
+        }
+    });
+
+    registerModalElement.addEventListener("hidden.bs.modal", function () {
+        const form = registerModalElement.querySelector("form");
+
+        if (form) {
+            form.reset(); // Llamar al método reset del formulario
+            form.classList.remove("was-validated"); // Elimina la clase de validación si existía
+        }
+
+        const alert = registerModalElement.querySelector(".alert");
+        if (alert) {
+            alert.remove(); // Elimina cualquier alerta
+        }
+    });
+
+    const f = document.getElementById("liveToast");
+    const loginForm = document.getElementById("form-login");
+    const loginButton = document.getElementById("login-button");
+
+    function setLoadingState(button, text) {
+        button.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      ${text}...
+        `;
+        button.disabled = true;
+    }
+
+    var a = new bootstrap.Toast(f, { delay: 3000 });
+
+    function resetButtonState(button, originalText) {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }
+
+    function handleServerResponse(response, form, button, originalText) {
+        if (!response.ok) {
+            throw new Error(response.error);
+        }
+    }
+
+    function displayErrorMessage(form, message) {
+        const existingErrorDiv = form.querySelector(".alert-danger");
+        if (existingErrorDiv) {
+            existingErrorDiv.remove();
+        }
+
+        const errorDiv = document.createElement("div");
+        errorDiv.classList.add("alert", "alert-danger");
+        errorDiv.textContent = message;
+        form.prepend(errorDiv);
+
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 4000);
+    }
+
+    function clearErrorMessage(form) {
+        const alert = form.querySelector(".alert-danger");
+        if (alert) {
+            alert.remove();
+        }
+    }
+
+    function updateUserMenu(client) {
+        const accountInfoDiv = document.getElementById("account-info");
+        accountInfoDiv.innerHTML = `
+            <div class="dropdown nav d-block order-lg-2 ms-auto">
+                <a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="border rounded-circle" src="${client.avatar}" width="48" alt="${client.name}">
+                    <div class="d-none d-sm-block ps-2">
+                        <div class="fs-xs lh-1 opacity-60">Hola,</div>
+                        <div class="fs-sm dropdown-toggle">${client.name}</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end my-1">
+                    <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                    <a class="dropdown-item" href="#"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a>
+                    <a class="dropdown-item" href="#"><i class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a>
+                    <a class="dropdown-item" href="#"><i class="ai-wallet fs-base opacity-70 me-2 mt-n1"></i>Billing</a>
+                    <div class="dropdown-divider"></div>
+                    <button type="button" class="dropdown-item" onclick=" window.location.reload();">
+                        <i class="ai-logout fs-lg opacity-70 me-2"></i>Cerrar Sesión
+                    </button> 
+            </div>
+        `;
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        if (!loginForm.checkValidity()) {
+            loginForm.classList.add("was-validated");
+            return;
+        }
+
+        setLoadingState(loginButton, "Validando");
+
+        const formData = new FormData(loginForm);
+        const data = {
+            number: formData.get("number_login"),
+            password: formData.get("password_login"),
+        };
+
+        try {
+            const response = await fetch(
+                "http://127.0.0.1:8000/api/client/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                    body: JSON.stringify(data),
+                }
+            );
+
+            const result = await response.json();
+            if (response.ok && result.user) {
+                updateUserMenu(result.user);
+                subjectToast.innerHTML = "Bienvenido, " + result.user.name;
+                loginModal.hide();
+                resetButtonState(loginButton, "Ingresar");
+                a.show();
+            } else {
+                handleServerResponse(
+                    result,
+                    loginForm,
+                    loginButton,
+                    "Ingresar"
+                );
+            }
+        } catch (error) {
+            displayErrorMessage(loginForm, error.message);
+            resetButtonState(loginButton, "Ingresar");
+        }
+    }
+
+    function handleServerResponse(result, loginForm, loginButton, buttonText) {
+        if (result.error) {
+            displayErrorMessage(loginForm, result.error);
+        } else {
+            // Si no hay error, limpiar cualquier alerta de error existente
+            clearErrorMessage(loginForm);
+        }
+        resetButtonState(loginButton, buttonText);
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener("submit", handleFormSubmit);
+    }
+
+    const form = document.getElementById("form-register");
+
+    if (form) {
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            registerButton = document.getElementById("register-button");
+
+            if (!form.checkValidity()) {
+                form.classList.add("was-validated");
+                return;
+            }
+            setLoadingState(registerButton, "Registrando");
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch(
+                    "http://127.0.0.1:8000/api/client/register",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken,
+                        },
+                        body: JSON.stringify(data),
+                    }
+                );
+
+                const responseText = await response.text();
+                const result = JSON.parse(responseText);
+
+                if (!response.ok) {
+                    const errors = result.errors || {};
+                    let errorList = "";
+
+                    // Recorre los errores y acumula los mensajes en una lista
+                    for (const [field, messages] of Object.entries(errors)) {
+                        const errorItems = messages
+                            .map((message) => `<li>${message}</li>`)
+                            .join("");
+                        errorList += errorItems;
+                    }
+
+                    // Solo muestra una alerta si hay errores
+                    if (errorList) {
+                        const alertContainer =
+                            document.getElementById("alert-container");
+                        if (alertContainer) {
+                            // Limpia el contenedor de alertas
+                            alertContainer.innerHTML = `
+                                <div class="alert d-flex alert-danger" role="alert">
+                                    <i class="ai-circle-x fs-xl pe-1 me-2"></i>
+                                    <div>
+                                        <strong>Corregir los siguientes campos :</strong>
+                                        <ul>${errorList}</ul>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    resetButtonState(registerButton, "Registrarse");
+
+                    return;
+                }
+
+                // Mostrar el alert de éxito
+                const alertContainer =
+                    document.getElementById("alert-container");
+                if (alertContainer) {
+                    alertContainer.innerHTML = `
+                        <div class="alert d-flex alert-success" role="alert">
+                            <i class="ai-circle-check fs-xl pe-1 me-2"></i>
+                            <div>Registro exitoso. Se ha enviado un código de validación a su correo. en instantes se mostrara el formulario de inicio de sesión.</div>
+                        </div>
+                    `;
+                }
+
+                resetButtonState(registerButton, "Registrarse");
+                registerButton.disabled = true;
+
+                setTimeout(() => {
+                    registerModal.hide();
+                    loginModal.show();
+                }, 5000);
+
+            } catch (error) {
+                // Mostrar el alert de error
+                const alertContainer =
+                    document.getElementById("alert-container");
+                if (alertContainer) {
+                    alertContainer.innerHTML = `
+                        <div class="alert d-flex alert-danger" role="alert">
+                            <i class="ai-circle-x fs-xl pe-1 me-2"></i>
+                            <div>Error: ${error.message}</div>
+                        </div>
+                    `;
+                }
+            }
+        });
+    }
 });

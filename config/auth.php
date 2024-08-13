@@ -36,6 +36,16 @@ return [
     */
 
     'guards' => [
+        'client' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'clients',
+            'hash' => false,
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -60,15 +70,15 @@ return [
     */
 
     'providers' => [
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Frontend\Client::class,
+        ],
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

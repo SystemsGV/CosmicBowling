@@ -12,19 +12,33 @@ use Illuminate\Support\Facades\Validator;
 
 //Mailing
 use App\Mail\VerifyClient;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class Client extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('client.auth')->only(['show', 'index']);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() {}
+
+    public function show()
     {
-        //
+        if (Auth::guard('client')->check()) {
+            $client = Auth::guard('client')->user();
+            return $client;
+        }
+        return "Ninguna session";
     }
 
     /**
@@ -45,6 +59,7 @@ class Client extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'type_doc' => 'required',
             'number_doc' => 'required|unique:clients,number_doc',
@@ -56,7 +71,12 @@ class Client extends Controller
             'birthday_user' => 'required|date_format:d/m/Y',
             'district_user' => 'required',
             'current_password' => 'required|min:8',
+        ],[
+            'number_doc.unique' => 'El número de documento ya está registrado. Por favor, use otro número.',
+            'mail_user.unique' => 'El correo electrónico ya está en uso. Por favor, use otro correo.',
+            'current_password.min' => 'La contraseña debe tener al menos :min caracteres.',
         ]);
+
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -77,7 +97,6 @@ class Client extends Controller
             'password_client' => Hash::make($request->input('current_password'))
         ]);
 
-        // Crear y devolver el token
         $token = $client->createToken('ClientToken')->plainTextToken;
 
         Mail::to($client->email_client)->send(new VerifyClient($token));
@@ -102,13 +121,36 @@ class Client extends Controller
             return response()->json(['error' => 'Contraseña incorrecta'], 401);
         }
 
+        Auth::guard('client')->login($client);
+
         $token = $client->createToken('ClientToken')->plainTextToken;
-        return response()->json(['token' => $token], 200);
+
+        $firstName = explode(' ', trim($client->names_client))[0];
+        $avatarUrl = asset('frontend/img/avatar/51.jpg');
+
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'name' => $firstName,
+                'avatar' => $avatarUrl
+            ]
+        ], 200);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        // Elimina los tokens si estás usando tokens para autenticación
+        if ($request->user()) {
+            $request->user()->tokens()->delete();
+        }
+
+        // Cierra la sesión
+        Auth::guard('client')->logout();
+
+        // Invalidar la sesión
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return response()->json(['message' => 'Successfully logged out'], 200);
     }
 

@@ -417,16 +417,47 @@
                     </label>
                 </div>
 
-
-                <!-- Account -->
-                <div class="nav align-items-center order-lg-3 ms-n1 me-3 me-sm-0">
-                    <a class="nav-link fs-4 p-2 mx-sm-1 d-none d-sm-flex" href="" aria-label="Account">
-                        <i class="ai-user"></i>
-                    </a>
+                <div id="account-info" class="nav align-items-center order-lg-3 ms-n1 me-3 me-sm-0">
+                    @if (Auth::guard('client')->check())
+                        <!-- Mostrar la información del cliente autenticado -->
+                        @php
+                            $client = Auth::guard('client')->user();
+                        @endphp
+                        <div class="dropdown nav d-block order-lg-2 ms-auto">
+                            <a class="nav-link d-flex align-items-center p-0" href="#"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="border rounded-circle" src="{{ asset('frontend/img/avatar/51.jpg') }}"
+                                    width="48" alt="{{ $client->names_client }}">
+                                <div class="d-none d-sm-block ps-2">
+                                    <div class="fs-xs lh-1 opacity-60">Hola,</div>
+                                    <div class="fs-sm dropdown-toggle">
+                                        {{ explode(' ', trim($client->names_client))[0] }}</div>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end my-1">
+                                <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">
+                                    Account</h6>
+                                <a class="dropdown-item" href="#"><i
+                                        class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a>
+                                <a class="dropdown-item" href="#"><i
+                                        class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a>
+                                <a class="dropdown-item" href="#"><i
+                                        class="ai-wallet fs-base opacity-70 me-2 mt-n1"></i>Billing</a>
+                                <div class="dropdown-divider"></div>
+                                <button type="button" class="dropdown-item" id="logout-button">
+                                    <i class="ai-logout fs-lg opacity-70 me-2"></i>
+                                    Cerrar Sesión
+                                </button>
+                            </div>
+                        </div>
+                    @else
+                        <!-- Mostrar el enlace de cuenta cuando no está autenticado -->
+                        <a class="nav-link fs-4 p-2 mx-sm-1 d-none d-sm-flex" href=""
+                            aria-label="Account">
+                            <i class="ai-user"></i>
+                        </a>
+                    @endif
                 </div>
-
-                
-
 
                 <!-- Mobile menu toggler (Hamburger) -->
                 <button class="navbar-toggler ms-sm-3" type="button" data-bs-toggle="collapse"
