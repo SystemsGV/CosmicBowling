@@ -22,7 +22,7 @@ class Client extends Controller
 
     public function __construct()
     {
-        $this->middleware('client.auth')->only(['show', 'index']);
+        $this->middleware('client.auth')->only(['show']);
     }
 
     /**
@@ -30,7 +30,10 @@ class Client extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {}
+    public function index()
+    {
+        return view('frontend.login.index');
+    }
 
     public function show()
     {
@@ -48,7 +51,8 @@ class Client extends Controller
      */
     public function create()
     {
-        //
+        return view('frontend.login.register');
+
     }
 
     /**
@@ -71,7 +75,7 @@ class Client extends Controller
             'birthday_user' => 'required|date_format:d/m/Y',
             'district_user' => 'required',
             'current_password' => 'required|min:8',
-        ],[
+        ], [
             'number_doc.unique' => 'El número de documento ya está registrado. Por favor, use otro número.',
             'mail_user.unique' => 'El correo electrónico ya está en uso. Por favor, use otro correo.',
             'current_password.min' => 'La contraseña debe tener al menos :min caracteres.',
@@ -119,6 +123,18 @@ class Client extends Controller
 
         if (!Hash::check($request->input('password'), $client->password_client)) {
             return response()->json(['error' => 'Contraseña incorrecta'], 401);
+        }
+
+        // Verificar si la cuenta está verificada
+        if (!$client->email_verified_at) {
+            // Enviar correo de verificación
+            $token = $client->createToken('ClientToken')->plainTextToken;
+            Mail::to($client->email_client)->send(new VerifyClient($token));
+
+            return response()->json([
+                'error' => 'Cuenta no verificada',
+                'message' => 'Por favor, verifique su correo electrónico para activar su cuenta. Hemos enviado un nuevo correo de verificación.'
+            ], 403);
         }
 
         Auth::guard('client')->login($client);
@@ -189,9 +205,11 @@ class Client extends Controller
             $client->email_verified_at = now();
             $client->save();
 
-            return response()->json(['message' => 'Cuenta verificada exitosamente. Ahora puedes iniciar sesión.']);
+            // Retorna la vista con un mensaje de éxito
+            return view('frontend.login.verify')->with('status', 'Cuenta verificada exitosamente. Ahora puedes iniciar sesión.');
         }
 
-        return response()->json(['message' => 'Token inválido o expirado.'], 400);
+        // Retorna la vista con un mensaje de error
+        return view('verification-error')->with('error', 'Token inválido o expirado.');
     }
 }

@@ -419,7 +419,6 @@
 
                 <div id="account-info" class="nav align-items-center order-lg-3 ms-n1 me-3 me-sm-0">
                     @if (Auth::guard('client')->check())
-                        <!-- Mostrar la información del cliente autenticado -->
                         @php
                             $client = Auth::guard('client')->user();
                         @endphp
@@ -452,7 +451,7 @@
                         </div>
                     @else
                         <!-- Mostrar el enlace de cuenta cuando no está autenticado -->
-                        <a class="nav-link fs-4 p-2 mx-sm-1 d-none d-sm-flex" href=""
+                        <a class="nav-link fs-4 p-2 mx-sm-1 d-none d-sm-flex" href="{{route('client.login')}}" role="button
                             aria-label="Account">
                             <i class="ai-user"></i>
                         </a>

@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::get('/client/check-authentication', function () {
+    return response()->json(['isAuthenticated' => auth('client')->check()]);
+});
 
 Route::get('coupon/{code}', [Coupon::class, 'show']);
 Route::post('client/register', [Client::class, 'store']);

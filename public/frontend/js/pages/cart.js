@@ -629,8 +629,11 @@ function formatHourRange(timeString, duration) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content");
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        protocol = window.location.protocol,
+        domain = window.location.hostname,
+        fullDomain = `${protocol}//${domain}:8000/`;
 
     const loginModalElement = document.getElementById("modal-login");
     const registerModalElement = document.getElementById("modal-register"),
@@ -640,7 +643,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const registerModal = new bootstrap.Modal(registerModalElement);
 
     document.getElementById("btnNext").addEventListener("click", function () {
-        loginModal.show();
+        // Realiza una solicitud a la API para verificar el estado de autenticación
+        fetch(`${fullDomain}api/client/check-authentication`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (!data.isAuthenticated) {
+                    // Si no está autenticado, muestra el modal
+                    loginModal.show();
+                } else {
+                    console.log("siguiente");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                // Maneja el error si ocurre
+            });
     });
 
     document
@@ -772,17 +789,14 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         try {
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/client/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": csrfToken,
-                    },
-                    body: JSON.stringify(data),
-                }
-            );
+            const response = await fetch(`${fullDomain}api/client/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify(data),
+            });
 
             const result = await response.json();
             if (response.ok && result.user) {
@@ -837,7 +851,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             try {
                 const response = await fetch(
-                    "http://127.0.0.1:8000/api/client/register",
+                    `${fullDomain}api/client/register`,
                     {
                         method: "POST",
                         headers: {
@@ -905,7 +919,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     registerModal.hide();
                     loginModal.show();
                 }, 5000);
-
             } catch (error) {
                 // Mostrar el alert de error
                 const alertContainer =

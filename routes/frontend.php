@@ -23,6 +23,11 @@ Route::middleware(['client.auth'])->group(function () {
   // Otras rutas protegidas para clientes...
 });
 
+Route::controller(Client::class)->group(function () {
+  Route::get('/Iniciar_sesion', 'index')->name('client.login');
+  Route::get('/Registrate', 'create')->name('client.register');
+});
+
 Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
   Route::get('/updateUI/{subcategory}/{date}', 'show');

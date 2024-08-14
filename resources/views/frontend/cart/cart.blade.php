@@ -601,8 +601,8 @@
                                 </select>
                             </div>
                             <div class="col-md-4 mb-4">
-                                <input id="number_doc" class="form-control form-control-lg numeric-input" name="number_doc"
-                                    type="text" placeholder="Número de Documento" required="" >
+                                <input id="number_doc" class="form-control form-control-lg numeric-input"
+                                    name="number_doc" type="text" placeholder="Número de Documento" required="">
                                 <div class="invalid-tooltip">Ingrese número de documento.</div>
 
                             </div>
@@ -623,8 +623,8 @@
 
                             </div>
                             <div class="col mb-6">
-                                <input class="form-control form-control-lg numeric-input" name="phone_user" type="text"
-                                    placeholder="Número de Celular" required="">
+                                <input class="form-control form-control-lg numeric-input" name="phone_user"
+                                    type="text" placeholder="Número de Celular" required="">
                                 <div class="invalid-tooltip">Ingrese Número de Celular.</div>
                             </div>
                         </div>
@@ -639,7 +639,7 @@
                         <div class="row row-cols-1 row-cols-sm-2">
                             <div class="password-toggle mb-4">
                                 <input class="form-control form-control-lg" name="current_password" type="password"
-                                    placeholder="Contraseña" required=""  minlength="8">
+                                    placeholder="Contraseña" required="" minlength="8">
                                 <label class="password-toggle-btn" aria-label="Show/hide password">
                                     <input class="password-toggle-check" type="checkbox">
                                     <span class="password-toggle-indicator"></span>
@@ -649,7 +649,7 @@
                                 <input class="form-control form-control-lg" type="password"
                                     placeholder="Confirmar contraseña" required="" minlength="8">
                                 <label class="password-toggle-btn" aria-label="Show/hide password">
-                                    <input class="password-toggle-check" type="checkbox" >
+                                    <input class="password-toggle-check" type="checkbox">
                                     <span class="password-toggle-indicator"></span>
                                 </label>
                             </div>
@@ -669,18 +669,18 @@
         </div>
     </div>
 
-    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-            data-bs-delay="300">
-            <div class="toast-header bg-success text-white">
-                <i class="ai-circle-check fs-lg me-2"></i>
-                <span class="me-auto">Reservas Cosmic Bowling</span>
-                <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
+        <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                data-bs-delay="300">
+                <div class="toast-header bg-success text-white">
+                    <i class="ai-circle-check fs-lg me-2"></i>
+                    <span class="me-auto">Reservas Cosmic Bowling</span>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-success" id="subjectToast"></div>
             </div>
-            <div class="toast-body text-success" id="subjectToast"></div>
         </div>
-    </div>
 @endsection()
 
 @section('styles')
