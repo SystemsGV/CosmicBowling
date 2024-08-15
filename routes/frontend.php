@@ -18,14 +18,14 @@ use App\Http\Controllers\Frontend\Client;
 
 Route::get('/', [Home::class, 'index'])->name('home.index');
 
-Route::middleware(['client.auth'])->group(function () {
-  Route::get('/Perfil', [Client::class, 'show']);
-  // Otras rutas protegidas para clientes...
-});
+Route::view('/mail', 'frontend.emails.verify');
+
+
 
 Route::controller(Client::class)->group(function () {
   Route::get('/Iniciar_sesion', 'index')->name('client.login');
   Route::get('/Registrate', 'create')->name('client.register');
+  Route::get('/Perfil', [Client::class, 'show'])->name('client.profile');
 });
 
 Route::controller(Cart::class)->group(function () {

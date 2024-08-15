@@ -396,7 +396,7 @@
             <div class="container">
 
                 <!-- Navbar brand (Logo) -->
-                <a class="navbar-brand pe-sm-3" href="index.html">
+                <a class="navbar-brand pe-sm-3" href="{{route('home.index')}}">
                     <span class="text-primary flex-shrink-0 me-2">
                         <svg width="35" height="32" viewbox="0 0 36 33" xmlns="http://www.w3.org/2000/svg">
                             <path fill="currentColor"
@@ -435,13 +435,9 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end my-1">
                                 <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">
-                                    Account</h6>
-                                <a class="dropdown-item" href="#"><i
-                                        class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="ai-wallet fs-base opacity-70 me-2 mt-n1"></i>Billing</a>
+                                    Cuenta</h6>
+                                <a class="dropdown-item" href="{{route('client.profile')}}"><i
+                                        class="ai-user-check fs-lg opacity-70 me-2"></i>Perfil</a>
                                 <div class="dropdown-divider"></div>
                                 <button type="button" class="dropdown-item" id="logout-button">
                                     <i class="ai-logout fs-lg opacity-70 me-2"></i>

@@ -178,7 +178,8 @@
             <div class="d-flex flex-column align-items-center w-lg-50 h-100 px-3 px-lg-5 pt-5">
                 <div class="w-100 mt-auto" style="max-width: 696px;">
                     <h1>¿Sin cuenta? Registrate</h1>
-                    <p class="pb-3 mb-3 mb-lg-4">¿Ya tienes una cuenta?&nbsp;&nbsp;<a href="{{ route('home.index') }}">
+                    <p class="pb-3 mb-3 mb-lg-4">¿Ya tienes una cuenta?&nbsp;&nbsp;<a
+                            href="{{ route('client.login') }}">
                             Iniciar sesión aquí!</a></p>
                     <div id="alert-container"></div>
                     <form class="needs-validation" id="form-register" novalidate="">

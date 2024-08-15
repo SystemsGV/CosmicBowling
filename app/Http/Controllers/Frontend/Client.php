@@ -32,16 +32,17 @@ class Client extends Controller
      */
     public function index()
     {
+        if (auth()->guard('client')->check()) {
+            return redirect()->route('home.index');
+        }
+
         return view('frontend.login.index');
     }
 
     public function show()
     {
-        if (Auth::guard('client')->check()) {
-            $client = Auth::guard('client')->user();
-            return $client;
-        }
-        return "Ninguna session";
+        $client = Auth::guard('client')->user();
+        return view('frontend.client.profile', compact('client'));
     }
 
     /**
@@ -51,8 +52,10 @@ class Client extends Controller
      */
     public function create()
     {
+        if (auth()->guard('client')->check()) {
+            return redirect()->route('home.index');
+        }
         return view('frontend.login.register');
-
     }
 
     /**
@@ -63,7 +66,6 @@ class Client extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'type_doc' => 'required',
             'number_doc' => 'required|unique:clients,number_doc',
@@ -103,7 +105,7 @@ class Client extends Controller
 
         $token = $client->createToken('ClientToken')->plainTextToken;
 
-        Mail::to($client->email_client)->send(new VerifyClient($token));
+        Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
 
         return response()->json(['token' => $token], 201);
     }
@@ -129,7 +131,7 @@ class Client extends Controller
         if (!$client->email_verified_at) {
             // Enviar correo de verificación
             $token = $client->createToken('ClientToken')->plainTextToken;
-            Mail::to($client->email_client)->send(new VerifyClient($token));
+            Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
 
             return response()->json([
                 'error' => 'Cuenta no verificada',
