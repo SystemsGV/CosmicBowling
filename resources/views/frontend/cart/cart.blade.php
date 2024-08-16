@@ -369,9 +369,10 @@
                                         <li id="emailli"></li>
                                         <li id="phoneli"></li>
                                     </ul>
-                                </div>git ad
+                                </div>
+
                             </div>
-                        </div>git ad
+                        </div>
                     </div>
                     <!-- Order summary -->
                     <div id="reservationDetailsStep3" class="col-lg-4 offset-lg-1 pt-1">
