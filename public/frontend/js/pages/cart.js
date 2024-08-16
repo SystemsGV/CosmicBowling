@@ -634,6 +634,10 @@ document.addEventListener("DOMContentLoaded", function () {
         protocol = window.location.protocol,
         domain = window.location.hostname,
         fullDomain = `${protocol}//${domain}:8000/`;
+    const c_ln = document.getElementById("c-ln"),
+        c_fn = document.getElementById("c-fn"),
+        c_email = document.getElementById("c-email"),
+        c_phone = document.getElementById("c-phone");
 
     const loginModalElement = document.getElementById("modal-login");
     const registerModalElement = document.getElementById("modal-register"),
@@ -643,21 +647,70 @@ document.addEventListener("DOMContentLoaded", function () {
     const registerModal = new bootstrap.Modal(registerModalElement);
 
     document.getElementById("btnNext").addEventListener("click", function () {
-        // Realiza una solicitud a la API para verificar el estado de autenticación
         fetch(`${fullDomain}api/client/check-authentication`)
             .then((response) => response.json())
             .then((data) => {
                 if (!data.isAuthenticated) {
-                    // Si no está autenticado, muestra el modal
                     loginModal.show();
                 } else {
-                    console.log("siguiente");
+                    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+                    c_ln.value = `${storedUser.pattername} ${storedUser.mattername}`;
+                    c_fn.value = `${storedUser.names}`;
+                    c_email.value = `${storedUser.email}`;
+                    c_phone.value = `${storedUser.phone}`;
+
+                    const summaryContainer = document.querySelector(
+                        ".position-md-sticky"
+                    );
+                    const clonedSummary = summaryContainer.cloneNode(true);
+                    const targetContainer = document.getElementById(
+                        "reservationDetailsStep2"
+                    );
+                    targetContainer.innerHTML = "";
+                    targetContainer.appendChild(clonedSummary);
+                    document
+                        .getElementById("tabBilling")
+                        .classList.remove("disabled");
+                    document.getElementById("tabBilling").click();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth",
+                    });
                 }
             })
             .catch((error) => {
                 console.error("Error:", error);
-                // Maneja el error si ocurre
             });
+    });
+
+    document.querySelectorAll(".btnBilling").forEach((button) => {
+        button.addEventListener("click", function () {
+            const summaryContainer = document.querySelector(
+                ".position-md-sticky"
+            );
+            const clonedSummary = summaryContainer.cloneNode(true);
+            const targetContainer = document.getElementById(
+                "reservationDetailsStep3"
+            );
+            targetContainer.innerHTML = "";
+            targetContainer.appendChild(clonedSummary);
+            
+            document.getElementById("namesli").textContent = `${c_ln.value} ${c_fn.value}`;
+            document.getElementById("emailli").textContent = `${c_email.value}`;
+            document.getElementById("phoneli").textContent = `${c_phone.value}`;
+
+
+            // Activar la pestaña de pago
+            document.getElementById("tabPayment").classList.remove("disabled");
+            document.getElementById("tabPayment").click();
+
+            // Desplazar la página al inicio
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        });
     });
 
     document
@@ -800,6 +853,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const result = await response.json();
             if (response.ok && result.user) {
+                localStorage.setItem("user", JSON.stringify(result.user));
                 updateUserMenu(result.user);
                 subjectToast.innerHTML = "Bienvenido, " + result.user.name;
                 loginModal.hide();
@@ -934,4 +988,32 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    const weight1 = document.getElementById("weight1");
+    const weight2 = document.getElementById("weight2");
+    const collapseExample = new bootstrap.Collapse(
+        document.getElementById("collapseExample"),
+        {
+            toggle: false,
+        }
+    );
+
+    if (weight2.checked) {
+        collapseExample.show();
+    } else {
+        collapseExample.hide();
+    }
+
+    // Escuchar cambios en los radio buttons
+    weight1.addEventListener("change", function () {
+        if (this.checked) {
+            collapseExample.hide();
+        }
+    });
+
+    weight2.addEventListener("change", function () {
+        if (this.checked) {
+            collapseExample.show();
+        }
+    });
 });

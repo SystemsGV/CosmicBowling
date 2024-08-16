@@ -150,7 +150,12 @@ class Client extends Controller
             'token' => $token,
             'user' => [
                 'name' => $firstName,
-                'avatar' => $avatarUrl
+                'avatar' => $avatarUrl,
+                'names' => $client->names_client,
+                'pattername' => $client->lastname_pat,
+                'mattername' => $client->lastname_mat,
+                'email' => $client->email_client,
+                'phone' => $client->phone_client
             ]
         ], 200);
     }

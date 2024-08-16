@@ -10,12 +10,12 @@
         <ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap align-content-center w-100 mx-auto pb-3 mb-3 mb-lg-4 fs-5"
             role="tablist" style="max-width: 600px;">
             <li class="nav-item mb-0">
-                <a id="tabReservation" class="nav-link active" href="#beginners" data-bs-toggle="tab" role="tab">
+                <a id="tabReservation" class="nav-link " href="#beginners" data-bs-toggle="tab" role="tab">
                     <i class="ai-calendar-plus me-2"></i> Reserva de Carril
                 </a>
             </li>
             <li class="nav-item mb-0">
-                <a id="tabBilling" class="nav-link disabled" href="#stretching" data-bs-toggle="tab" role="tab">
+                <a id="tabBilling" class="nav-link active" href="#stretching" data-bs-toggle="tab" role="tab">
                     <i class="ai-card me-2"></i> Facturación
                 </a>
             </li>
@@ -30,7 +30,7 @@
         <div class="tab-content">
 
             <!-- Beginers -->
-            <div class="tab-pane fade show active" id="beginners" role="tabpanel">
+            <div class="tab-pane fade show " id="beginners" role="tabpanel">
                 <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
                     <div class="row">
                         <div class="col-lg-7">
@@ -77,7 +77,6 @@
                                 <h4 class=" ms-1">4. Selecciona cuánto tiempo quieres jugar a los bolos</h4>
                             </h3>
 
-
                             <div class="container">
                                 <div class="row">
                                     <div class="col-12 col-md-6 radio-container d-flex justify-content-center">
@@ -116,11 +115,11 @@
                         </div>
 
                         <!-- Order summary -->
-                        <div class="col-lg-4 offset-lg-1 pt-1">
+                        <div id="reservationDetailsStep1" class="col-lg-4 offset-lg-1 pt-1">
                             <div class="position-md-sticky top-0 ps-md-4 ps-lg-5 ps-xl-0">
                                 <div class="d-none d-md-block" style="padding-top: 90px;"></div>
                                 <h2 class="pb-2 pt-md-2 my-4">
-                                    Resumen del pedido
+                                    Resumen de la Reserva
                                 </h2>
 
                                 <!-- Item -->
@@ -152,8 +151,8 @@
                                 </div>
                                 <ul class="list-unstyled py-3 mb-0">
                                     <li class="d-flex justify-content-between mb-2">
-                                        <span><strong id="n-lane"></strong> {{ $subcategory->name_subcategory }} <strong
-                                                id='l-hours'></strong></span>
+                                        <span><strong id="n-lane"></strong> {{ $subcategory->name_subcategory }}
+                                            <strong id='l-hours'></strong></span>
                                         <span class="fw-semibold ms-2" id="lp-lane">S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">
@@ -183,270 +182,143 @@
             </div>
 
             <!-- Stretching -->
-            <div class="tab-pane fade" id="stretching" role="tabpanel">
+            <div class="tab-pane fade show active" id="stretching" role="tabpanel">
                 <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <h1 class="h2 pb-3">Checkout</h1>
+                        <div class="col-lg-7">
+                            <h1 class="h2 pb-3">DATOS FACTURACION</h1>
                             <!-- Checkout form fields -->
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                1.<span class="text-decoration-underline ms-1">Shipping details</span>
+                                1.<span class="text-decoration-underline ms-1">Información de Facturación</span>
                             </h3>
                             <div class="row g-4 pb-4 pb-md-5 mb-3 mb-md-1">
                                 <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-fn">First name</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        placeholder="Your first name" required="" id="c-fn">
+                                    <label class="form-label fs-base" for="c-fn">Apellidos</label>
+                                    <input class="form-control form-control-lg" type="text" placeholder="Apellidos"
+                                        required="" id="c-ln">
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-ln">Last name</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        placeholder="Your last name" required="" id="c-ln">
+                                    <label class="form-label fs-base" for="c-ln">Nombres</label>
+                                    <input class="form-control form-control-lg" type="text" placeholder="Nombres"
+                                        required="" id="c-fn">
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-email">Email</label>
+                                    <label class="form-label fs-base" for="c-email">Correo Electrónico</label>
                                     <div class="position-relative"><i
                                             class="ai-mail fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                         <input class="form-control form-control-lg ps-5" type="email"
-                                            placeholder="Email address" required="" id="c-email">
+                                            placeholder="Correo Electrónico" required="" id="c-email">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-phone">Phone</label>
+                                    <label class="form-label fs-base" for="c-phone">Nº Celular</label>
                                     <div class="position-relative"><i
                                             class="ai-phone fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                         <input class="form-control form-control-lg ps-5" type="tel"
-                                            data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
-                                            placeholder="+1 ___ ___ __" required="" id="c-phone">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fs-base" for="c-country">Country</label>
-                                    <select class="form-select form-select-lg" required="" id="c-country">
-                                        <option value="" selected="" disabled="">Select a country</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Belgium">Belgium</option>
-                                        <option value="Canada">Canada</option>
-                                        <option value="Denmark">Denmark</option>
-                                        <option value="USA">USA</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-city">City</label>
-                                    <select class="form-select form-select-lg" required="" id="c-city">
-                                        <option value="" selected="" disabled="">Select a city</option>
-                                        <option value="Sydney">Sydney</option>
-                                        <option value="Brussels">Brussels</option>
-                                        <option value="Toronto">Toronto</option>
-                                        <option value="Copenhagen">Copenhagen</option>
-                                        <option value="New York">New York</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-zip">Zip code</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        data-format='{"delimiter": "-", "blocks": [3, 4], "uppercase": true}'
-                                        placeholder="XXX-XXXX" required="" id="c-zip">
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fs-base" for="c-address">Address line</label>
-                                    <input class="form-control form-control-lg" type="text" required=""
-                                        id="c-address">
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fs-base" for="c-notes">Order notes <span
-                                            class="text-body-secondary">(optional)</span></label>
-                                    <textarea class="form-control form-control-lg" rows="5" id="c-notes"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="same-address">
-                                        <label class="form-check-label text-dark fw-medium" for="same-address">Billing
-                                            address same as
-                                            delivery</label>
+                                            data-format='{"numericOnly": true, "delimiters": ["+51 ", " ", " "], "blocks": [0, 3, 3, 3]}'
+                                            placeholder="___ ___ __" required="" name="c-phone" id="c-phone">
                                     </div>
                                 </div>
                             </div>
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">2.<span
-                                    class="text-decoration-underline ms-1">Shipping method</span></h3>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="shipping" id="standard">
-                                <label class="form-check-label d-flex justify-content-between" for="standard">
-                                    <span>
-                                        <span class="d-block fs-base text-dark fw-medium mb-1">Standard Delivery</span>
-                                        <span class="text-body">Delivery in 5 - 8 working days</span>
-                                    </span>
-                                    <span class="fs-base text-dark fw-semibold">$8.00</span>
-                                </label>
-                            </div>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="shipping" checked=""
-                                    id="express">
-                                <label class="form-check-label d-flex justify-content-between" for="express">
-                                    <span>
-                                        <span class="d-block fs-base text-dark fw-medium mb-1">Express Shipping</span>
-                                        <span class="text-body">Delivery in 3 - 5 working days</span>
-                                    </span>
-                                    <span class="fs-base text-dark fw-semibold">$15.00</span>
-                                </label>
-                            </div>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="shipping" id="local">
-                                <label class="form-check-label d-flex justify-content-between" for="local">
-                                    <span>
-                                        <span class="d-block fs-base text-dark fw-medium mb-1">Local Pickup</span>
-                                        <span class="text-body">Delivery in 1 - 2 working days</span>
-                                    </span>
-                                    <span class="fs-base text-dark fw-semibold">Free</span>
-                                </label>
-                            </div>
-                            <h3 class="fs-base fw-normal text-body text-uppercase mt-n4 mt-md-n3 pt-5 pb-2 pb-sm-3">
-                                3.<span class="text-decoration-underline ms-1">Payment method</span>
-                            </h3>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="payment" checked=""
-                                    id="card">
-                                <label class="form-check-label" for="card">
-                                    <span>
-                                        <span class="d-block fs-base text-dark fw-medium mb-1">Credit Card</span>
-                                        <span class="text-body">Mastercard, Maestro, American Express, Visa are
-                                            accepted</span>
-                                    </span>
-                                </label>
-                            </div>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="payment" id="cash">
-                                <label class="form-check-label" for="cash">
-                                    <span>
-                                        <span class="d-block fs-base text-dark fw-medium mb-1">Cash on Delivery</span>
-                                        <span class="text-body">Pay with cash upon the delivery</span>
-                                    </span>
-                                </label>
+                                    class="text-decoration-underline ms-1">Tipo de Documento</span></h3>
+                            <div class="row g-4 pb-4 pb-md-5 mb-3 mb-md-1">
+                                <div class="d-flex">
+                                    <div class="col-sm-6">
+                                        <div class="me-3">
+                                            <input type="radio" class="btn-check" id="weight1" name="weight"
+                                                value="boleta" checked>
+                                            <label for="weight1" class="btn btn-outline-secondary px-2">
+                                                <span class="mx-1">Boleta Electrónica</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="me-3">
+                                        <input type="radio" class="btn-check" id="weight2" name="weight"
+                                            value="factura">
+                                        <label for="weight2" class="btn btn-outline-secondary px-2">
+                                            <span class="mx-1">Factura Electrónica</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <i class="fa fa-university"></i> Ingrese Datos para la facturación
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="mb-3">
+                                                        <label for="rsocial" class="form-label">Razón Social</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i
+                                                                    class="fa fa-user"></i></span>
+                                                            <input type="text" class="form-control" id="rsocial"
+                                                                name="rsocial" placeholder="Razón Social" required
+                                                                minlength="3">
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Este campo es obligatorio
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="mb-3">
+                                                        <label for="ruc" class="form-label">RUC</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i
+                                                                    class="fa fa-ticket"></i></span>
+                                                            <input type="text" class="form-control" id="ruc"
+                                                                name="ruc" placeholder="RUC" required
+                                                                pattern="^[0-9]{11}$" maxlength="11">
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Por favor ingrese un valor correcto.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label for="dir" class="form-label">Dirección</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i
+                                                                    class="fa fa-location-arrow"></i></span>
+                                                            <input type="text" class="form-control" id="dir"
+                                                                name="dir" placeholder="Dirección" required
+                                                                minlength="2">
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Este campo es obligatorio
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Place an order button visible on screens > 991px -->
                             <div class="d-none d-lg-block pt-5 mt-n3">
                                 <div class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" checked="" id="save-info">
+                                    <input class="form-check-input" type="checkbox" id="save-info">
                                     <label class="form-check-label" for="save-info">
-                                        <span class="text-body-secondary">Your personal information will be used to process
-                                            your order, to
-                                            support your experience on this site and for other purposes described in the
-                                        </span><a class="fw-medium" href="#">privacy policy</a>
+                                        <span class="text-body-secondary">Su información personal se utilizará para
+                                            procesar su reserva, para respaldar su experiencia en este sitio y para otros
+                                            fines descritos en el
+                                        </span><a class="fw-medium" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#modalScroll">Términos y Condiciones</a>
                                     </label>
                                 </div>
-                                <button class="btn btn-lg btn-primary" type="submit">Place an order</button>
+                                <button class="btn btn-lg btn-primary btnBilling" id="btnBilling" type="button">Pago
+                                    Reserva</button>
                             </div>
                         </div>
 
                         <!-- Order summary -->
-                        <div class="col-lg-5 offset-xl-1">
-                            <div class="d-none d-md-block" style="margin-top: -90px;"></div>
-                            <div class="position-md-sticky top-0 ps-md-4 ps-lg-5 ps-xl-0">
-                                <div class="d-none d-md-block" style="padding-top: 90px;"></div>
-                                <h1 class="d-none d-md-inline-block pb-1 mb-2">
-                                    Order summary <span class="fs-base fw-normal text-body-secondary">(4 items)</span>
-                                </h1>
+                        <div id="reservationDetailsStep2" class="col-lg-4 offset-lg-1 pt-1">
 
-                                <!-- Item -->
-                                <div class="d-sm-flex align-items-center border-top py-4">
-                                    <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-sm-2 p-xl-3 mb-2 mb-sm-0"
-                                        href="shop-single.html">
-                                        <img src="{{ asset('frontend/img/shop/cart/01.png') }}" width="110"
-                                            alt="Product">
-                                    </a>
-                                    <div class="w-100 pt-1 ps-sm-4">
-                                        <div class="d-flex">
-                                            <div class="me-3">
-                                                <h3 class="h5 mb-2">
-                                                    <a href="shop-single.html">Candle in concrete bowl</a>
-                                                </h3>
-                                                <div class="d-sm-flex flex-wrap">
-                                                    <div class="text-body-secondary fs-sm me-3">
-                                                        Color: <span class="text-dark fw-medium">Gray night</span>
-                                                    </div>
-                                                    <div class="text-body-secondary fs-sm me-3">
-                                                        Weight: <span class="text-dark fw-medium">140g</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-end ms-auto">
-                                                <div class="fs-5 mb-2">$11.00</div>
-                                                <del class="text-body-secondary ms-auto">$15.00</del>
-                                            </div>
-                                        </div>
-                                        <div class="count-input ms-n3">
-                                            <button class="btn btn-icon fs-xl" type="button"
-                                                data-decrement="">-</button>
-                                            <input class="form-control" type="number" value="2" readonly="">
-                                            <button class="btn btn-icon fs-xl" type="button"
-                                                data-increment="">+</button>
-                                        </div>
-                                        <div class="nav justify-content-end mt-n5 mt-sm-n3">
-                                            <a class="nav-link fs-xl p-2" href="#" data-bs-toggle="tooltip"
-                                                title="Remove" aria-label="Remove">
-                                                <i class="ai-trash"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Item -->
-                                <div class="d-sm-flex align-items-center border-top py-4">
-                                    <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-sm-2 p-xl-3 mb-2 mb-sm-0"
-                                        href="shop-single.html">
-                                        <img src="{{ asset('frontend/img/shop/cart/03.png') }}" width="110"
-                                            alt="Product">
-                                    </a>
-                                    <div class="w-100 pt-1 ps-sm-4">
-                                        <div class="d-flex">
-                                            <div class="me-3">
-                                                <h3 class="h5 mb-2">
-                                                    <a href="shop-single.html">Set for a dinner party of 7 items</a>
-                                                </h3>
-                                            </div>
-                                            <div class="text-end ms-auto">
-                                                <div class="fs-5 mb-2">$47.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="count-input ms-n3">
-                                            <button class="btn btn-icon fs-xl" type="button"
-                                                data-decrement="">-</button>
-                                            <input class="form-control" type="number" value="1" readonly="">
-                                            <button class="btn btn-icon fs-xl" type="button"
-                                                data-increment="">+</button>
-                                        </div>
-                                        <div class="nav justify-content-end mt-n5 mt-sm-n3">
-                                            <a class="nav-link fs-xl p-2" href="#" data-bs-toggle="tooltip"
-                                                title="Remove" aria-label="Remove">
-                                                <i class="ai-trash"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="border-top pt-4 mb-3">
-                                    <div class="input-group input-group-sm border-dashed" style="max-width: 310px;">
-                                        <input class="form-control text-uppercase" type="text"
-                                            placeholder="Your coupon code">
-                                        <button class="btn btn-secondary" type="button">Apply coupon</button>
-                                    </div>
-                                </div>
-                                <ul class="list-unstyled py-3 mb-0">
-                                    <li class="d-flex justify-content-between mb-2">
-                                        Subtotal:<span class="fw-semibold ms-2">$92.00</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between mb-2">
-                                        Taxes:<span class="fw-semibold ms-2">$8.00</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between mb-2">
-                                        Shipping cost:<span class="fw-semibold ms-2">$15.00</span>
-                                    </li>
-                                </ul>
-                                <div class="d-flex align-items-center justify-content-between border-top fs-xl pt-4">
-                                    Total:<span class="fs-3 fw-semibold text-dark ms-2">S/ 00.00</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -458,10 +330,12 @@
                                 <span class="text-body-secondary">Your personal information will be used to process your
                                     order, to support
                                     your experience on this site and for other purposes described in the </span><a
-                                    class="fw-medium" href="#">privacy policy</a>
+                                    class="fw-medium" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#modalScroll">privacy policy</a>
                             </label>
                         </div>
-                        <button class="btn btn-lg btn-primary w-100 w-sm-auto" type="submit">Place an order</button>
+                        <button class="btn btn-lg btn-primary w-100 w-sm-auto btnBilling">Pago
+                            Reserva</button>
                     </div>
                 </form>
             </div>
@@ -470,39 +344,38 @@
             <div class="tab-pane fade" id="fly-yoga" role="tabpanel">
                 <div class="row align-items-lg-center">
                     <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
-                        <img class="rounded-5" src="{{ asset('frontend/img/landing/yoga-studio/classes/fly-yoga.jpg') }}"
-                            alt="Fly-yoga">
-                    </div>
-                    <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1">
-                        <div class="ps-md-4 ps-lg-0">
-                            <h2 class="mb-xl-4">Fly-yoga</h2>
-                            <p class="pb-3 mb-3 mb-xl-4">Varius purus dui nunc faucibus mauris iaculis tortor enim cursus
-                                quisque eu, vel amet massa suscipit cursus sit mattis quis magnis dignissim dui fames tortor
-                                amet quis.</p>
-                            <div class="row row-cols-2 g-4 pb-2 pb-xl-0 mb-4 mb-xl-5">
-                                <div class="col">
-                                    <i class="ai-towel d-block h2 text-primary fw-normal pb-2 mb-1"></i>
-                                    <h3 class="h6 mb-2">Changing rooms</h3>
-                                    <p class="fs-sm mb-0">Neque, blandit consectetur viverra placerat ante.</p>
-                                </div>
-                                <div class="col">
-                                    <i class="ai-rug d-block h2 text-primary fw-normal pb-2 mb-1"></i>
-                                    <h3 class="h6 mb-2">Free rugs</h3>
-                                    <p class="fs-sm mb-0">Neque, blandit consectetur viverra placerat ante.</p>
-                                </div>
-                                <div class="col">
-                                    <i class="ai-spa d-block h2 text-primary fw-normal pb-2 mb-1"></i>
-                                    <h3 class="h6 mb-2">Spa area</h3>
-                                    <p class="fs-sm mb-0">Neque, blandit consectetur viverra placerat ante.</p>
-                                </div>
-                                <div class="col">
-                                    <i class="ai-sofa d-block h2 text-primary fw-normal pb-2 mb-1"></i>
-                                    <h3 class="h6 mb-2">Bright halls</h3>
-                                    <p class="fs-sm mb-0">Neque, blandit consectetur viverra placerat ante.</p>
-                                </div>
+                        <h1 class="h2 pb-3">DATOS FACTURACION</h1>
+
+                        <div class="accordion-item d-flex align-items-start border-0">
+                            <div class="d-flex align-items-center justify-content-center bg-body-secondary text-dark-emphasis rounded-circle flex-shrink-0"
+                                style="width: 2rem; height: 2rem; margin-top: -.125rem">
+                                <i class="ci-check fs-base"></i>
                             </div>
-                            <a class="btn btn-primary w-100 w-sm-auto" href="#">Try a free lesson</a>
-                        </div>
+                            <div class="w-100 ps-3 ps-md-4">
+                                <div class="d-flex align-items-center">
+                                    <h2 class="accordion-header h5 mb-0 me-3" id="shippingAddressHeading">
+                                        <span class="d-none d-lg-inline">Información de Facturación</span>
+                                        <button type="button" class="accordion-button collapsed fs-5 d-lg-none py-1"
+                                            data-bs-toggle="collapse" data-bs-target="#shippingAddress"
+                                            aria-expanded="false" aria-controls="shippingAddress">
+                                            <span class="me-2">Shipping address</span>
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div class="accordion-collapse collapse d-lg-block" id="shippingAddress"
+                                    aria-labelledby="shippingAddressHeading" data-bs-parent="#checkout">
+                                    <ul class="accordion-body list-unstyled p-0 pt-3 pt-md-4 mb-0">
+                                        <li id="namesli"></li>
+                                        <li id="emailli"></li>
+                                        <li id="phoneli"></li>
+                                    </ul>
+                                </div>git ad
+                            </div>
+                        </div>git ad
+                    </div>
+                    <!-- Order summary -->
+                    <div id="reservationDetailsStep3" class="col-lg-4 offset-lg-1 pt-1">
+
                     </div>
                 </div>
             </div>
@@ -669,18 +542,72 @@
         </div>
     </div>
 
-        <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
-            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-                data-bs-delay="300">
-                <div class="toast-header bg-success text-white">
-                    <i class="ai-circle-check fs-lg me-2"></i>
-                    <span class="me-auto">Reservas Cosmic Bowling</span>
-                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+    <div class="modal fade" id="modalScroll" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-d modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal title</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="toast-body text-success" id="subjectToast"></div>
+                <div class="modal-body fs-sm">
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                        laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                        laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                        laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                        laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                        laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                        laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary w-100 w-sm-auto mb-3 mb-sm-0" type="button"
+                        data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button">Save changes</button>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+            data-bs-delay="300">
+            <div class="toast-header bg-success text-white">
+                <i class="ai-circle-check fs-lg me-2"></i>
+                <span class="me-auto">Reservas Cosmic Bowling</span>
+                <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-success" id="subjectToast"></div>
+        </div>
+    </div>
 @endsection()
 
 @section('styles')
