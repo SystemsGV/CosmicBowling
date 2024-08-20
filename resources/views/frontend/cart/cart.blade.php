@@ -373,6 +373,41 @@
 
                             </div>
                         </div>
+
+                        <h1>Formulario de Pago</h1>
+                        <form id="frmVisaNet" action="" method="POST">
+                            @csrf
+                            @php
+                                // Datos de ejemplo
+                                $amount = number_format('100', 2, '.', '');
+                                $idorder = '12345'; // Ejemplo
+                                $user = Auth::guard('client')->user();
+                                $nombre = $user ? $user->names_client : 'Invitado';
+                                $moneda = 'Soles';
+                                $productos = 1; // Ejemplo
+                                $descrip = 'Pista VIP'; // Ejemplo
+
+                                // Genera el token y la sesión usando el servicio VisaNet
+                                $visaNetService = app('App\Services\VisaNetService');
+                                $token = $visaNetService->generateToken();
+                                $session = $visaNetService->generateSession($amount, $token);
+                            @endphp
+
+                            <!-- Parámetros necesarios -->
+                            <input type="hidden" name="action" value="{{ url('tienda/PagoVisa/finalizar') }}">
+                            <input type="hidden" name="merchantid" value="{{ env('VISA_DEV_MERCHANT_ID') }}">
+                            <input type="hidden" name="sessiontoken" value="{{ $session }}">
+                            <input type="hidden" name="amount" value="{{ $amount }}">
+                            <input type="hidden" name="purchasenumber" value="{{ $idorder }}">
+
+                            <!-- Script de VisaNet -->
+                            <script src="{{ env('VISA_DEV_URL_JS') }}" data-sessiontoken="{{ $session }}" data-channel="web"
+                                data-merchantid="{{ env('VISA_DEV_MERCHANT_ID') }}"
+                                data-merchantlogo="	https://cosmicbowling.com.pe/new/images/logo.png" data-purchasenumber="{{ $idorder }}"
+                                data-amount="{{ $amount }}" data-showamount="true" data-expirationminutes="5"
+                                data-timeouturl="http://127.0.0.1:8000/Carrito/Pistas_General"></script>
+                        </form>
+
                     </div>
                     <!-- Order summary -->
                     <div id="reservationDetailsStep3" class="col-lg-4 offset-lg-1 pt-1">
