@@ -82,16 +82,6 @@ class Cart extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -103,27 +93,28 @@ class Cart extends Controller
         return response()->json($hours);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function cartData(Request $request)
     {
-        //
+        $sessionData = $request->json('sessionArray', []);
+
+        $formattedData = [];
+        foreach ($sessionData as $item) {
+            if (isset($item['key']) && isset($item['value'])) {
+                $formattedData[$item['key']] = $item['value'];
+            }
+        }
+        session(['cart' => $formattedData]);
+
+        return response()->json(['success' => true, 'message' => 'Datos guardados en la sesión']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function showSession()
     {
-        //
+        // Obtener los datos del carrito de la sesión
+        $cart = session('cart', []); // El segundo parámetro es el valor por defecto si 'cart' no está en la sesión
+
+        // Mostrar el contenido del carrito
+        return  response()->json($cart); // Utiliza `dd()` para volcar el contenido en la pantalla
     }
 
     /**

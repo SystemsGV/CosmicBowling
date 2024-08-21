@@ -166,6 +166,9 @@ function handleRadioChange(selectedRadio) {
 
     selectedButtonId = selectedRadio.id;
     const buttonNumber = selectedRadio.value;
+    sessionStorage.setItem("time", buttonNumber);
+    sessionStorage.setItem("hours", 1);
+
     selectedPrice = selectedRadio.getAttribute("data-price");
     const dateTime = formatDateTime(selectedDate, buttonNumber);
 
@@ -193,7 +196,7 @@ function handleRadioChange(selectedRadio) {
     document.getElementById(
         "l-guests"
     ).innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados </strong>`;
-
+    sessionStorage.setItem("guests", selectGuests);
     priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 }
 
@@ -271,6 +274,7 @@ const getProductCalendar = async (subcategory, date) => {
 const updateUI = async () => {
     try {
         const selectedDate = document.getElementById("c-date").value;
+        sessionStorage.setItem("date", selectedDate);
         document.getElementById("l-date").innerHTML = "----------------";
 
         priceLeft(0, 0, 0, 0, 1);
@@ -309,6 +313,7 @@ const updateGuests = async (date, one, two, three, four) => {
         const data = await response.json();
         localStorage.setItem("limit", data.limit);
         inputGuests.max = data.calculated;
+
         if (parseInt(inputGuests.value) > data.calculated) {
             inputGuests.value = data.calculated;
             guests.innerHTML = ` ${typeLane} <strong> X ${data.calculated} Invitados </strong>`;
@@ -377,8 +382,6 @@ const getCoupon = async (code) => {
             return { error: "Límite de uso alcanzado." };
         }
 
-        // Verificar si 'xwyz' se encuentra en 'subcategory_ids'
-        const xwyz = "4"; // Ejemplo de cupón como cadena
         const xwyzNumber = parseInt(xwyz, 10); // Convertir a número
         if (!data.subcategory_ids.includes(xwyzNumber)) {
             alert("Este cupón no es válido para este producto.");
@@ -399,6 +402,7 @@ const getCoupon = async (code) => {
 
 const LabelGuests = () => {
     const selectGuests = parseInt(inputGuests.value) || 0; // Asegúrate de que sea un número
+    sessionStorage.setItem("guests", selectGuests);
     guests.innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados</strong>`;
 
     if (selectedButtonId) {
@@ -461,6 +465,7 @@ radioHours.forEach((hours) => {
 
         if (this.checked) {
             selectHour = parseInt(this.value);
+            sessionStorage.setItem("hours", selectHour);
 
             const pluralSuffix = selectHour > 1 ? "s" : "";
             document.getElementById(
@@ -509,10 +514,10 @@ btnCoupon.addEventListener("click", async () => {
     if (couponData && !couponData.error) {
         globalDiscountType = couponData.discountType;
         globalDiscount = parseFloat(couponData.discountAmount);
-
-        // Aquí puedes actualizar la UI para mostrar el monto descontado y el nuevo monto total al usuario
+        sessionStorage.setItem("coupon", inputCoupon.value);
         LabelGuests();
     } else {
+        sessionStorage.removeItem("coupon");
         console.error("Error al obtener el cupón:", couponData.error);
     }
 });
@@ -628,6 +633,9 @@ function formatHourRange(timeString, duration) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    sessionStorage.setItem("product", xwyz);
+    sessionStorage.setItem("date", document.getElementById("c-date").value);
+
     const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content"),
@@ -647,6 +655,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const registerModal = new bootstrap.Modal(registerModalElement);
 
     document.getElementById("btnNext").addEventListener("click", function () {
+        let sessionArray = [];
+
+        // Recorrer todos los elementos de sessionStorage
+        for (let i = 0; i < sessionStorage.length; i++) {
+            // Obtener la clave
+            let key = sessionStorage.key(i);
+            // Obtener el valor asociado a la clave
+            let value = sessionStorage.getItem(key);
+            // Agregar el par clave-valor al array
+            sessionArray.push({ key: key, value: value });
+        }
+
         fetch(`${fullDomain}api/client/check-authentication`)
             .then((response) => response.json())
             .then((data) => {
@@ -660,23 +680,59 @@ document.addEventListener("DOMContentLoaded", function () {
                     c_email.value = `${storedUser.email}`;
                     c_phone.value = `${storedUser.phone}`;
 
-                    const summaryContainer = document.querySelector(
-                        ".position-md-sticky"
-                    );
-                    const clonedSummary = summaryContainer.cloneNode(true);
-                    const targetContainer = document.getElementById(
-                        "reservationDetailsStep2"
-                    );
-                    targetContainer.innerHTML = "";
-                    targetContainer.appendChild(clonedSummary);
-                    document
-                        .getElementById("tabBilling")
-                        .classList.remove("disabled");
-                    document.getElementById("tabBilling").click();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: "smooth",
-                    });
+                    fetch(`${fullDomain}cartsession`, {
+                        // Asegúrate de usar la URL completa o relativa correcta
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken, // Asegúrate de que csrfToken está definido
+                        },
+                        body: JSON.stringify({ sessionArray }), // Asegúrate de enviar los datos necesarios
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                return response.json().then((errorData) => {
+                                    throw new Error(
+                                        errorData.message ||
+                                            "Error en la solicitud"
+                                    );
+                                });
+                            }
+                            return response.json();
+                        })
+                        .then((sessionData) => {
+                            if (sessionData.success) {
+                                const summaryContainer = document.querySelector(
+                                    ".position-md-sticky"
+                                );
+                                const clonedSummary =
+                                    summaryContainer.cloneNode(true);
+                                const targetContainer = document.getElementById(
+                                    "reservationDetailsStep2"
+                                );
+
+                                targetContainer.innerHTML = "";
+                                targetContainer.appendChild(clonedSummary);
+
+                                document
+                                    .getElementById("tabBilling")
+                                    .classList.remove("disabled");
+                                document.getElementById("tabBilling").click();
+
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: "smooth",
+                                });
+                            } else {
+                                console.error(
+                                    "Error al guardar los datos en la sesión:",
+                                    sessionData.message
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error.message || error);
+                        });
                 }
             })
             .catch((error) => {
@@ -695,11 +751,12 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             targetContainer.innerHTML = "";
             targetContainer.appendChild(clonedSummary);
-            
-            document.getElementById("namesli").textContent = `${c_ln.value} ${c_fn.value}`;
+
+            document.getElementById(
+                "namesli"
+            ).textContent = `${c_ln.value} ${c_fn.value}`;
             document.getElementById("emailli").textContent = `${c_email.value}`;
             document.getElementById("phoneli").textContent = `${c_phone.value}`;
-
 
             // Activar la pestaña de pago
             document.getElementById("tabPayment").classList.remove("disabled");

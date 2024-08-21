@@ -10,12 +10,12 @@
         <ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap align-content-center w-100 mx-auto pb-3 mb-3 mb-lg-4 fs-5"
             role="tablist" style="max-width: 600px;">
             <li class="nav-item mb-0">
-                <a id="tabReservation" class="nav-link " href="#beginners" data-bs-toggle="tab" role="tab">
+                <a id="tabReservation" class="nav-link active" href="#beginners" data-bs-toggle="tab" role="tab">
                     <i class="ai-calendar-plus me-2"></i> Reserva de Carril
                 </a>
             </li>
             <li class="nav-item mb-0">
-                <a id="tabBilling" class="nav-link active" href="#stretching" data-bs-toggle="tab" role="tab">
+                <a id="tabBilling" class="nav-link disabled" href="#stretching" data-bs-toggle="tab" role="tab">
                     <i class="ai-card me-2"></i> Facturación
                 </a>
             </li>
@@ -30,7 +30,7 @@
         <div class="tab-content">
 
             <!-- Beginers -->
-            <div class="tab-pane fade show " id="beginners" role="tabpanel">
+            <div class="tab-pane fade show active" id="beginners" role="tabpanel">
                 <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
                     <div class="row">
                         <div class="col-lg-7">
@@ -182,7 +182,7 @@
             </div>
 
             <!-- Stretching -->
-            <div class="tab-pane fade show active" id="stretching" role="tabpanel">
+            <div class="tab-pane fade" id="stretching" role="tabpanel">
                 <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
                     <div class="row">
                         <div class="col-lg-7">
@@ -311,7 +311,7 @@
                                             data-bs-target="#modalScroll">Términos y Condiciones</a>
                                     </label>
                                 </div>
-                                <button class="btn btn-lg btn-primary btnBilling" id="btnBilling" type="button">Pago
+                                <button class="btn btn-lg btn-primary btnBilling" type="button">Pago
                                     Reserva</button>
                             </div>
                         </div>
@@ -375,38 +375,7 @@
                         </div>
 
                         <h1>Formulario de Pago</h1>
-                        <form id="frmVisaNet" action="" method="POST">
-                            @csrf
-                            @php
-                                // Datos de ejemplo
-                                $amount = number_format('100', 2, '.', '');
-                                $idorder = '12345'; // Ejemplo
-                                $user = Auth::guard('client')->user();
-                                $nombre = $user ? $user->names_client : 'Invitado';
-                                $moneda = 'Soles';
-                                $productos = 1; // Ejemplo
-                                $descrip = 'Pista VIP'; // Ejemplo
 
-                                // Genera el token y la sesión usando el servicio VisaNet
-                                $visaNetService = app('App\Services\VisaNetService');
-                                $token = $visaNetService->generateToken();
-                                $session = $visaNetService->generateSession($amount, $token);
-                            @endphp
-
-                            <!-- Parámetros necesarios -->
-                            <input type="hidden" name="action" value="{{ url('tienda/PagoVisa/finalizar') }}">
-                            <input type="hidden" name="merchantid" value="{{ env('VISA_DEV_MERCHANT_ID') }}">
-                            <input type="hidden" name="sessiontoken" value="{{ $session }}">
-                            <input type="hidden" name="amount" value="{{ $amount }}">
-                            <input type="hidden" name="purchasenumber" value="{{ $idorder }}">
-
-                            <!-- Script de VisaNet -->
-                            <script src="{{ env('VISA_DEV_URL_JS') }}" data-sessiontoken="{{ $session }}" data-channel="web"
-                                data-merchantid="{{ env('VISA_DEV_MERCHANT_ID') }}"
-                                data-merchantlogo="	https://cosmicbowling.com.pe/new/images/logo.png" data-purchasenumber="{{ $idorder }}"
-                                data-amount="{{ $amount }}" data-showamount="true" data-expirationminutes="5"
-                                data-timeouturl="http://127.0.0.1:8000/Carrito/Pistas_General"></script>
-                        </form>
 
                     </div>
                     <!-- Order summary -->
@@ -464,7 +433,6 @@
 
                         <button id="login-button" class="btn btn-lg btn-primary w-100 mb-4"
                             type="submit">Ingresar</button>
-
                     </form>
                 </div>
             </div>

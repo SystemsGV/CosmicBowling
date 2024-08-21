@@ -27,17 +27,15 @@ Route::post('/payment/finalize', [Payment::class, 'finalizePayment'])->name('pay
 Route::controller(Client::class)->group(function () {
   Route::get('/Iniciar_sesion', 'index')->name('client.login');
   Route::get('/Registrate', 'create')->name('client.register');
-  Route::get('/Perfil', [Client::class, 'show'])->name('client.profile');
+  Route::get('/Perfil', 'show')->name('client.profile');
+  Route::get('/Registro', 'create')->name('registro');
+  Route::get('/verify', 'verifyEmail');
 });
 
 Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
   Route::get('/updateUI/{subcategory}/{date}', 'show');
   Route::post('updateGuests', 'guests');
-});
-
-
-Route::controller(Client::class)->group(function () {
-  Route::get('/Registro', 'create')->name('registro');
-  Route::get('/verify', 'verifyEmail');
+  Route::post('/cartsession','cartData');
+  Route::get('/sesiones','showSession');
 });
