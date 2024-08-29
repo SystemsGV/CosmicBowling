@@ -31,6 +31,9 @@ let selectedButtonId = null,
 generateRadioButtons(calendarItems);
 
 function priceLeft(lane, shoe, cPrice, cShoe, lines) {
+    document.getElementById("tabBilling").classList.add("disabled");
+    document.getElementById("tabPayment").classList.add("disabled");
+
     plane = lane * cPrice * line;
     const pShoe = shoe * cShoe;
 
@@ -518,6 +521,8 @@ btnCoupon.addEventListener("click", async () => {
         LabelGuests();
     } else {
         sessionStorage.removeItem("coupon");
+        globalDiscount = 0;
+        LabelGuests();
         console.error("Error al obtener el cupón:", couponData.error);
     }
 });
@@ -653,17 +658,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const loginModal = new bootstrap.Modal(loginModalElement);
     const registerModal = new bootstrap.Modal(registerModalElement);
-
-    document.getElementById("btnNext").addEventListener("click", function () {
+    const wToast = new bootstrap.Toast(
+        document.getElementById("warningToast"),
+        {
+            delay: 5000,
+        }
+    );
+    function handleButtonClick() {
         let sessionArray = [];
 
-        // Recorrer todos los elementos de sessionStorage
         for (let i = 0; i < sessionStorage.length; i++) {
-            // Obtener la clave
             let key = sessionStorage.key(i);
-            // Obtener el valor asociado a la clave
             let value = sessionStorage.getItem(key);
-            // Agregar el par clave-valor al array
             sessionArray.push({ key: key, value: value });
         }
 
@@ -675,19 +681,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     const storedUser = JSON.parse(localStorage.getItem("user"));
 
+                    // Actualizar los campos del formulario con la información del usuario
                     c_ln.value = `${storedUser.pattername} ${storedUser.mattername}`;
                     c_fn.value = `${storedUser.names}`;
                     c_email.value = `${storedUser.email}`;
                     c_phone.value = `${storedUser.phone}`;
 
+                    if (sessionStorage.getItem("time") == null) {
+                        wToast.show();
+                        document.getElementById("subjectWarning").innerHTML =
+                            "Seleccione su hora de ingreso, el tiempo, y la cantidad de integrantes.";
+                        return false;
+                    }
+
+                    // Enviar los datos de la sesión al backend
                     fetch(`${fullDomain}cartsession`, {
-                        // Asegúrate de usar la URL completa o relativa correcta
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": csrfToken, // Asegúrate de que csrfToken está definido
                         },
-                        body: JSON.stringify({ sessionArray }), // Asegúrate de enviar los datos necesarios
+                        body: JSON.stringify({ sessionArray }), // Enviar los datos de la sesión
                     })
                         .then((response) => {
                             if (!response.ok) {
@@ -702,6 +716,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         })
                         .then((sessionData) => {
                             if (sessionData.success) {
+                                // Clonar el contenedor del resumen y actualizar la interfaz
                                 const summaryContainer = document.querySelector(
                                     ".position-md-sticky"
                                 );
@@ -714,11 +729,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                 targetContainer.innerHTML = "";
                                 targetContainer.appendChild(clonedSummary);
 
+                                // Habilitar la pestaña de facturación y navegar a ella
                                 document
                                     .getElementById("tabBilling")
                                     .classList.remove("disabled");
                                 document.getElementById("tabBilling").click();
 
+                                // Desplazarse hacia arriba
                                 window.scrollTo({
                                     top: 0,
                                     behavior: "smooth",
@@ -738,36 +755,201 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => {
                 console.error("Error:", error);
             });
+    }
+
+    function updateSummaryAndProceed() {
+        const summaryContainer = document.querySelector(".position-md-sticky");
+        const clonedSummary = summaryContainer.cloneNode(true);
+        const targetContainer = document.getElementById(
+                "reservationDetailsStep3"
+            ),
+            doc = (selectedWeight = document.querySelector(
+                'input[name="weight"]:checked'
+            ).value),
+            boletaRadio = document.getElementById("weight1");
+        facturaRadio = document.getElementById("weight2");
+
+        targetContainer.innerHTML = "";
+        targetContainer.appendChild(clonedSummary);
+
+        const checkboxes = document.querySelectorAll(".check-input");
+        const isChecked = Array.from(checkboxes).some(
+            (checkbox) => checkbox.checked
+        );
+
+        if (doc === "F") {
+            // Lista de IDs de los campos a validar
+            const fields = ["rsocial", "ruc", "dir"];
+
+            // Iterar sobre cada campo para verificar su validez
+            for (let id of fields) {
+                const field = document.getElementById(id);
+
+                // Verificar si el campo está vacío o no es válido según su HTML
+                if (
+                    !field ||
+                    field.value.trim() === "" ||
+                    !field.checkValidity()
+                ) {
+                    // Mostrar mensaje de advertencia
+                    wToast.show();
+                    document.getElementById("subjectWarning").innerHTML =
+                        "Rellene todos los campos para generar su Factura Electrónica.";
+                    return false; // Detener el proceso si un campo no es válido
+                }
+            }
+        }
+
+        if (!isChecked) {
+            document.getElementById("subjectWarning").textContent =
+                "Acepte los términos y condiciones.";
+            wToast.show();
+            return;
+        }
+
+        if (facturaRadio.checked) {
+            const rsocial = document.getElementById("rsocial").value;
+            const ruc = document.getElementById("ruc").value;
+            const dir = document.getElementById("dir").value;
+
+            bodyData = {
+                type: "Factura",
+                rsocial: rsocial,
+                ruc: ruc,
+                dir: dir,
+            };
+        } else if (boletaRadio.checked) {
+            bodyData = {
+                type: "Boleta",
+            };
+        }
+
+        fetch(`${fullDomain}billingsession`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify(bodyData),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((errorData) => {
+                        throw new Error(
+                            errorData.message || "Error en la solicitud"
+                        );
+                    });
+                }
+                return response.json();
+            })
+            .then((sessionData) => {
+                rowB = sessionData.billing;
+                rowc = sessionData.cart;
+
+                if (rowB.type == "Boleta") {
+                    document.getElementById("typeDoc").innerHTML = `BOLETA A: `;
+                    document.getElementById(
+                        "numberDoc"
+                    ).innerHTML = `${rowB.document}`;
+                    document.getElementById(
+                        "numberDocLabel"
+                    ).innerHTML = `${rowB.number_doc}`;
+                    document.getElementById(
+                        "nameDoc"
+                    ).innerHTML = `NOMBRES Y APELLIDOS:`;
+                    document.getElementById(
+                        "nameDocLabel"
+                    ).innerHTML = `${rowB.lastname_pat} ${rowB.lastname_mat} ${rowB.names}`;
+                    document.getElementById(
+                        "addressDocLabel"
+                    ).innerHTML = `${rowB.address}`;
+                    document.getElementById(
+                        "phoneDocLabel"
+                    ).innerHTML = `${rowB.phone}`;
+                    document.getElementById(
+                        "mailDocLabel"
+                    ).innerHTML = `${rowB.email}`;
+                    return true;
+                }
+                if ((rowB.type = "Factura")) {
+                    document.getElementById(
+                        "typeDoc"
+                    ).innerHTML = `FACTURA A: `;
+                    document.getElementById("numberDoc").innerHTML = `R.U.C.`;
+                    document.getElementById(
+                        "numberDocLabel"
+                    ).innerHTML = `${rowB.ruc}`;
+                    document.getElementById(
+                        "nameDoc"
+                    ).innerHTML = `RAZON SOCIAL`;
+                    document.getElementById(
+                        "nameDocLabel"
+                    ).innerHTML = `${rowB.rsocial}`;
+                    document.getElementById(
+                        "addressDocLabel"
+                    ).innerHTML = `${rowB.dir}`;
+                    document.getElementById(
+                        "phoneDocLabel"
+                    ).innerHTML = `${rowB.phone}`;
+                    document.getElementById(
+                        "mailDocLabel"
+                    ).innerHTML = `${rowB.email}`;
+                    return true;
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error.message || error);
+            });
+
+        document.getElementById("tabPayment").classList.remove("disabled");
+        document.getElementById("tabPayment").click();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }
+
+    function getPayment() {
+        fetch(`${fullDomain}getBtnPayment`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((errorData) => {
+                        throw new Error(
+                            errorData.message || "Error en la solicitud"
+                        );
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error.message || error);
+            });
+    }
+
+    const buttons = document.querySelectorAll(".btnNext");
+    const buttonsBilling = document.querySelectorAll(".btnBilling");
+    const buttonsPayment = document.querySelectorAll(".check-payment");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", handleButtonClick);
     });
 
-    document.querySelectorAll(".btnBilling").forEach((button) => {
-        button.addEventListener("click", function () {
-            const summaryContainer = document.querySelector(
-                ".position-md-sticky"
-            );
-            const clonedSummary = summaryContainer.cloneNode(true);
-            const targetContainer = document.getElementById(
-                "reservationDetailsStep3"
-            );
-            targetContainer.innerHTML = "";
-            targetContainer.appendChild(clonedSummary);
+    buttonsBilling.forEach((button) => {
+        button.addEventListener("click", updateSummaryAndProceed);
+    });
 
-            document.getElementById(
-                "namesli"
-            ).textContent = `${c_ln.value} ${c_fn.value}`;
-            document.getElementById("emailli").textContent = `${c_email.value}`;
-            document.getElementById("phoneli").textContent = `${c_phone.value}`;
-
-            // Activar la pestaña de pago
-            document.getElementById("tabPayment").classList.remove("disabled");
-            document.getElementById("tabPayment").click();
-
-            // Desplazar la página al inicio
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
-        });
+    buttonsPayment.forEach((button) => {
+        button.addEventListener("click", getPayment);
     });
 
     document

@@ -42,4 +42,24 @@ class calendarIntervals extends Model
 
         return $result;
     }
+
+
+    public static function filterPayment($subcategory, $date, $time)
+    {
+        // Buscar un solo registro que coincida con los criterios
+        $data = self::where('subcategory_id', $subcategory)
+            ->whereDate('date_citem', $date)
+            ->where('time_interval', $time)
+            ->first();
+
+        // Si se encuentra un registro, devolver el resultado
+        if ($data) {
+            return [
+                'price' => $data->price_citem,
+            ];
+        }
+
+        // Si no se encuentra ningún registro, retornar null o un valor por defecto
+        return null;
+    }
 }

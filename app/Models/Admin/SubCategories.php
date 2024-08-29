@@ -27,7 +27,7 @@ class SubCategories extends Model
     public function coupons()
     {
         return $this->belongsToMany(Coupons::class, 'subcategory_coupon', 'subcategory_id', 'coupon_id')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public static function getAllSubcategories()
@@ -58,6 +58,21 @@ class SubCategories extends Model
             ->where('category_id', $categoryId)
             ->get(['id_subcategory as id', 'name_subcategory as name'])
             ->toArray();
+    }
+
+    public static function filterSubcategory($subcategory)
+    {
+        $data = self::find($subcategory);
+
+        if ($data) {
+            return [
+                'name' => $data->name_subcategory,
+                'limit' => $data->limit_subcategory,
+                'status' => $data->status_subcategory
+            ];
+        }
+
+        return null;
     }
 
     public function getFormattedNameAttribute()

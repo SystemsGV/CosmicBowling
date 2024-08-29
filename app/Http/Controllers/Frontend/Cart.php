@@ -5,23 +5,29 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\calendarIntervals;
 use App\Models\Admin\SubCategories;
-use App\Models\Admin\Products;
-use App\Models\Admin\calendarItem;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Services\VisanetService;
 
 class Cart extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param string $formattedName
-     * @return \Illuminate\Http\Response
-     */
+    const SHOES_PRICE = 8.00;
+
+    protected $visanetService;
+
+    public function __construct(VisanetService $visanetService)
+    {
+        $this->visanetService = $visanetService;
+    }
 
     public function index($formattedName)
     {
+        session()->forget('billing');
+        session()->forget('cart');
+
         try {
             $tomorrow = Carbon::tomorrow()->toDateString();
 
@@ -81,12 +87,6 @@ class Cart extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($subcategory, $date)
     {
         $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory, $date);
@@ -108,13 +108,182 @@ class Cart extends Controller
         return response()->json(['success' => true, 'message' => 'Datos guardados en la sesión']);
     }
 
+    public function billingData(Request $request)
+    {
+        $sessionData = $request->json()->all();
+        session()->forget('billing');
+        $client = Auth::guard('client')->user();
+
+        if (isset($sessionData['type']) && $sessionData['type'] === 'Boleta') {
+
+            // Obtener la descripción del documento
+            $sunatDescription = $client->sunatTypedoc ? $client->sunatTypedoc->description_doc : null;
+
+            // Preparar los datos del cliente
+            $clientData = [
+                'id_client' => $client->id_client,
+                'document_id' => $client->document_id,
+                'number_doc' => $client->number_doc,
+                'lastname_pat' => $client->lastname_pat,
+                'lastname_mat' => $client->lastname_mat,
+                'names' => $client->names_client,
+                'email' => $client->email_client,
+                'phone' => $client->phone_client,
+                'address' => $client->address_client,
+                'document' => $sunatDescription,  // Agregar la descripción del documento
+            ];
+
+            // Combinar los datos de la sesión con los datos del cliente
+            $combinedData = array_merge($sessionData, $clientData);
+
+            // Guardar los datos combinados en la sesión
+            session(['billing' => $combinedData]);
+        } else {
+            $clientData = [
+                'email' => $client->email_client,
+                'phone' => $client->phone_client,
+            ];
+
+            $combinedData = array_merge($sessionData, $clientData);
+
+            session(['billing' => $combinedData]);
+        }
+
+        $billingData = session('billing');
+        $cartData = session('cart');
+
+        return response()->json([
+            'billing' => $billingData,
+            'cart' => $cartData,
+        ]);
+    }
+
+    public function paymentData($couponCode = null)
+    {
+        $cart = session('cart');
+        $totalGuests = $cart['guests'];
+        $couponCode = isset($cart['coupon']) ? $cart['coupon'] : null;
+        $discount = 0;
+
+        $purchaseNumber = "0111";
+
+
+        // Obtén otros datos como el precio y la subcategoría
+        $calendar = calendarIntervals::filterPayment($cart['product'], $cart['date'], $cart['time']);
+        $subcategory = SubCategories::filterSubcategory($cart['product']);
+        $limitPerTrack = $subcategory['limit'];
+
+        $numberOfTracksNeeded = ceil($totalGuests / $limitPerTrack);
+
+        // Calcular los intervalos de 30 minutos
+        $halfHourIntervals = $this->getHalfHourIntervals($cart['time'], $numberOfTracksNeeded);
+
+        // Verificar disponibilidad de todos los intervalos
+        $isAvailable = $this->checkAvailability($halfHourIntervals, $cart['product'], $cart['date'], $numberOfTracksNeeded);
+
+        $amount = $numberOfTracksNeeded * $calendar['price'];
+
+        if ($couponCode) {
+            // Traer los datos del cupón desde la base de datos
+            $coupon = DB::table('coupons')
+                ->where('code', $couponCode)
+                ->where('is_active', 1)
+                ->first();
+
+            if ($coupon) {
+                // Calcular el descuento si el cupón es válido
+                if ($coupon->discount_type === 'percentage') {
+                    $discount = ($amount * $coupon->discount_amount) / 100;
+                } elseif ($coupon->discount_type === 'fixed') {
+                    $discount = $coupon->discount_amount;
+                }
+
+                // Aplicar el descuento al precio de la pista
+                $amount -= $discount;
+            }
+        }
+
+        // Agregar el costo de los zapatos después de aplicar el descuento
+        $amount += $totalGuests * self::SHOES_PRICE;
+
+
+        $data = $this->showFormPayment('', '');
+
+
+        return response()->json([
+            'price' => $calendar,
+            'subcategory' => $subcategory,
+            'availability' => $isAvailable,
+            'tracks_needed' => $numberOfTracksNeeded,
+            'price_lane' => $amount,
+            'discount' => $discount,
+            'data' => $discount,
+        ]);
+    }
+
+    public function getHalfHourIntervals($startTime, $hoursToAdd)
+    {
+        // Convertir la hora de inicio a un objeto DateTime
+        $startDateTime = new DateTime($startTime);
+
+        // Calcular la hora de finalización
+        $endDateTime = clone $startDateTime;
+        $endDateTime->modify("+{$hoursToAdd} hours");
+
+        // Inicializar el array de intervalos
+        $intervals = [];
+
+        // Generar los intervalos de 30 minutos
+        while ($startDateTime < $endDateTime) {
+            $intervals[] = $startDateTime->format('H:i:s');
+            $startDateTime->modify('+30 minutes');
+        }
+
+        return $intervals;
+    }
+
+    public function checkAvailability($intervals, $subcategory, $date, $requiredHours)
+    {
+        $availability = [];
+
+        // Consultar la base de datos para obtener la disponibilidad de cada intervalo específico
+        foreach ($intervals as $interval) {
+            $availability[$interval] = DB::table('calendar_intervals')
+                ->where('subcategory_id', $subcategory)
+                ->whereDate('date_citem', $date)
+                ->where('time_interval', $interval)
+                ->value('available_quantity');
+        }
+
+        // Verificar si todos los intervalos están disponibles
+        foreach ($intervals as $interval) {
+            // Comprobar si la cantidad disponible es menor que las horas requeridas
+            if (!isset($availability[$interval]) || $availability[$interval] < $requiredHours) {
+                return false; // Al menos un intervalo no tiene suficiente cantidad disponible
+            }
+        }
+
+        return true; // Todos los intervalos tienen suficiente cantidad disponible
+    }
+
+    public function showFormPayment($amount, $purchaseNumber)
+    {
+        $moneda = "soles";
+
+        $token =  $this->visanetService->generateToken();
+
+        return $token;
+    }
+
     public function showSession()
     {
-        // Obtener los datos del carrito de la sesión
-        $cart = session('cart', []); // El segundo parámetro es el valor por defecto si 'cart' no está en la sesión
+        $client = session('billing');
+        $cart = session('cart');
 
-        // Mostrar el contenido del carrito
-        return  response()->json($cart); // Utiliza `dd()` para volcar el contenido en la pantalla
+        return response()->json([
+            'client' => $client,
+            'cart' => $cart,
+        ]);
     }
 
     /**

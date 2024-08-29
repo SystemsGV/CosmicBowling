@@ -117,7 +117,8 @@ class Client extends Controller
             'password' => 'required|string',
         ]);
 
-        $client = FrontendClient::where('number_doc', $request->input('number'))->first();
+        // Cargar la relación con SunatTypeDoc
+        $client = FrontendClient::with('sunatTypedoc')->where('number_doc', $request->input('number'))->first();
 
         if (!$client) {
             return response()->json(['error' => 'Número de documento incorrecto'], 401);
@@ -139,12 +140,18 @@ class Client extends Controller
             ], 403);
         }
 
+        // Autenticar al cliente
         Auth::guard('client')->login($client);
 
+        // Generar token de autenticación
         $token = $client->createToken('ClientToken')->plainTextToken;
 
+        // Obtener el primer nombre y la URL del avatar
         $firstName = explode(' ', trim($client->names_client))[0];
         $avatarUrl = asset('frontend/img/avatar/51.jpg');
+
+        // Obtener el documento relacionado con SunatTypeDoc
+        $sunatDoc = $client->sunatTypedoc ? $client->sunatTypedoc->id_doc : null;
 
         return response()->json([
             'token' => $token,
@@ -155,10 +162,12 @@ class Client extends Controller
                 'pattername' => $client->lastname_pat,
                 'mattername' => $client->lastname_mat,
                 'email' => $client->email_client,
-                'phone' => $client->phone_client
+                'phone' => $client->phone_client,
+                'sunatdoc' => $sunatDoc  // Incluyendo el dato adicional
             ]
         ], 200);
     }
+
 
     public function logout(Request $request)
     {

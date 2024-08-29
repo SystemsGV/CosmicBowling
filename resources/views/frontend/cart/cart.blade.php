@@ -1,7 +1,7 @@
 @extends('frontend/layouts/app')
 
 @section('content')
-    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+    <section class="container py-5 mt-4 mt-5 mt-lg-5 mb-lg-4 my-xl-5">
         <h2 class="h1 text-center pt-2 pt-sm-3">COMIENZE SU RESERVA DE CARRIL</h2>
         <p class="text-center pb-3 mb-3 mb-lg-4" id="xwyz" data-id={{ $subcategory->id_subcategory }}>
             {{ $subcategory->name_subcategory }}</p>
@@ -172,7 +172,17 @@
                     </div>
 
                     <div class="d-none d-lg-block pt-5 mt-n3">
-                        <button id="btnNext" class="btn btn-lg btn-primary" type="button">
+                        <button id="btnNext" class="btn btn-lg btn-primary btnNext" type="button">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">SIGUIENTE: FACTURACIÓN</font>
+                            </font>
+                        </button>
+                    </div>
+
+
+                    <!-- Place an order button visible on screens < 992px -->
+                    <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
+                        <button class="btn btn-lg btn-primary btnNext" type="button">
                             <font style="vertical-align: inherit;">
                                 <font style="vertical-align: inherit;">SIGUIENTE: FACTURACIÓN</font>
                             </font>
@@ -182,8 +192,8 @@
             </div>
 
             <!-- Stretching -->
-            <div class="tab-pane fade" id="stretching" role="tabpanel">
-                <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
+            <div class="tab-pane fade " id="stretching" role="tabpanel">
+                <div class="container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2">
                     <div class="row">
                         <div class="col-lg-7">
                             <h1 class="h2 pb-3">DATOS FACTURACION</h1>
@@ -195,19 +205,19 @@
                                 <div class="col-sm-6">
                                     <label class="form-label fs-base" for="c-fn">Apellidos</label>
                                     <input class="form-control form-control-lg" type="text" placeholder="Apellidos"
-                                        required="" id="c-ln">
+                                        required="" disabled id="c-ln">
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label fs-base" for="c-ln">Nombres</label>
                                     <input class="form-control form-control-lg" type="text" placeholder="Nombres"
-                                        required="" id="c-fn">
+                                        required="" disabled id="c-fn">
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label fs-base" for="c-email">Correo Electrónico</label>
                                     <div class="position-relative"><i
                                             class="ai-mail fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                         <input class="form-control form-control-lg ps-5" type="email"
-                                            placeholder="Correo Electrónico" required="" id="c-email">
+                                            placeholder="Correo Electrónico" required="" disabled id="c-email">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -216,7 +226,16 @@
                                             class="ai-phone fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                         <input class="form-control form-control-lg ps-5" type="tel"
                                             data-format='{"numericOnly": true, "delimiters": ["+51 ", " ", " "], "blocks": [0, 3, 3, 3]}'
-                                            placeholder="___ ___ __" required="" name="c-phone" id="c-phone">
+                                            placeholder="___ ___ __" disabled required="" name="c-phone"
+                                            id="c-phone">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label fs-base" for="c-email">Documento Identidad</label>
+                                    <div class="position-relative"><i
+                                            class="ai-dashboard fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                        <input class="form-control form-control-lg ps-5" type="text"
+                                            placeholder="Documento de Identidad" required="" disabled id="c-email">
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +246,7 @@
                                     <div class="col-sm-6">
                                         <div class="me-3">
                                             <input type="radio" class="btn-check" id="weight1" name="weight"
-                                                value="boleta" checked>
+                                                value="B" checked>
                                             <label for="weight1" class="btn btn-outline-secondary px-2">
                                                 <span class="mx-1">Boleta Electrónica</span>
                                             </label>
@@ -235,7 +254,7 @@
                                     </div>
                                     <div class="me-3">
                                         <input type="radio" class="btn-check" id="weight2" name="weight"
-                                            value="factura">
+                                            value="F">
                                         <label for="weight2" class="btn btn-outline-secondary px-2">
                                             <span class="mx-1">Factura Electrónica</span>
                                         </label>
@@ -270,8 +289,7 @@
                                                             <span class="input-group-text"><i
                                                                     class="fa fa-ticket"></i></span>
                                                             <input type="text" class="form-control" id="ruc"
-                                                                name="ruc" placeholder="RUC" required
-                                                                pattern="^[0-9]{11}$" maxlength="11">
+                                                                name="ruc" placeholder="RUC" required maxlength="20">
                                                         </div>
                                                         <div class="invalid-feedback">
                                                             Por favor ingrese un valor correcto.
@@ -299,45 +317,43 @@
                                 </div>
                             </div>
 
-                            <!-- Place an order button visible on screens > 991px -->
-                            <div class="d-none d-lg-block pt-5 mt-n3">
-                                <div class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" id="save-info">
-                                    <label class="form-check-label" for="save-info">
-                                        <span class="text-body-secondary">Su información personal se utilizará para
-                                            procesar su reserva, para respaldar su experiencia en este sitio y para otros
-                                            fines descritos en el
-                                        </span><a class="fw-medium" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#modalScroll">Términos y Condiciones</a>
-                                    </label>
-                                </div>
-                                <button class="btn btn-lg btn-primary btnBilling" type="button">Pago
-                                    Reserva</button>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input check-input" type="checkbox" id="save-info">
+                                <label class="form-check-label" for="save-info-1">
+                                    <span class="text-body-secondary">Su información personal se utilizará para
+                                        procesar su reserva, para respaldar su experiencia en este sitio y para otros
+                                        fines descritos en el
+                                    </span><a class="fw-medium" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#modalScroll">Términos y Condiciones</a>
+                                </label>
                             </div>
+
+
                         </div>
 
-                        <!-- Order summary -->
                         <div id="reservationDetailsStep2" class="col-lg-4 offset-lg-1 pt-1">
 
                         </div>
                     </div>
 
-                    <!-- Place an order button visible on screens < 992px -->
-                    <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" checked="" id="save-info2">
-                            <label class="form-check-label" for="save-info2">
-                                <span class="text-body-secondary">Your personal information will be used to process your
-                                    order, to support
-                                    your experience on this site and for other purposes described in the </span><a
-                                    class="fw-medium" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modalScroll">privacy policy</a>
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary w-100 w-sm-auto btnBilling">Pago
-                            Reserva</button>
+                    <div class="d-none d-lg-block pt-5 mt-n3">
+
+                        <button class="btn btn-lg btn-primary btnBilling" type="button">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">PAGO RESERVA</font>
+                            </font>
+                        </button>
                     </div>
-                </form>
+
+                    <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
+
+                        <button class="btn btn-lg btn-primary btnBilling" type="button">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">PAGO RESERVA</font>
+                            </font>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Fly-yoga -->
@@ -346,41 +362,82 @@
                     <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
                         <h1 class="h2 pb-3">DATOS FACTURACION</h1>
 
-                        <div class="accordion-item d-flex align-items-start border-0">
-                            <div class="d-flex align-items-center justify-content-center bg-body-secondary text-dark-emphasis rounded-circle flex-shrink-0"
-                                style="width: 2rem; height: 2rem; margin-top: -.125rem">
-                                <i class="ci-check fs-base"></i>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mt-sm-n1 mb-0 mb-xl-3">
+                                <i class="ai-wallet text-primary lead pe-1 me-2"></i>
+                                <h2 class="h4 mb-0">Información Facturación</h2>
                             </div>
-                            <div class="w-100 ps-3 ps-md-4">
-                                <div class="d-flex align-items-center">
-                                    <h2 class="accordion-header h5 mb-0 me-3" id="shippingAddressHeading">
-                                        <span class="d-none d-lg-inline">Información de Facturación</span>
-                                        <button type="button" class="accordion-button collapsed fs-5 d-lg-none py-1"
-                                            data-bs-toggle="collapse" data-bs-target="#shippingAddress"
-                                            aria-expanded="false" aria-controls="shippingAddress">
-                                            <span class="me-2">Shipping address</span>
-                                        </button>
-                                    </h2>
+                            <div class="d-md-flex align-items-center">
+                            </div>
+                            <div class="row py-4 mb-2 mb-sm-3">
+                                <div class="col-md-12 mb-4 mb-md-0">
+                                    <table class="table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="border-0 text-body-secondary py-1 px-0" id="typeDoc">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 text-body-secondary py-1 px-0" id="numberDoc">
+                                                </td>
+                                                <td class="border-0 text-dark fw-medium py-1 ps-1" id="numberDocLabel">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 text-body-secondary py-1 px-0" id="nameDoc">
+                                                </td>
+                                                <td class="border-0 text-dark fw-medium py-1 ps-1" id="nameDocLabel"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 text-body-secondary py-1 px-0">
+                                                    DIRECCION</td>
+                                                <td class="border-0 text-dark fw-medium py-1 ps-1" id="addressDocLabel">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 text-body-secondary py-1 px-0">
+                                                    NUMERO CELULAR</td>
+                                                <td class="border-0 text-dark fw-medium py-1 ps-1" id="phoneDocLabel">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0 text-body-secondary py-1 px-0">
+                                                    CORREO ELECTRONICO</td>
+                                                <td class="border-0 text-dark fw-medium py-1 ps-1" id="mailDocLabel"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="accordion-collapse collapse d-lg-block" id="shippingAddress"
-                                    aria-labelledby="shippingAddressHeading" data-bs-parent="#checkout">
-                                    <ul class="accordion-body list-unstyled p-0 pt-3 pt-md-4 mb-0">
-                                        <li id="namesli"></li>
-                                        <li id="emailli"></li>
-                                        <li id="phoneli"></li>
-                                    </ul>
-                                </div>
-
                             </div>
                         </div>
-
-                        <h1>Formulario de Pago</h1>
-
 
                     </div>
                     <!-- Order summary -->
                     <div id="reservationDetailsStep3" class="col-lg-4 offset-lg-1 pt-1">
 
+                    </div>
+
+
+                    <div class="d-none d-lg-block pt-5 mt-n3">
+                        <div class="form-check mb-4">
+                            <input class="form-check-input check-payment" type="checkbox">
+                            <label class="form-check-label" for="save-info-1">
+                                <span class="text-body-secondary">Acepte los
+                                </span><a class="fw-medium" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
+                        <div class="form-check mb-4">
+                            <input class="form-check-input check-payment" type="checkbox">
+                            <label class="form-check-label" for="save-info-1">
+                                <span class="text-body-secondary">Acepte los
+                                </span><a class="fw-medium" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -610,6 +667,19 @@
                     aria-label="Close"></button>
             </div>
             <div class="toast-body text-success" id="subjectToast"></div>
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+        <div id="warningToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+            data-bs-delay="300">
+            <div class="toast-header bg-warning text-black">
+                <i class="ai-circle-check fs-lg me-2"></i>
+                <span class="me-auto">Reservas Cosmic Bowling</span>
+                <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-warning" id="subjectWarning"></div>
         </div>
     </div>
 @endsection()

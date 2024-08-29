@@ -406,7 +406,7 @@
                                                                         cuenta. <br><br>
                                                                         Confirme su dirección de correo electrónico
                                                                         haciendo clic en el botón a continuación. Este
-                                                                        paso agrega seguridad adicional a su negocio al
+                                                                        paso agrega seguridad adicional a su cuenta al
                                                                         verificar que es el propietario de este correo
                                                                         electrónico.</p>
                                                                 </td>

@@ -18,6 +18,9 @@ class Payment extends Controller
 
     public function showPaymentForm()
     {
+        $moneda = "Soles";
+        
+
 
     }
 

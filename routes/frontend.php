@@ -36,6 +36,9 @@ Route::controller(Cart::class)->group(function () {
   Route::get('/Carrito/{subcategory}', 'index');
   Route::get('/updateUI/{subcategory}/{date}', 'show');
   Route::post('updateGuests', 'guests');
-  Route::post('/cartsession','cartData');
-  Route::get('/sesiones','showSession');
+  Route::post('/cartsession', 'cartData');
+  Route::post('/billingsession', 'billingData');
+  Route::get('/sesiones', 'showSession');
+  Route::post('/getBtnPayment', 'paymentData');
+
 });
