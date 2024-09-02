@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\calendarIntervals;
 use App\Models\Admin\SubCategories;
+use App\Models\Admin\Order;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\VisanetService;
+use Illuminate\Support\Str;
 
 class Cart extends Controller
 {
@@ -27,6 +29,7 @@ class Cart extends Controller
     {
         session()->forget('billing');
         session()->forget('cart');
+        session()->forget('summary');
 
         try {
             $tomorrow = Carbon::tomorrow()->toDateString();
@@ -140,6 +143,10 @@ class Cart extends Controller
             session(['billing' => $combinedData]);
         } else {
             $clientData = [
+                'id_client' => $client->id_client,
+                'lastname_pat' => $client->lastname_pat,
+                'lastname_mat' => $client->lastname_mat,
+                'names' => $client->names_client,
                 'email' => $client->email_client,
                 'phone' => $client->phone_client,
             ];
@@ -164,9 +171,10 @@ class Cart extends Controller
         $totalGuests = $cart['guests'];
         $couponCode = isset($cart['coupon']) ? $cart['coupon'] : null;
         $discount = 0;
+        $coupon = null;
 
-        $purchaseNumber = "0111";
-
+        // Generar un código de reserva único
+        $reservationCode = strtoupper(Str::random(9));
 
         // Obtén otros datos como el precio y la subcategoría
         $calendar = calendarIntervals::filterPayment($cart['product'], $cart['date'], $cart['time']);
@@ -176,10 +184,14 @@ class Cart extends Controller
         $numberOfTracksNeeded = ceil($totalGuests / $limitPerTrack);
 
         // Calcular los intervalos de 30 minutos
-        $halfHourIntervals = $this->getHalfHourIntervals($cart['time'], $numberOfTracksNeeded);
+        $halfHourIntervals = $this->getHalfHourIntervals($cart['time'], $cart['hours']);
 
         // Verificar disponibilidad de todos los intervalos
         $isAvailable = $this->checkAvailability($halfHourIntervals, $cart['product'], $cart['date'], $numberOfTracksNeeded);
+
+        if (!$isAvailable) {
+            return response()->json(['status' => false, 'message' => 'Ya no se encuentra disponible su horario. Por favor Verificar nuevamente.']);
+        }
 
         $amount = $numberOfTracksNeeded * $calendar['price'];
 
@@ -206,18 +218,56 @@ class Cart extends Controller
         // Agregar el costo de los zapatos después de aplicar el descuento
         $amount += $totalGuests * self::SHOES_PRICE;
 
+        // Guardar los detalles del pedido en la base de datos
+        $order = new Order();
+        $order->client_id = session('billing.id_client');
+        $order->subcategory_id = $cart['product'];
+        $order->coupon_id = $coupon ? $coupon->id : null;
+        $order->reservation_code = $reservationCode;
+        $order->document_type = session('billing.type') === 'Factura' ? 'F' : 'B';
 
-        $data = $this->showFormPayment('', '');
+        if ($order->document_type === 'F') {
+            $order->rsocial = session('billing.rsocial');
+            $order->ruc = session('billing.ruc');
+            $order->dir = session('billing.dir');
+        }
 
+        $order->date_reserved = $cart['date'];
+        $order->hour_init = $cart['time'];
+        $order->quantity_lane = $numberOfTracksNeeded;
+        $order->quantity_hours = $cart['hours'];
+        $order->quantity_guests = $cart['guests'];
+        $order->amount_discount = $discount;
+        $order->amount = $amount;
+        $order->status = 'pending';
+        $order->payment_type = '2'; // Siempre será 2
+
+        $order->save();
+
+        $arrSummary = [
+            'amount' => $amount,
+            'description' => $subcategory['name'],
+            'quantity' => $numberOfTracksNeeded,
+            'purchaseNumber' => $order->id_order,
+            'discount' => $discount
+        ];
+
+        session(['summary' => $arrSummary]);
+
+        $data = $this->showFormPayment($amount, $order->id_order);
+
+        $sessionKey = $data['sessionKey'];
 
         return response()->json([
-            'price' => $calendar,
-            'subcategory' => $subcategory,
-            'availability' => $isAvailable,
-            'tracks_needed' => $numberOfTracksNeeded,
-            'price_lane' => $amount,
-            'discount' => $discount,
-            'data' => $discount,
+            'sessionKey' => $sessionKey,
+            'amount' => $amount,
+            'purchaseNumber' => $order->id_order, // Retorna el código de reserva como número de compra
+            'merchantId' => config('visanet.merchant_id'),
+            'logoUrl' => 'https://cosmicbowling.com.pe/new/images/logo.png',
+            'timeoutUrl' => url('/'),
+            'action' => url('/Reserva'),
+            'jsUrl' => config('visanet.url_js'),
+            'status' => true
         ]);
     }
 
@@ -268,11 +318,12 @@ class Cart extends Controller
 
     public function showFormPayment($amount, $purchaseNumber)
     {
-        $moneda = "soles";
-
         $token =  $this->visanetService->generateToken();
-
-        return $token;
+        $sessionKey = $this->visanetService->generateSession($amount, $token);
+        return [
+            'token' => $token,
+            'sessionKey' => $sessionKey,
+        ];
     }
 
     public function showSession()
@@ -280,18 +331,13 @@ class Cart extends Controller
         $client = session('billing');
         $cart = session('cart');
 
-        return response()->json([
-            'client' => $client,
-            'cart' => $cart,
-        ]);
+        return response()->json(session()->all());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
     public function destroy($id)
     {
         //

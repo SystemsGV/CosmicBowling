@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\Booking;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\Home;
 use App\Http\Controllers\Frontend\Cart;
@@ -21,9 +22,6 @@ Route::get('/', [Home::class, 'index'])->name('home.index');
 
 Route::view('/mail', 'frontend.emails.verify');
 
-Route::get('/payment/form', [Payment::class, 'showPaymentForm'])->name('payment.form');
-Route::post('/payment/finalize', [Payment::class, 'finalizePayment'])->name('payment.finalize');
-
 Route::controller(Client::class)->group(function () {
   Route::get('/Iniciar_sesion', 'index')->name('client.login');
   Route::get('/Registrate', 'create')->name('client.register');
@@ -40,5 +38,8 @@ Route::controller(Cart::class)->group(function () {
   Route::post('/billingsession', 'billingData');
   Route::get('/sesiones', 'showSession');
   Route::post('/getBtnPayment', 'paymentData');
+});
 
+Route::controller(Booking::class)->group(function () {
+  Route::post('/Reserva', 'summaryPayment');
 });

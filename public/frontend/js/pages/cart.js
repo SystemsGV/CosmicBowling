@@ -918,18 +918,54 @@ document.addEventListener("DOMContentLoaded", function () {
                 "X-CSRF-TOKEN": csrfToken,
             },
         })
-            .then((response) => {
-                if (!response.ok) {
-                    return response.json().then((errorData) => {
-                        throw new Error(
-                            errorData.message || "Error en la solicitud"
-                        );
-                    });
-                }
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                if (data.status) {
+                    var form = document.createElement("form");
+                    form.id = "frmVisaNet";
+                    form.method = "POST";
+                    form.action = data.action;
+
+                    // Agregar campo CSRF al formulario
+                    var csrfInput = document.createElement("input");
+                    csrfInput.type = "hidden";
+                    csrfInput.name = "_token"; // Laravel usa _token para el CSRF
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    var script = document.createElement("script");
+                    script.src = data.jsUrl;
+                    script.setAttribute("data-sessiontoken", data.sessionKey);
+                    script.setAttribute("data-channel", "web");
+                    script.setAttribute("data-merchantid", data.merchantId);
+                    script.setAttribute("data-merchantlogo", data.logoUrl);
+                    script.setAttribute(
+                        "data-purchasenumber",
+                        data.purchaseNumber
+                    );
+                    script.setAttribute("data-amount", data.amount);
+                    script.setAttribute("data-expirationminutes", "5");
+                    script.setAttribute("data-timeouturl", data.timeoutUrl);
+                    script.setAttribute("data-buttonsize", "LARGE");
+                    script.setAttribute("data-formbuttoncolor", "#a22769");
+
+                    form.appendChild(script);
+                    // Add the form to the container
+                    document
+                        .getElementById("visaNetContainer")
+                        .appendChild(form);
+
+                    // Añade el formulario al body o a un contenedor específico
+                    var container = document.getElementById("visaNetContainer");
+                    if (container) {
+                        container.innerHTML = ""; // Limpiar contenido previo si es necesario
+                        container.appendChild(form);
+                    } else {
+                        console.error("Contenedor no encontrado");
+                    }
+                } else {
+                    console.log(data);
+                }
             })
             .catch((error) => {
                 console.error("Error:", error.message || error);

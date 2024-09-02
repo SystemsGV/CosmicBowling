@@ -235,7 +235,7 @@
                                     <div class="position-relative"><i
                                             class="ai-dashboard fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                         <input class="form-control form-control-lg ps-5" type="text"
-                                            placeholder="Documento de Identidad" required="" disabled id="c-email">
+                                            placeholder="Documento de Identidad" required="" disabled id="c-document">
                                     </div>
                                 </div>
                             </div>
@@ -439,6 +439,9 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="pt-2 mt-n3" id="visaNetContainer"></div>
+
                 </div>
             </div>
         </div>
