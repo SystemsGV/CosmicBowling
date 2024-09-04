@@ -249,7 +249,8 @@ class Cart extends Controller
             'description' => $subcategory['name'],
             'quantity' => $numberOfTracksNeeded,
             'purchaseNumber' => $order->id_order,
-            'discount' => $discount
+            'discount' => $discount,
+            'code' => $reservationCode
         ];
 
         session(['summary' => $arrSummary]);
