@@ -13400,7 +13400,7 @@ html:not([dir="rtl"]) .range-slider-ui.noUi-horizontal .noUi-handle {
 }
 .btn-check + .btn-outline-secondary:not(.btn-icon) {
     --ar-btn-active-border-color: var(--ar-primary);
-    --ar-btn-active-color: var(--ar-primary);
+    --ar-btn-active-color: #FFFF;
 }
 .btn-check + .btn-icon.btn-outline-secondary {
     --ar-btn-border-color: transparent;

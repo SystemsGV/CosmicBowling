@@ -650,7 +650,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const c_ln = document.getElementById("c-ln"),
         c_fn = document.getElementById("c-fn"),
         c_email = document.getElementById("c-email"),
-        c_phone = document.getElementById("c-phone");
+        c_phone = document.getElementById("c-phone"),
+        c_document = document.getElementById("c-document");
+
 
     const loginModalElement = document.getElementById("modal-login");
     const registerModalElement = document.getElementById("modal-register"),
@@ -686,6 +688,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     c_fn.value = `${storedUser.names}`;
                     c_email.value = `${storedUser.email}`;
                     c_phone.value = `${storedUser.phone}`;
+                    c_document.value = `${storedUser.document}`;
 
                     if (sessionStorage.getItem("time") == null) {
                         wToast.show();

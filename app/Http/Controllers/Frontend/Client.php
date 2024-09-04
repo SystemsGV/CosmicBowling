@@ -163,6 +163,7 @@ class Client extends Controller
                 'mattername' => $client->lastname_mat,
                 'email' => $client->email_client,
                 'phone' => $client->phone_client,
+                'document' => $client->number_doc,
                 'sunatdoc' => $sunatDoc  // Incluyendo el dato adicional
             ]
         ], 200);

@@ -51,8 +51,8 @@
                     </div>
                     <div class="position-sticky z-3 top-0" style="padding-top: 115px;">
                         <div class="px-5 px-md-0 ps-xl-5 ms-lg-3">
-                            <img class="d-block mx-auto mx-md-0" src="{{ asset('frontend/images/logo.png') }}"
-                                width="465" alt="Headphones">
+                            <img src="{{ asset('frontend/logo.svg') }}" width="695"
+                            alt="Descripción del SVG">
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                 <div
                     class="col-md-7 col-lg-6 col-xxl-5 order-md-1 position-relative z-3 text-center text-md-start pb-sm-3 pb-md-5 pt-4 mb-md-5 mt-2">
                     <h1 class="display-3 text-uppercase mb-sm-4">
-                        <span class="fw-medium">Choose only </span>
+                        <span class="fw-medium">Choose only</span>
                         <span class="text-info fw-bold">high quality sound</span>
                         <img class="d-none d-xl-inline-block align-middle ms-3"
                             src="{{ asset('frontend/img/landing/product/soundwave.svg') }}" width="200" alt="Sound wave">

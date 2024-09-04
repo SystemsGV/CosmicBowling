@@ -47,14 +47,14 @@ class Booking extends Controller
             1 => 'Pista General',
             2 => 'Pista VIP',
             3 => 'Pista Duo VIP',
-            4 => 'Billar',
+            4 => 'Mesa de Billar',
         ];
 
         $subcategoryNamesPlural = [
             1 => 'Pistas Generales',
             2 => 'Pistas VIP',
             3 => 'Pistas Duo VIP',
-            4 => 'Billares',
+            4 => 'Mesas de Billar',
         ];
 
         $subcategoryName = $summary['quantity'] > 1
@@ -78,7 +78,6 @@ class Booking extends Controller
 
         return view('frontend.cart.details', compact('purchaseNumber', 'description', 'quantity', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests'));
     }
-
 
     private function saveCart($description)
     {
@@ -131,5 +130,11 @@ class Booking extends Controller
 
         // Guarda el array actualizado en el archivo
         file_put_contents($filePath, json_encode($existingData, JSON_PRETTY_PRINT));
+    }
+
+
+    public function email()
+    {
+        return view('frontend.emails.payment');
     }
 }

@@ -463,73 +463,10 @@
                 <!-- Navbar collapse (Main navigation) -->
                 <nav class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                data-bs-auto-close="outside" aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown">
-                                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                        aria-expanded="false">Portfolio</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="portfolio-list-v1.html">List View v.1</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="portfolio-list-v2.html">List View v.2</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="portfolio-grid-v1.html">Grid View v.1</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="portfolio-grid-v2.html">Grid View v.2</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="portfolio-slider.html">Slider View</a></li>
-                                        <li><a class="dropdown-item" href="portfolio-single-v1.html">Single Project
-                                                v.1</a></li>
-                                        <li><a class="dropdown-item" href="portfolio-single-v2.html">Single Project
-                                                v.2</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                        aria-expanded="false">Shop</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="shop-catalog.html">Catalog (Listing)</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="shop-single.html">Product Page</a></li>
-                                        <li><a class="dropdown-item" href="shop-checkout.html">Checkout</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                data-bs-auto-close="outside" aria-expanded="false">Account</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown">
-                                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                        aria-expanded="false">Auth pages</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="account-signin.html">Sign In</a></li>
-                                        <li><a class="dropdown-item" href="account-signup.html">Sign Up</a></li>
-                                        <li><a class="dropdown-item" href="account-signinup.html">Sign In / Up</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="account-password-recovery.html">Password
-                                                Recovery</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="dropdown-item" href="account-overview.html">Overview</a></li>
-                                <li><a class="dropdown-item" href="account-settings.html">Settings</a></li>
-                                <li><a class="dropdown-item" href="account-billing.html">Billing</a></li>
-                                <li><a class="dropdown-item" href="account-orders.html">Orders</a></li>
-                                <li><a class="dropdown-item" href="account-earnings.html">Earnings</a></li>
-                                <li><a class="dropdown-item" href="account-chat.html">Chat (Messages)</a></li>
-                                <li><a class="dropdown-item" href="account-favorites.html">Favorites (Wishlist)</a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="components/typography.html">UI Kit</a>
+                            <a class="nav-link" href="{{url('/')}}">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="docs/getting-started.html">Docs</a>
-                        </li>
+
                     </ul>
                 </nav>
             </div>

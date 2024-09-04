@@ -42,4 +42,5 @@ Route::controller(Cart::class)->group(function () {
 
 Route::controller(Booking::class)->group(function () {
   Route::post('/Reserva', 'summaryPayment');
+  Route::get('/Correo', 'email');
 });
