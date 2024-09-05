@@ -3,21 +3,6 @@
 <html lang="en">
 
 <head>
-    <!--[if gte mso 9]>
-    <xml>
-    <o:OfficeDocumentsettings>
-    <o:AllowPNG/>
-    <o:PixelsPerInch>96</o:PixelsPerInch>
-    </o:OfficeDocumentsettings>
-    </xml>
-    <![endif]-->
-    <!--[if gt mso 15]>
-     <style type="text/css" media="all">
-     /* Outlook 2016 Height Fix */
-     table, tr, td {border-collapse: collapse;}
-     tr { font-size:0px; line-height:0px; border-collapse: collapse; }
-     </style>
-     <![endif]-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -248,13 +233,11 @@
 
 <body
     style="padding: 0; margin: 0; -webkit-font-smoothing:antialiased; background-color:#f1f1f1; -webkit-text-size-adjust:none;">
-    <!--Main Parent Table -->
     <table width="100%" border="0" cellpadding="0" direction="ltr" bgcolor="#f1f1f1" cellspacing="0"
         role="presentation" style="width: 640px; min-width: 640px; margin:0 auto 0 auto;">
         <tbody>
             <tr>
                 <td>
-                    <!--Content Starts Here -->
                     <table cellpadding="0" cellspacing="0" border="0" align="center" width="640"
                         style="width: 640px; min-width: 640px;" role="presentation" bgcolor="#f1f1f1">
                         <tr>
@@ -267,7 +250,6 @@
                         class="table-container ">
                         <tbody>
                             <tr width="640" style="width: 640px; min-width: 640px; " align="center">
-                                <!--Top Header Starts Here -->
                                 <table border="0" bgcolor="#121212" cellpadding="0" cellspacing="0" width="640"
                                     role="presentation" width="640" style="width: 640px; min-width: 640px;"
                                     align="center" class="table-container ">
@@ -300,8 +282,7 @@
                                                                             </tr>
                                                                         </table>
                                                                         <table cellpadding="0" cellspacing="0"
-                                                                            border="0" align="center"
-                                                                            width="640"
+                                                                            border="0" align="center" width="640"
                                                                             style="width: 640px; min-width: 640px;"
                                                                             role="presentation" bgcolor="#b12b77">
                                                                         </table>
@@ -315,7 +296,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <!--Top Header Ends Here -->
                                 <table cellpadding="0" cellspacing="0" border="0" align="center" width="640"
                                     style="width: 640px; min-width: 640px;" role="presentation" bgcolor="#FFFFFF">
                                     <tr>
@@ -383,7 +363,7 @@
                                                         </td>
                                                         <td bgcolor="#f9f9f9" align="right"
                                                             style="color:#5a5a5a;padding:10px 40px 10px 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
-                                                            4543656
+                                                            {{ $data['purchaseNumber'] }}
                                                         </td>
                                                         <td bgcolor="#FFF" width="40" align="left"
                                                             style="color:#5a5a5a;padding:10px 0 10px 0;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
@@ -405,7 +385,7 @@
                                                         </td>
                                                         <td bgcolor="#FFFFFF" align="right"
                                                             style="color:#5a5a5a;padding:10px 40px 10px 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
-                                                            1 Pista General x 1 hora
+                                                            {{ $data['description'] }}
                                                         </td>
                                                         <td bgcolor="#FFF" width="40" align="left"
                                                             style="color:#5a5a5a;padding:10px 0 10px 0;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
@@ -421,7 +401,7 @@
                                                         </td>
                                                         <td bgcolor="#FFFFFF" align="right"
                                                             style="color:#5a5a5a;padding:10px 40px 10px 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
-                                                            2024-09-05 9:00 PM
+                                                            {{ $data['formattedDateTime'] }}
                                                         </td>
                                                         <td bgcolor="#FFF" width="40" align="left"
                                                             style="color:#5a5a5a;padding:10px 0 10px 0;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
@@ -443,7 +423,7 @@
                                                         </td>
                                                         <td bgcolor="#FFFFFF" align="right"
                                                             style="color:#5a5a5a;padding:10px 40px 10px 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
-                                                            5
+                                                            {{ $data['guests'] }}
                                                         </td>
                                                         <td bgcolor="#FFF" width="40" align="left"
                                                             style="color:#5a5a5a;padding:10px 0 10px 0;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
@@ -467,7 +447,7 @@
                                                         <td bgcolor="#FFFFFF" align="right"
                                                             style="border-top:2px solid #CCCCCC;border-bottom:2px solid #CCCCCC;color:#5a5a5a;padding:10px 40px 10px 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:16px;-webkit-font-smoothing:antialiased;line-height:1.4;"
                                                             class="table-container">
-                                                            230 Soles
+                                                            {{ $data['amount'] }}
                                                         </td>
                                                         <td bgcolor="#FFF" width="40" align="left"
                                                             style="color:#5a5a5a;padding:10px 0 10px 0;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
@@ -556,7 +536,7 @@
                                 <table cellpadding="0" cellspacing="0" border="0" align="center" width="640"
                                     style="width: 640px; min-width: 440px;" role="presentation" bgcolor="#b12b77">
                                     <tbody>
-      
+
                                     </tbody>
                                 </table>
                                 <table bgcolor="#b12b77" cellpadding="0" cellspacing="0" border="0"
@@ -589,23 +569,27 @@
                                     <tr>
                                         <td style="padding:0 10px 0 10px;">
                                             <a href="https://www.MailerSend.com/" target="_blank"><img
-                                                    src="{{url('frontend/img/socials/social-facebook.png')}}" alt="Social Icons"
-                                                    width="30" height="30" class="social-icon"></a>
+                                                    src="{{ url('frontend/img/socials/social-facebook.png') }}"
+                                                    alt="Social Icons" width="30" height="30"
+                                                    class="social-icon"></a>
                                         </td>
                                         <td style="padding:0 10px 0 10px;;">
                                             <a href="https://www.MailerSend.com/" target="_blank"><img
-                                                    src="{{url('frontend/img/socials/social-twitter.png')}}" alt="Social Icons" width="30"
-                                                    height="30" class="social-icon"></a>
+                                                    src="{{ url('frontend/img/socials/social-twitter.png') }}"
+                                                    alt="Social Icons" width="30" height="30"
+                                                    class="social-icon"></a>
                                         </td>
                                         <td style="padding:0 10px 0 10px;">
                                             <a href="https://www.MailerSend.com/" target="_blank"><img
-                                                    src="{{url('frontend/img/socials/social-linkedin.png')}}" alt="Social Icons"
-                                                    width="30" height="30" class="social-icon"></a>
+                                                    src="{{ url('frontend/img/socials/social-linkedin.png') }}"
+                                                    alt="Social Icons" width="30" height="30"
+                                                    class="social-icon"></a>
                                         </td>
                                         <td style="padding:0 10px 0 10px;">
                                             <a href="https://www.MailerSend.com/" target="_blank"><img
-                                                    src="{{url('frontend/img/socials/social-instagram.png')}}" alt="Social Icons"
-                                                    width="30" height="30" class="social-icon"></a>
+                                                    src="{{ url('frontend/img/socials/social-instagram.png') }}"
+                                                    alt="Social Icons" width="30" height="30"
+                                                    class="social-icon"></a>
                                         </td>
                                     </tr>
                                 </table>
@@ -652,13 +636,9 @@
                                         </td>
                                     </tr>
                                 </table>
-
-                                <!--Bottom Section Ends Here -->
-                                <!--Main Td  Ends Here -->
                 </td>
             </tr>
         </tbody>
-        <!--Main Parent Table Ends Here -->
     </table>
 </body>
 

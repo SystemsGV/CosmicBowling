@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\PaymentHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPaymentSummaryMail;
 use App\Models\Admin\Cart;
 use App\Services\VisaNetService;
 use Carbon\Carbon;
@@ -17,6 +18,7 @@ class Booking extends Controller
     {
         $this->visanetService = $visanetService;
     }
+
     public function summaryPayment(Request $request)
     {
         $summary = session('summary');
@@ -76,7 +78,21 @@ class Booking extends Controller
 
         $names = $billing['lastname_pat'] . ' ' . $billing['lastname_mat'] . ' ' . $billing['names'];
 
-        return view('frontend.cart.details', compact('purchaseNumber', 'description', 'quantity', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests'));
+
+        $emailDetails = [
+            'email' => $billing['email'], // O el correo que sea relevante
+            'purchaseNumber' => $purchaseNumber,
+            'description' => $description,
+            'formattedDateTime' => $formattedDateTime,
+            'amount' => $amount,
+            'names' => $names,
+            'hours' => $hours,
+            'guests' => $guests,
+        ];
+
+        SendPaymentSummaryMail::dispatch($emailDetails);
+
+        return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests'));
     }
 
     private function saveCart($description)
