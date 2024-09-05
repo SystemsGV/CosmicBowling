@@ -106,7 +106,7 @@ class Client extends Controller
 
         $token = $client->createToken('ClientToken')->plainTextToken;
 
-        Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
+        SendVerificationEmail::dispatch($token, $client->name_client, $client->email_client);
 
         return response()->json(['token' => $token], 201);
     }
