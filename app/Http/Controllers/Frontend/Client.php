@@ -133,7 +133,7 @@ class Client extends Controller
         if (!$client->email_verified_at) {
             // Enviar correo de verificación
             $token = $client->createToken('ClientToken')->plainTextToken;
-            SendVerificationEmail::dispatch($token, $client->name, $client->email);
+            SendVerificationEmail::dispatch($token, $client->name_client, $client->email_client);
             return response()->json([
                 'error' => 'Cuenta no verificada',
                 'message' => 'Por favor, verifique su correo electrónico para activar su cuenta. Hemos enviado un nuevo correo de verificación.'
