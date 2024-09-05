@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendVerificationEmail;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
 use Carbon\Carbon;
@@ -106,7 +105,7 @@ class Client extends Controller
 
         $token = $client->createToken('ClientToken')->plainTextToken;
 
-        SendVerificationEmail::dispatch($token, $client->name_client, $client->email_client);
+        Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
 
         return response()->json(['token' => $token], 201);
     }
@@ -133,7 +132,8 @@ class Client extends Controller
         if (!$client->email_verified_at) {
             // Enviar correo de verificación
             $token = $client->createToken('ClientToken')->plainTextToken;
-            SendVerificationEmail::dispatch($token, $client->name_client, $client->email_client);
+            Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
+
             return response()->json([
                 'error' => 'Cuenta no verificada',
                 'message' => 'Por favor, verifique su correo electrónico para activar su cuenta. Hemos enviado un nuevo correo de verificación.'
