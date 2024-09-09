@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Services\VisanetService;
+use App\Services\VisaNetService;
 use Illuminate\Support\Str;
 
 class Cart extends Controller
@@ -20,7 +20,7 @@ class Cart extends Controller
 
     protected $visanetService;
 
-    public function __construct(VisanetService $visanetService)
+    public function __construct(VisaNetService $visanetService)
     {
         $this->visanetService = $visanetService;
     }
