@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 //Mailing
 use App\Mail\VerifyClient;
+use App\Models\Admin\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -42,7 +43,10 @@ class Client extends Controller
     public function show()
     {
         $client = Auth::guard('client')->user();
-        return view('frontend.client.profile', compact('client'));
+
+        $reservations = Cart::getReservationsByClient($client->id_client);
+
+        return view('frontend.client.profile', compact('client', 'reservations'));
     }
 
     /**

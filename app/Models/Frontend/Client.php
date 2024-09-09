@@ -51,5 +51,6 @@ class Client extends Authenticatable
         return Hash::check($password, $this->password_client);
     }
 
+        
 
 }

@@ -265,7 +265,7 @@
 
     <!-- Bootstrap + Theme scripts -->
     <script src="{{ asset('frontend/js/theme.min.js') }}"></script>
-    <script src="{{ asset('frontend/pages/login.js') }}"></script>
+    <script src="{{ asset('frontend/js/pages/login.js') }}"></script>
 </body>
 
 </html>

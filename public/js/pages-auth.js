@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         const submitBtn = document.querySelector(".data-submit");
         const resetBtn = setLoadingState(submitBtn);
         const formData = new FormData(formAuthentication);
-        fetch("be/auth", {
+        fetch("auth", {
             method: "POST",
             body: formData,
         })

@@ -303,7 +303,7 @@
 
     <!-- Bootstrap + Theme scripts -->
     <script src="{{ asset('frontend/js/theme.min.js') }}"></script>
-    <script src="{{ asset('frontend/pages/register.js') }}"></script>
+    <script src="{{ asset('frontend/js/pages/register.js') }}"></script>
 
 </body>
 

@@ -22,7 +22,7 @@ class AuthenticateClient
             return $next($request);
         }
 
-        // Si no está autenticado, responde con error 401 (No autorizado)
-        return response()->json(['message' => 'Unauthorized'], 401);
+        // Si no está autenticado, redirige a la página de inicio
+        return redirect()->route('home.index'); // Asegúrate de que 'inicio' sea el nombre de la ruta de tu página de inicio
     }
 }
