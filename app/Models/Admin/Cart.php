@@ -19,6 +19,6 @@ class Cart extends Model
      */
     static public function getReservationsByClient($clientId)
     {
-        return self::where('client_id', $clientId)->get();
+        return self::where('client_id', $clientId)->orderByDesc('id_cart')->get();
     }
 }
