@@ -325,7 +325,7 @@
                                                                     style="padding:0;Margin:0;font-size:0px"><a
                                                                         target="_blank" href="https://cosmicbowling.com.pe/"
                                                                         style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:14px"><img
-                                                                            src="{{ url('frontend/logo.svg') }}"
+                                                                            src="https://bowling.syvec.com.pe/frontend/logo.svg"
                                                                             alt="Logo"
                                                                             style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"
                                                                             height="120" title="Logo"></a></td>
@@ -652,7 +652,7 @@
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Imprima, Arial, sans-serif;line-height:21px;color:#2D3142;font-size:14px">
                                                                         <a target="_blank" href=""
                                                                             style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:14px"></a>Copyright
-                                                                        © 2023&nbsp; CosmicBowling<a target="_blank"
+                                                                        © 2024&nbsp; CosmicBowling<a target="_blank"
                                                                             href=""
                                                                             style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:14px"></a>
                                                                     </p>

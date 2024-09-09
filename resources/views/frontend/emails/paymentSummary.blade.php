@@ -275,7 +275,7 @@
                                                                             role="presentation">
                                                                             <tr>
                                                                                 <td align="center">
-                                                                                    <img src="{{ url('frontend/logo.svg') }}"
+                                                                                    <img src="https://bowling.syvec.com.pe/frontend/logo.svg"
                                                                                         alt="Logo" width="320"
                                                                                         class="logo">
                                                                                 </td>
