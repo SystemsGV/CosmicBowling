@@ -1,6 +1,33 @@
 @extends('frontend/layouts/app')
 
 @section('content')
+    <div id="preloader" class="preloader hidden">
+        <div class="section-center">
+            <div class="section-path">
+                <div class="globe">
+                    <div class="wrapper">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="container py-5 mt-4 mt-5 mt-lg-5 mb-lg-4 my-xl-5">
         <h2 class="h1 text-center pt-2 pt-sm-3">COMIENZE SU RESERVA DE CARRIL</h2>
         <p class="text-center pb-3 mb-3 mb-lg-4" id="xwyz" data-id={{ $subcategory->id_subcategory }}>
@@ -65,7 +92,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">3. Seleccione una hora</h4>
+                                <h4 class=" ms-1">2. Seleccione una hora</h4>
                             </h3>
 
                             <div class="container">
@@ -74,7 +101,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">4. Selecciona cuánto tiempo quieres jugar a los bolos</h4>
+                                <h4 class=" ms-1">3. Selecciona cuánto tiempo quieres jugar a los bolos</h4>
                             </h3>
 
                             <div class="container">
@@ -96,9 +123,9 @@
                                 </div>
                             </div>
 
-
+   
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">5. Seleccionar Integrantes</h4>
+                                <h4 class=" ms-1">4. Seleccionar Integrantes</h4>
                                 <span class="text-body-secondary">Añade hasta 5 jugadores por pista. Proporcione un recuento
                                     exacto de
                                     invitados. No podemos garantizar alojamiento para cambios en el tamaño del grupo.
@@ -689,6 +716,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('frontend/vendor/flatpickr/dist/flatpickr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/loader.css') }}">
     <style>
         .btn-custom {
             padding: 20px;

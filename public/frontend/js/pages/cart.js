@@ -15,8 +15,11 @@ const guests = document.getElementById("l-guests"),
         .getAttribute("content"),
     inputGuests = document.getElementById("c-guests"),
     limitRound = "",
-    labelLine = document.getElementById("n-lane");
+    labelLine = document.getElementById("n-lane"),
+    preloader = document.getElementById("preloader");
+
 localStorage.setItem("limit", "");
+sessionStorage.clear();
 
 const radioHours = document.querySelectorAll('input[name="c-hour"]'),
     priceShoe = xwyz === "4" ? 0 : 8,
@@ -221,6 +224,10 @@ function generateRadioButtons(calendarItems) {
     const container = document.getElementById("radioContainer");
     container.innerHTML = "";
 
+    if (calendarItems.length === 0) {
+        showNoScheduleCard(container);
+    }
+
     // Filtra los elementos para excluir aquellos con la hora '23:00:00'
     const filteredItems = calendarItems.filter(
         (item) => item.hour !== "23:00:00"
@@ -261,6 +268,21 @@ function generateRadioButtons(calendarItems) {
     });
 }
 
+function showNoScheduleCard(container) {
+    const cardHTML = `
+    <a href="javascript:void(0)" class="card card-hover-primary bg-secondary border-0 h-100 text-decoration-none">
+      <div class="card-body text-center">
+        <i class="ai-clock h1 fw-normal d-block mb-4"></i>
+        <h3>No hay horarios disponibles</h3>
+        <p class="card-text">Actualmente no hay horarios disponibles para este servicio. Por favor, intenta más tarde.</p>
+      </div>
+    </a>
+    `;
+
+    // Insertamos el contenido de la tarjeta en el contenedor
+    container.innerHTML = cardHTML;
+}
+
 const getProductCalendar = async (subcategory, date) => {
     try {
         const response = await fetch(`/updateUI/${subcategory}/${date}`);
@@ -268,6 +290,7 @@ const getProductCalendar = async (subcategory, date) => {
             throw new Error("No se pudo obtener la data");
         }
         const data = await response.json();
+        preloader.classList.add("hidden");
         return data;
     } catch (error) {
         console.error("Error al obtener la data:", error);
@@ -276,6 +299,7 @@ const getProductCalendar = async (subcategory, date) => {
 
 const updateUI = async () => {
     try {
+        preloader.classList.remove("hidden");
         const selectedDate = document.getElementById("c-date").value;
         sessionStorage.setItem("date", selectedDate);
         document.getElementById("l-date").innerHTML = "----------------";
@@ -640,19 +664,16 @@ function formatHourRange(timeString, duration) {
 document.addEventListener("DOMContentLoaded", function () {
     sessionStorage.setItem("product", xwyz);
     sessionStorage.setItem("date", document.getElementById("c-date").value);
-
+    const preloader = document.getElementById("preloader");
     const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content"),
-        protocol = window.location.protocol,
-        domain = window.location.hostname,
-        fullDomain = `${protocol}//${domain}:8000/`;
+        fullDomain = window.location.origin + "/";
     const c_ln = document.getElementById("c-ln"),
         c_fn = document.getElementById("c-fn"),
         c_email = document.getElementById("c-email"),
         c_phone = document.getElementById("c-phone"),
         c_document = document.getElementById("c-document");
-
 
     const loginModalElement = document.getElementById("modal-login");
     const registerModalElement = document.getElementById("modal-register"),
@@ -674,7 +695,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let value = sessionStorage.getItem(key);
             sessionArray.push({ key: key, value: value });
         }
-
+        preloader.classList.remove("hidden");
         fetch(`${fullDomain}api/client/check-authentication`)
             .then((response) => response.json())
             .then((data) => {
@@ -757,6 +778,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch((error) => {
                 console.error("Error:", error);
+            })
+            .finally(() => {
+                preloader.classList.add("hidden");
             });
     }
 
@@ -826,6 +850,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 type: "Boleta",
             };
         }
+
+        preloader.classList.remove("hidden");
 
         fetch(`${fullDomain}billingsession`, {
             method: "POST",
@@ -902,6 +928,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch((error) => {
                 console.error("Error:", error.message || error);
+            })
+            .finally(() => {
+                preloader.classList.add("hidden");
             });
 
         document.getElementById("tabPayment").classList.remove("disabled");
@@ -914,6 +943,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getPayment() {
+        preloader.classList.remove("hidden");
+
         fetch(`${fullDomain}getBtnPayment`, {
             method: "POST",
             headers: {
@@ -972,6 +1003,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch((error) => {
                 console.error("Error:", error.message || error);
+            })
+            .finally(() => {
+                preloader.classList.add("hidden");
             });
     }
 
@@ -1080,6 +1114,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateUserMenu(client) {
+        const domain = window.location.origin;
         const accountInfoDiv = document.getElementById("account-info");
         accountInfoDiv.innerHTML = `
             <div class="dropdown nav d-block order-lg-2 ms-auto">
@@ -1091,10 +1126,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end my-1">
-                    <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
-                    <a class="dropdown-item" href="#"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a>
-                    <a class="dropdown-item" href="#"><i class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a>
-                    <a class="dropdown-item" href="#"><i class="ai-wallet fs-base opacity-70 me-2 mt-n1"></i>Billing</a>
+                    <a class="dropdown-item" href="${domain}/Perfil"><i
+                                        class="ai-user-check fs-lg opacity-70 me-2"></i>Perfil</a>
                     <div class="dropdown-divider"></div>
                     <button type="button" class="dropdown-item" onclick=" window.location.reload();">
                         <i class="ai-logout fs-lg opacity-70 me-2"></i>Cerrar Sesión

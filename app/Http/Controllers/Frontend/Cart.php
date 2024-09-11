@@ -98,6 +98,7 @@ class Cart extends Controller
 
     public function cartData(Request $request)
     {
+        
         $sessionData = $request->json('sessionArray', []);
 
         $formattedData = [];

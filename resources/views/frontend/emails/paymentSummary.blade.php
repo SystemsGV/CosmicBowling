@@ -275,7 +275,7 @@
                                                                             role="presentation">
                                                                             <tr>
                                                                                 <td align="center">
-                                                                                    <img src="https://bowling.syvec.com.pe/frontend/logo.svg"
+                                                                                    <img src="https://cosmicbowling.com.pe/new/images/logo.png"
                                                                                         alt="Logo" width="320"
                                                                                         class="logo">
                                                                                 </td>

@@ -18,7 +18,7 @@
 
     <!-- Webmanifest + Favicon / App icons -->
     <link rel="manifest" href="{{ asset('frontend/manifest.json') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('frontend/img/app-icons/favicon.png') }}">
     <!-- Theme switcher (color modes) -->
     <script src="{{ asset('frontend/js/theme-switcher.js') }}"></script>
 
@@ -399,8 +399,8 @@
                 <!-- Navbar brand (Logo) -->
                 <a class="navbar-brand pe-sm-3" href="{{ route('home.index') }}">
                     <span class="text-primary flex-shrink-0 me-2">
-                        <img src="{{ asset('frontend/logo.svg') }}" width="95" height="92"
-                            alt="Descripción del SVG">
+                        <img src="{{ asset('frontend/img/app-icons/logo.svg') }}" width="95" height="92"
+                            alt="Logo Cosmic Bowling">
 
                     </span>
                     <span class="d-none d-sm-inline"></span>

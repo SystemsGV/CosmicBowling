@@ -12,4 +12,8 @@ class ClientController extends Controller
         $data['title'] = "Cliente";
         return view('admin.client.index', $data);
     }
+
+    public function show(){
+        
+    }
 }

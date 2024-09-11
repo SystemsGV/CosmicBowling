@@ -51,7 +51,7 @@
                     </div>
                     <div class="position-sticky z-3 top-0" style="padding-top: 115px;">
                         <div class="px-5 px-md-0 ps-xl-5 ms-lg-3">
-                            <img src="{{ asset('frontend/logo.svg') }}" width="695"
+                            <img src="{{ asset('frontend/img/app-icons/logo.svg') }}" width="695"
                             alt="Descripción del SVG">
                         </div>
                     </div>

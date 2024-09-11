@@ -18,13 +18,13 @@
                     <thead class="table-light">
                         <tr>
                             <th></th>
-                            <th></th>
-                            <th>User</th>
-                            <th>Role</th>
-                            <th>Plan</th>
-                            <th>Billing</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Nombres / Apellidos</th>
+                            <th>Número de Documento</th>
+                            <th>Email</th>
+                            <th>Número Cliente</th>
+                            <th>Distrito</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                 </table>

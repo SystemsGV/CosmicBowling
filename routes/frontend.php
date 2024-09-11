@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\Home;
 use App\Http\Controllers\Frontend\Cart;
 use App\Http\Controllers\Frontend\Client;
 use App\Http\Controllers\Frontend\Payment;
+use App\Http\Controllers\Frontend\TestView;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,8 @@ Route::controller(Cart::class)->group(function () {
 Route::controller(Booking::class)->group(function () {
   Route::post('/Reserva', 'summaryPayment');
   Route::get('/Correo', 'email');
+});
+
+Route::controller(TestView::class)->group(function () {
+  Route::get('test', 'index');
 });

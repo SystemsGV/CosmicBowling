@@ -29,14 +29,14 @@ $(function () {
       (e = s.DataTable({
         ajax: assetsPath + "json/user-list.json",
         columns: [
-          { data: "" },
           { data: "id" },
           { data: "full_name" },
           { data: "role" },
           { data: "current_plan" },
           { data: "billing" },
+          { data: "avatar" },
           { data: "status" },
-          { data: "action" },
+          { data: "id" },
         ],
         columnDefs: [
           {
@@ -49,19 +49,9 @@ $(function () {
               return "";
             },
           },
+
           {
             targets: 1,
-            orderable: !1,
-            render: function () {
-              return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-            },
-            checkboxes: {
-              selectAllRender:
-                '<input type="checkbox" class="form-check-input">',
-            },
-          },
-          {
-            targets: 2,
             responsivePriority: 4,
             render: function (e, t, a, n) {
               var s = a.full_name,
@@ -102,7 +92,7 @@ $(function () {
             },
           },
           {
-            targets: 3,
+            targets: 2,
             render: function (e, t, a, n) {
               a = a.role;
               return (
@@ -125,13 +115,13 @@ $(function () {
             },
           },
           {
-            targets: 4,
+            targets: 3,
             render: function (e, t, a, n) {
               return '<span class="text-heading">' + a.current_plan + "</span>";
             },
           },
           {
-            targets: 6,
+            targets: 5,
             render: function (e, t, a, n) {
               a = a.status;
               return (
