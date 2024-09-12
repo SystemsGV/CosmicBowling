@@ -299,6 +299,9 @@ const getProductCalendar = async (subcategory, date) => {
 
 const updateUI = async () => {
     try {
+        sessionStorage.removeItem("time");
+        sessionStorage.removeItem("hours");
+        sessionStorage.removeItem("guests");
         preloader.classList.remove("hidden");
         const selectedDate = document.getElementById("c-date").value;
         sessionStorage.setItem("date", selectedDate);
@@ -695,6 +698,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let value = sessionStorage.getItem(key);
             sessionArray.push({ key: key, value: value });
         }
+
         preloader.classList.remove("hidden");
         fetch(`${fullDomain}api/client/check-authentication`)
             .then((response) => response.json())
@@ -984,12 +988,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     script.setAttribute("data-formbuttoncolor", "#a22769");
 
                     form.appendChild(script);
-                    // Add the form to the container
-                    document
-                        .getElementById("visaNetContainer")
-                        .appendChild(form);
 
-                    // Añade el formulario al body o a un contenedor específico
                     var container = document.getElementById("visaNetContainer");
                     if (container) {
                         container.innerHTML = ""; // Limpiar contenido previo si es necesario
@@ -1012,6 +1011,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.querySelectorAll(".btnNext");
     const buttonsBilling = document.querySelectorAll(".btnBilling");
     const buttonsPayment = document.querySelectorAll(".check-payment");
+    const checkPaymentDesktop = document.getElementById(
+        "check-payment-desktop"
+    );
+    const checkPaymentMobile = document.getElementById("check-payment-mobile");
 
     buttons.forEach((button) => {
         button.addEventListener("click", handleButtonClick);
@@ -1022,7 +1025,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     buttonsPayment.forEach((button) => {
-        button.addEventListener("click", getPayment);
+        button.addEventListener("click", function () {
+            // Verificar si uno de los checkboxes está marcado
+            if (checkPaymentDesktop.checked || checkPaymentMobile.checked) {
+                // Deshabilitar los checkboxes para que no se puedan desmarcar
+                checkPaymentDesktop.disabled = true;
+                checkPaymentMobile.disabled = true;
+
+                // Eliminar el formulario anterior si existe
+                let existingForm = document.getElementById("frmVisaNet");
+                if (existingForm) {
+                    existingForm.remove();
+                }
+
+                // Ejecutar la función para obtener el pago
+                getPayment();
+            } else {
+                console.log("Debe aceptar los Términos y Condiciones");
+            }
+        });
     });
 
     document
@@ -1030,6 +1051,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("click", function () {
             loginModal.hide();
             registerModal.show();
+        });
+
+    document
+        .getElementById("tabReservation")
+        .addEventListener("click", function () {
+            location.reload();
         });
 
     document.getElementById("btnLogin").addEventListener("click", function () {

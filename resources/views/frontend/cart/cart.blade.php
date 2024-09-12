@@ -123,7 +123,7 @@
                                 </div>
                             </div>
 
-   
+
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">4. Seleccionar Integrantes</h4>
                                 <span class="text-body-secondary">Añade hasta 5 jugadores por pista. Proporcione un recuento
@@ -170,8 +170,7 @@
                                 <div class="border-top pt-4 mt-2 mb-4">
                                     <div class="input-group input-group-sm border-dashed" style="max-width: 410px;">
                                         <input class="form-control text-uppercase" type="text"
-                                            placeholder="Código promocional" id="couponCode" name="couponCode"
-                                            value="8YTW3KAQNGHV">
+                                            placeholder="Código promocional" id="couponCode" name="couponCode">
                                         <button class="btn btn-secondary" type="button" id="btnCoupon" disabled>APLICAR
                                             CUPÓN</button>
                                     </div>
@@ -444,25 +443,22 @@
 
                     </div>
 
-
                     <div class="d-none d-lg-block pt-5 mt-n3">
                         <div class="form-check mb-4">
-                            <input class="form-check-input check-payment" type="checkbox">
-                            <label class="form-check-label" for="save-info-1">
-                                <span class="text-body-secondary">Acepte los
-                                </span><a class="fw-medium" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
+                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-desktop">
+                            <label class="form-check-label" for="check-payment-desktop">
+                                <span class="text-body-secondary">Acepte los</span>
+                                <a class="fw-medium" href="#" data-bs-toggle="modal" data-bs-target="#modalScroll">Términos y Condiciones</a>
                             </label>
                         </div>
                     </div>
-
+                    
                     <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
                         <div class="form-check mb-4">
-                            <input class="form-check-input check-payment" type="checkbox">
-                            <label class="form-check-label" for="save-info-1">
-                                <span class="text-body-secondary">Acepte los
-                                </span><a class="fw-medium" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
+                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-mobile">
+                            <label class="form-check-label" for="check-payment-mobile">
+                                <span class="text-body-secondary">Acepte los</span>
+                                <a class="fw-medium" href="#" data-bs-toggle="modal" data-bs-target="#modalScroll">Términos y Condiciones</a>
                             </label>
                         </div>
                     </div>
@@ -637,7 +633,7 @@
         <div class="modal-dialog modal-d modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Modal title</h4>
+                    <h4 class="modal-title">Terminos y Condiciones</h4>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body fs-sm">
@@ -680,8 +676,8 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary w-100 w-sm-auto mb-3 mb-sm-0" type="button"
-                        data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button">Save changes</button>
+                        data-bs-dismiss="modal">No Acepto</button>
+                    <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button">Acepto</button>
                 </div>
             </div>
         </div>
