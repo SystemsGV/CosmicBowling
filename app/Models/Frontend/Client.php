@@ -52,10 +52,25 @@ class Client extends Authenticatable
     }
 
 
-    static public function getClients(){
-        
+    static public function getClients()
+    {
+        $clients = self::all();
+        $data = [];
+
+        foreach ($clients as $client) {
+            $data[] = [
+                'id' => $client->id_client,
+                'names' => trim("{$client->lastname_pat} {$client->lastname_mat} {$client->names_client}"),
+                'type_doc' => optional($client->sunatTypedoc)->name_doc,
+                'number_doc' => $client->number_doc,
+                'email' => $client->email_client,
+                'phone' => $client->phone_client,
+                'address' => $client->address_client,
+                'verified' => $client->email_verified_at,
+                'status' => $client->email_verified_at ? 'Validado' : 'No Validado'
+            ];
+        }
+
+        return $data;
     }
-
-        
-
 }

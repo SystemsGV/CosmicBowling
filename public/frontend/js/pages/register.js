@@ -2,9 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content"),
-        protocol = window.location.protocol,
-        domain = window.location.hostname,
-        fullDomain = `${protocol}//${domain}:8000/`;
+        fullDomain = window.location.origin + "/";
 
     function setLoadingState(button, text) {
         button.innerHTML = `

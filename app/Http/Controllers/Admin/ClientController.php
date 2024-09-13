@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Frontend\Client;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -13,7 +14,9 @@ class ClientController extends Controller
         return view('admin.client.index', $data);
     }
 
-    public function show(){
-        
+    public function show()
+    {
+        $clients = Client::getClients();
+        return response()->json(['data' => $clients]);
     }
 }

@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content"),
         subjectToast = document.getElementById("subjectToast"),
-        protocol = window.location.protocol,
-        domain = window.location.hostname,
-        fullDomain = `${protocol}//${domain}:8000/`;
+        fullDomain = window.location.origin + "/";
 
     const f = document.getElementById("liveToast");
     const loginForm = document.getElementById("form-login");
