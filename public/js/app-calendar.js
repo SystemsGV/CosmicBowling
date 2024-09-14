@@ -24,6 +24,7 @@ isRtl && (direction = "rtl"),
                 w = document.querySelector("#eventEndDate"),
                 q = $("#eventLabel"),
                 M = document.querySelector("#eventPrice"),
+                Z = document.querySelector("#quantity"),
                 A = document.querySelector(".select-all"),
                 F = [].slice.call(document.querySelectorAll(".input-filter")),
                 Y = document.querySelector(".inline-calendar");
@@ -105,36 +106,44 @@ isRtl && (direction = "rtl"),
                     }));
             q.on("input", function () {
                 let option = $(this).find("option:selected"),
-                    lj = option.data("lj"),
-                    fds = option.data("fds");
+                    prices = [
+                        option.data("sunday"), // Domingo (0)
+                        option.data("monday"), // Lunes (1)
+                        option.data("tuesday"), // Martes (2)
+                        option.data("wednesday"), // Miércoles (3)
+                        option.data("thursday"), // Jueves (4)
+                        option.data("friday"), // Viernes (5)
+                        option.data("saturday"), // Sábado (6)
+                    ];
 
                 let selectedDate = new Date(k.value);
-                let dayOfWeek = selectedDate.getDay();
+                let dayOfWeek = selectedDate.getDay(); // Obtiene el día de la semana (0 es domingo, 6 es sábado)
 
-                blockUI();
+                blockUI(); // Bloquea la interfaz de usuario
 
-                let promise;
-                if (isWeekend(dayOfWeek)) {
-                    promise = Promise.resolve(fds);
-                } else {
-                    promise = checkHoliday(k.value).then((isHoliday) =>
-                        isHoliday ? fds : lj
+                let promise = Promise.resolve(prices[dayOfWeek]);
+
+                // Verifica si es feriado y ajusta el precio si es necesario
+                promise = promise.then((price) => {
+                    return checkHoliday(k.value).then(
+                        (isHoliday) => (isHoliday ? prices[0] : price) // Usa el precio del domingo si es feriado
                     );
-                }
+                });
 
+                // Asigna el precio final o maneja errores
                 promise
                     .then((price) => {
-                        M.value = price;
-                        console.log(price);
+                        M.value = price; // Asigna el precio al campo M
+                        console.log("Precio final:", price);
                     })
                     .catch((error) => {
                         console.error(
-                            "Error al verificar el día feriado:",
+                            "Error al verificar el día o feriado:",
                             error
                         );
                     })
                     .finally(() => {
-                        $.unblockUI();
+                        $.unblockUI(); // Desbloquea la interfaz de usuario
                     });
             });
 
@@ -238,14 +247,17 @@ isRtl && (direction = "rtl"),
                         y.classList.add("btn-update-event"),
                         y.classList.remove("btn-add-event"),
                         S.classList.remove("d-none"),
-                        (E.value = a.title),
+                        (E.value =
+                            a.title + " (" + a.extendedProps.quantity + ")"),
                         d.setDate(a.start, !0, "Y-m-d"),
                         null !== a.end
                             ? o.setDate(a.end, !0, "Y-m-d")
                             : o.setDate(a.start, !0, "Y-m-d"),
                         q.val(a.extendedProps.calendar).trigger("change"),
                         void 0 !== a.extendedProps.price &&
-                            (M.value = a.extendedProps.price);
+                            (M.value = a.extendedProps.price),
+                        void 0 !== a.extendedProps.quantity &&
+                            (Z.value = a.extendedProps.quantity);
                 },
                 datesSet: function () {
                     s();
@@ -263,6 +275,7 @@ isRtl && (direction = "rtl"),
                 k.value = "";
                 E.value = "";
                 M.value = "";
+                Z.value = 0;
             }
 
             (fv = FormValidation.formValidation(c, {
@@ -325,6 +338,7 @@ isRtl && (direction = "rtl"),
                                     extendedProps: {
                                         calendar: q.val(),
                                         price: M.value,
+                                        quantity: Z.value,
                                     },
                                 };
                                 l.push(n);
@@ -341,7 +355,9 @@ isRtl && (direction = "rtl"),
                                 extendedProps: {
                                     calendar: q.val(),
                                     price: M.value,
+                                    quantity: Z.value,
                                 },
+
                                 display: "block",
                                 allDay: "0",
                             }),
@@ -410,6 +426,7 @@ isRtl && (direction = "rtl"),
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content");
         function insert() {
+            blockUI();
             return new Promise((resolve, reject) => {
                 let eventLabelSelect = document.getElementById("eventLabel"),
                     dataId =
@@ -425,20 +442,29 @@ isRtl && (direction = "rtl"),
                     body: formData,
                 })
                     .then((response) => {
-                        if (!response.ok) {
-                            return response.json().then((errorData) => {
+                        return response.json().then((data) => {
+                            if (!response.ok) {
                                 throw new Error(
-                                    errorData.message ||
+                                    data.message ||
                                         "Hubo un problema al procesar el formulario."
                                 );
-                            });
-                        }
-                        return response.json();
+                            }
+                            return data;
+                        });
                     })
                     .then((data) => {
+                        console.log("Fetch exitoso", data);
                         if (data.status === "success") {
-                            resolve(data.calendar_id); // Resolver la promesa con `calendar_id`
+                            Toast.fire({
+                                icon: data.status,
+                                title: "Horario ingresado",
+                            });
+                            resolve(data.calendar_id);
                         } else {
+                            Toast.fire({
+                                icon: data.status,
+                                title: data.message,
+                            });
                             throw new Error(
                                 data.message ||
                                     "Hubo un problema con la respuesta del servidor."
@@ -446,8 +472,15 @@ isRtl && (direction = "rtl"),
                         }
                     })
                     .catch((error) => {
+                        Toast.fire({
+                            icon: "warning",
+                            title: error.message,
+                        });
                         console.error("Error:", error.message);
                         reject(error);
+                    })
+                    .finally(() => {
+                        $.unblockUI();
                     });
             });
         }
@@ -493,4 +526,15 @@ isRtl && (direction = "rtl"),
                 overlayCSS: { opacity: 0.5 },
             });
         }
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top",
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+        });
     });

@@ -49,10 +49,10 @@
                             </div>
 
                             <!-- <div class="form-check mb-3">
-                                                                                                                            <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                                                                                                                data-value="business" checked="">
-                                                                                                                            <label class="form-check-label" for="select-business">Business</label>
-                                                                                                                        </div>-->
+                                                                                                                                <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                                                                                                                    data-value="business" checked="">
+                                                                                                                                <label class="form-check-label" for="select-business">Business</label>
+                                                                                                                            </div>-->
 
                             <div class="form-check form-check-warning mb-3">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-family"
@@ -101,8 +101,13 @@
                                         <option value="">-----</option>
                                         @foreach ($subcategories as $row)
                                             <option data-label={{ $row->color_subcategory }}
-                                                data-id={{ $row->id_subcategory }} data-lj={{ $row->price_sublj }}
-                                                data-fds={{ $row->price_subfds }} value={{ $row->extend_subcategory }}>
+                                                data-id={{ $row->id_subcategory }} data-monday={{ $row->price_monday }}
+                                                data-tuesday={{ $row->price_tuesday }}
+                                                data-wednesday={{ $row->price_wednesday }}
+                                                data-thursday={{ $row->price_thursday }}
+                                                data-friday={{ $row->price_friday }}
+                                                data-saturday={{ $row->price_saturday }}
+                                                data-sunday={{ $row->price_sunday }} value={{ $row->extend_subcategory }}>
                                                 {{ $row->name_subcategory }}</option>
                                         @endforeach
                                     </select>
@@ -123,6 +128,19 @@
                                     <input type="text" class="form-control" id="eventPrice" name="eventPrice"
                                         placeholder="00.00">
                                     <label for="eventTitle">Precio</label>
+                                </div>
+
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text"><i
+                                                class="mdi mdi-numeric-9-plus-box-multiple-outline"></i></span>
+
+                                        <div class="form-floating form-floating-outline">
+                                            <input type="text" class="form-control" id="quantity" name="quantity"
+                                                placeholder="" value="0">
+                                            <label for="quantity">Cantidad de Pistas Disponibles</label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4 gap-2">

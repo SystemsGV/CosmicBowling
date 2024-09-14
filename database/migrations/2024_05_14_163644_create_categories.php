@@ -30,8 +30,13 @@ return new class extends Migration
             $table->string('descr_subcategory', 150)->nullable();
             $table->time('time_init')->nullable();
             $table->time('time_finish')->nullable();
-            $table->decimal('price_sublj', 8, 2);
-            $table->decimal('price_subfds', 8, 2);
+            $table->decimal('price_monday', 8, 2);
+            $table->decimal('price_tuesday', 8, 2);
+            $table->decimal('price_wednesday', 8, 2);
+            $table->decimal('price_thursday', 8, 2);
+            $table->decimal('price_friday', 8, 2);
+            $table->decimal('price_saturday', 8, 2);
+            $table->decimal('price_sunday', 8, 2);
             $table->integer('limit_subcategory');
             $table->string('img_subcategory', 120)->nullable();
             $table->string('color_subcategory', 30)->nullable();

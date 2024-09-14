@@ -11,7 +11,7 @@ class Calendar extends Model
 
     protected $table = 'calendar';
     protected $primaryKey = 'id_calendar';
-    protected $fillable = ['subcategory_id ', 'name_calendar', 'extent_calendar', 'start_calendar', 'end_calendar'];
+    protected $fillable = ['subcategory_id ', 'name_calendar', 'extent_calendar', 'start_calendar', 'end_calendar', 'quantity_calendar'];
 
     public static function show()
     {
@@ -26,6 +26,7 @@ class Calendar extends Model
                 'start' => $row->start_calendar,
                 'end' => $row->end_calendar,
                 'calendar' => $row->extent_calendar,
+                'quantity' => $row->quantity_calendar,
             ];
         }
 

@@ -11,6 +11,7 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CalendarController extends Controller
@@ -33,20 +34,41 @@ class CalendarController extends Controller
     public function store(Request $request, Products $products)
     {
         try {
+            // Obtener la cantidad de productos disponibles (pistas activas)
+            $availableQuantity = $products->where('subcategory_id', $request->input('data-id'))
+                ->where('status_product', 1)
+                ->count();
+
+            // Verificar la cantidad enviada por el request
+            $quantity = $request->input('quantity');
+
+            // Validar que la cantidad no sea mayor a la disponible
+            if ($quantity > $availableQuantity) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La cantidad ingresada excede el número de pistas activas disponibles. Máximo disponible: ' . $availableQuantity,
+                ], 400);
+            }
+
+            // Si la cantidad es menor a 1, usar la cantidad disponible
+            if ($quantity < 1) {
+                $quantity = $availableQuantity;
+            }
+
+
             $calendar = new Calendar();
             $calendar->subcategory_id = $request->input('data-id');
-            $calendar->name_calendar = $request->input('eventTitle');
+            $calendar->name_calendar = sprintf('%s (%d)', $request->input('eventTitle'), $quantity);
             $calendar->price_calendar = $request->input('eventPrice');
             $calendar->extent_calendar = $request->input('eventLabel');
             $calendar->start_calendar = $request->input('eventStartDate');
             $calendar->end_calendar = $request->input('eventEndDate');
+            $calendar->quantity_calendar = $request->input('quantity');
+            $calendar->quantity_calendar = $quantity;
+            $calendar->user_id = Auth::id();
             $calendar->save();
 
             $calendarId = $calendar->id_calendar;
-
-            $availableQuantity = $products->where('subcategory_id', $request->input('data-id'))
-                ->where('status_product', 1)
-                ->count();
 
             $timeIntervals = $this->getTimeIntervals($request->input('eventStartDate'), $request->input('eventEndDate'));
 
@@ -54,13 +76,12 @@ class CalendarController extends Controller
                 if ($time === '23:00') {
                     continue; // Saltar esta iteración si el tiempo es 23:00
                 }
-
                 calendarIntervals::create([
                     'subcategory_id' => $request->input('data-id'),
                     'calendar_id' => $calendarId,
                     'date_citem' => (new DateTime($request->input('eventStartDate')))->format('Y-m-d'),
                     'time_interval' => $time,
-                    'available_quantity' => $availableQuantity,
+                    'available_quantity' => $quantity,
                     'price_citem' => $request->input('eventPrice'),
                 ]);
             }
