@@ -318,11 +318,11 @@
                             </ul>
                             <div class="d-flex">
                                 <a class="btn btn-icon btn-sm btn-secondary btn-instagram rounded-circle me-3"
-                                    href="#" aria-label="Instagram">
+                                    href="https://www.instagram.com/cosmic_bowling/profilecard/?igsh=dXJzZGV4eDg5OG1z" target="_blank" aria-label="Instagram">
                                     <i class="ai-instagram"></i>
                                 </a>
                                 <a class="btn btn-icon btn-sm btn-secondary btn-facebook rounded-circle me-3"
-                                    href="#" aria-label="Facebook">
+                                    href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank" aria-label="Facebook">
                                     <i class="ai-facebook"></i>
                                 </a>
                                 <a class="btn btn-icon btn-sm btn-secondary btn-primary rounded-circle"
@@ -337,7 +337,7 @@
                             <ul class="list-unstyled mb-0">
                                 <li class="nav flex-nowrap mb-3">
                                     <i class="ai-whatsapp lead text-primary me-2"></i>
-                                    <a class="nav-link fw-normal p-0 mt-n1" href="tel:+178632256040">Escríbenos¡por
+                                    <a class="nav-link fw-normal p-0 mt-n1" href="https://wa.link/l9mreh" target="_blank">Escríbenos¡por
                                         whastapp</a>
                                 </li>
                                 <li class="nav flex-nowrap mb-3">

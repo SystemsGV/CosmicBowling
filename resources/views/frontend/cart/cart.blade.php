@@ -92,7 +92,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">2. Seleccione la hora</h4>
+                                <h4 class="ms-1">2. Selecciona la hora</h4>
                             </h3>
 
                             <div class="container">

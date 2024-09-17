@@ -60,9 +60,9 @@
                 <!-- Text -->
                 <div
                     class="col-md-7 col-lg-6 col-xxl-5 order-md-1 position-relative z-3 text-center text-md-start pb-sm-3 pb-md-5 pt-4 mb-md-5 mt-2">
-                    <h1 class="display-3 text-uppercase mb-sm-4">
-                        <span class="fw-medium">¡ QUE COMIENCEN</span>
-                        <span class="text-primary fw-bold">LAS CHUZAS!</span>
+                    <h1 class="display-3 text-uppercase mb-sm-4" style="line-height: 1.1">
+                        <span class="fw-bold">¡ QUE COMIENCEN</span>
+                        <span class="text-primary fw-bold">LAS CHUZAS !</span>
                     </h1>
                     <div class="mx-auto mx-md-0" style="max-width: 400px;">
                         <p class="pb-2 pb-lg-0 mb-4">¿Buscas un plan de otro planeta?</p>
@@ -101,6 +101,8 @@
             <div class="row align-items-center text-center gy-2 mb-4 pb-1 pb-sm-2 pb-lg-3">
                 <div class="col-lg-12">
                     <h1 class="mb-lg-0">{{ $category->name_category }}</h1>
+                    <p class="fs-lg text-center pb-3 pb-lg-0">Maximo
+                        {{ $category->id_category == 1 ? '5 personas por pista' : '3 personas por mesa' }}</p>
                 </div>
             </div>
 
@@ -108,15 +110,15 @@
                 <div class="masonry-grid mb-2 mb-md-4 pb-lg-3" data-columns="3">
                     @foreach ($category->subcategories as $subcategory)
                         <article class="masonry-grid-item">
-                            <div class="card border-0 bg-secondary text-center">
+                            <div class="card border-0 bg-primary text-center">
                                 <a href="{{ url('Carrito/' . $subcategory->formatted_name) }}">
                                     <img class="card-img-top"
                                         src="{{ asset('storage/subcategory/' . $subcategory->img_subcategory) }}"
                                         alt="{{ $subcategory->name_subcategory }}">
                                 </a>
-                                <div class="card-body pb-4">
+                                <div class="card-body pb-4 text-white">
                                     <h3 class="h3 card-title">
-                                        <a class="text-primary fw-bold"
+                                        <a class="fw-bold text-white"
                                             href="{{ url('Carrito/' . $subcategory->formatted_name) }}">
                                             {{ $subcategory->name_subcategory }}
                                         </a>
