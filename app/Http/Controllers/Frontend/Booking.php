@@ -44,7 +44,7 @@ class Booking extends Controller
         if (isset($data['errorCode'])) {
             $actionCode = isset($data['data']['ACTION_CODE']) ? $data['data']['ACTION_CODE'] : null;
             $errorMessage = PaymentHelper::getErrorMessage($actionCode);
-            return view('frontend.cart.err', compact('actionCode', 'errorMessage', 'names'));
+            return view('frontend.cart.err', compact('actionCode', 'errorMessage', 'names', 'purchaseNumber'));
         }
 
         $card = $data['dataMap']['CARD'] . " (" . $data['dataMap']['BRAND'] . ")";
