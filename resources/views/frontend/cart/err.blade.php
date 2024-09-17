@@ -41,13 +41,18 @@
                                 class="text-dark">{{ $actionCode }}</span></td>
                     </tr>
                     <tr>
-                        <th scope="row" class="border-0 bg-secondary rounded-3 rounded-end-0 text-start py-3 ps-4">
+                        <th scope="row" class="border-0 text-start py-3 ps-4">
                             <span class="d-flex align-items-center text-body fw-medium">
                                 Motivo
                             </span>
                         </th>
-                        <td class="border-0 rounded-3 rounded-start-0 bg-secondary py-3"><span
-                                class="text-dark">{{ $errorMessage }}</span></td>
+                        <td class="border-0 py-3"><span class="text-dark"><span class="text-dark">{{ $errorMessage }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <a href="{{ url('/') }}" class="btn btn-primary mt-4">Regresar al Inicio</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

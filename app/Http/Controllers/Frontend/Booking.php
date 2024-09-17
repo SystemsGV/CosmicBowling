@@ -21,6 +21,7 @@ class Booking extends Controller
 
     public function summaryPayment(Request $request)
     {
+
         $summary = session('summary');
         $cart = session('cart');
         $billing = session('billing');
@@ -75,11 +76,8 @@ class Booking extends Controller
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $datetime);
         $formattedDateTime = $date->format('d/m/Y h:i A');
 
-
-
-
         $emailDetails = [
-            'email' => $billing['email'], // O el correo que sea relevante
+            'email' => $billing['email'],
             'purchaseNumber' => $purchaseNumber,
             'description' => $description,
             'formattedDateTime' => $formattedDateTime,
@@ -92,6 +90,7 @@ class Booking extends Controller
         SendPaymentSummaryMail::dispatch($emailDetails);
 
         return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests'));
+
     }
 
     private function saveCart($description)
