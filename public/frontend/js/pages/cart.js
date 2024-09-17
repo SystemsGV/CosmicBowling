@@ -274,7 +274,7 @@ function showNoScheduleCard(container) {
       <div class="card-body text-center">
         <i class="ai-clock h1 fw-normal d-block mb-4"></i>
         <h3>No hay horarios disponibles</h3>
-        <p class="card-text">Actualmente no hay horarios disponibles para este servicio. Por favor, intenta más tarde.</p>
+        <p class="card-text">Actualmente no hay horarios disponibles. Por favor, intenta más tarde.</p>
       </div>
     </a>
     `;

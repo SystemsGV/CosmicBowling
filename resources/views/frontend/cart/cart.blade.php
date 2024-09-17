@@ -61,7 +61,7 @@
                 <form class="needs-validation container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2" novalidate="">
                     <div class="row">
                         <div class="col-lg-7">
-                            <h1 class="h2">CÓMO FUNCIONA</h1>
+                            <h1 class="h2">QUIERO UNA RESERVA</h1>
                             <div class="alert alert-info d-flex mb-4">
                                 <i class="ai-circle-info fs-xl me-2"></i>
                                 <p class="mb-0">Disfrute de bolos, comida y cócteles, un lugar garantizado en las pistas y
@@ -69,7 +69,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">1. Seleccione una Fecha</h4>
+                                <h4 class=" ms-1">1. Selecciona una Fecha</h4>
                             </h3>
 
                             <div class="position-relative">
@@ -92,7 +92,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">2. Seleccione una hora</h4>
+                                <h4 class=" ms-1">2. Seleccione la hora</h4>
                             </h3>
 
                             <div class="container">
@@ -101,7 +101,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">3. Selecciona cuánto tiempo quieres jugar a los bolos</h4>
+                                <h4 class=" ms-1">3. Selecciona el tiempo para jugar bolos </h4>
                             </h3>
 
                             <div class="container">
@@ -125,10 +125,9 @@
 
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">4. Seleccionar Integrantes</h4>
-                                <span class="text-body-secondary">Añade hasta 5 jugadores por pista. Proporcione un recuento
-                                    exacto de
-                                    invitados. No podemos garantizar alojamiento para cambios en el tamaño del grupo.
+                                <h4 class=" ms-1">4. Selecciona los integrantes</h4>
+                                <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }} jugadores por pista. Proporcione un recuento
+                                    exacto de invitados. No podemos garantizar alojamiento para cambios en el tamaño del grupo.
                                 </span>
                                 <div class="count-input bg-gray rounded-3">
                                     <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement=""
@@ -182,7 +181,7 @@
                                         <span class="fw-semibold ms-2" id="lp-lane">S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">
-                                        <span>Descuento Cupón</span>
+                                        <span>Descuento de Cupón</span>
                                         <span class="fw-semibold ms-2" id="l-discount">- S/. 0.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between mb-2">
@@ -448,17 +447,19 @@
                             <input class="form-check-input check-payment" type="checkbox" id="check-payment-desktop">
                             <label class="form-check-label" for="check-payment-desktop">
                                 <span class="text-body-secondary">Acepte los</span>
-                                <a class="fw-medium" href="#" data-bs-toggle="modal" data-bs-target="#modalScroll">Términos y Condiciones</a>
+                                <a class="fw-medium" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
                             </label>
                         </div>
                     </div>
-                    
+
                     <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
                         <div class="form-check mb-4">
                             <input class="form-check-input check-payment" type="checkbox" id="check-payment-mobile">
                             <label class="form-check-label" for="check-payment-mobile">
                                 <span class="text-body-secondary">Acepte los</span>
-                                <a class="fw-medium" href="#" data-bs-toggle="modal" data-bs-target="#modalScroll">Términos y Condiciones</a>
+                                <a class="fw-medium" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
                             </label>
                         </div>
                     </div>
@@ -473,11 +474,11 @@
     <div class="modal fade" id="modal-login" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Iniciar Session</h4>
+                <div class="modal-header text-center w-100">
+                    <h4 class="modal-title w-100">Ingresar a cuenta</h4>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-center">
                     <p class="pb-3 mb-3 mb-lg-4">
                         ¿Aún no tienes una cuenta?&nbsp;&nbsp;<a href="javascript:void(0)" id="btnRegister">Regístrate
                             aquí!</a></p>
@@ -508,10 +509,10 @@
                         <div class="d-flex flex-wrap align-items-center justify-content-between pb-4">
                             <div class="form-check my-1">
                                 <input class="form-check-input" type="checkbox" id="keep-signedin">
-                                <label class="form-check-label ms-1" for="keep-signedin">Mantenme registrado</label>
+                                <label class="form-check-label ms-1" for="keep-signedin">Recuérdame</label>
                             </div>
                             <a class="fs-sm fw-semibold text-decoration-none my-1" href="account-password-recovery.html">
-                                ¿Has olvidado tu contraseña?</a>
+                                He olvidado mi contraseña</a>
                         </div>
 
                         <button id="login-button" class="btn btn-lg btn-primary w-100 mb-4"

@@ -181,8 +181,8 @@
 
             <!-- Sign in form -->
             <div class="d-flex flex-column align-items-center w-lg-50 h-100 px-3 px-lg-5 pt-5">
-                <div class="w-100 mt-auto" style="max-width: 526px;">
-                    <h1>Iniciar Session</h1>
+                <div class="w-100 mt-auto text-center" style="max-width: 526px;">
+                    <h1>Ingresar a cuenta</h1>
                     <p class="pb-3 mb-3 mb-lg-4">¿Aún no tienes una cuenta?&nbsp;&nbsp;<a
                             href="{{ route('client.register') }}">Regístrate aquí!</a></p>
                     <form id="form-login" class="needs-validation" novalidate="">
@@ -212,10 +212,10 @@
                         <div class="d-flex flex-wrap align-items-center justify-content-between pb-4">
                             <div class="form-check my-1">
                                 <input class="form-check-input" type="checkbox" id="keep-signedin">
-                                <label class="form-check-label ms-1" for="keep-signedin">Mantenme registrado</label>
+                                <label class="form-check-label ms-1" for="keep-signedin">Recuérdame</label>
                             </div>
                             <a class="fs-sm fw-semibold text-decoration-none my-1"
-                                href="account-password-recovery.html">¿Has olvidado tu contraseña?</a>
+                                href="account-password-recovery.html">He olvidado mi contraseña</a>
                         </div>
                         <button id="login-button" class="btn btn-lg btn-primary w-100 mb-4"
                             type="submit">Ingresar</button>
@@ -232,7 +232,7 @@
 
             <!-- Cover image -->
             <div class="w-50 bg-size-cover bg-repeat-0 bg-position-center"
-                style="background-image: url(frontend/img/account/cover.jpg);"></div>
+                style="background-image: url(frontend/images/login.webp);"></div>
         </div>
     </main>
 
