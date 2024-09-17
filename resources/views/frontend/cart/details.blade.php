@@ -76,7 +76,11 @@
                         <td class="border-0 rounded-3 rounded-start-0 bg-secondary py-3"><span
                                 class="text-dark">{{ $amount }} Soles</span></td>
                     </tr>
-
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <a href="{{ url('/') }}" class="btn btn-primary mt-4">Regresar al Inicio</a>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
