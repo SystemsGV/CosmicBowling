@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class VisaNetService
 {
@@ -25,11 +26,22 @@ class VisaNetService
 
   public function generateToken()
   {
-    $response = Http::withHeaders([
-      'Authorization' => 'Basic ' . base64_encode($this->user . ":" . $this->password),
-    ])->post($this->urlSecurity);
-
-    return $response->body();
+      try {
+          $response = Http::withHeaders([
+              'Authorization' => 'Basic ' . base64_encode($this->user . ":" . $this->password),
+          ])->post($this->urlSecurity);
+  
+          if ($response->successful()) {
+              return $response->body();
+          } else {
+              // Si la respuesta no es exitosa, puedes lanzar una excepción
+              throw new \Exception('Error al generar el token: ' . $response->body());
+          }
+      } catch (\Exception $e) {
+          // Manejo del error (por ejemplo, registrar el error o mostrar un mensaje)
+          Log::error($e->getMessage());
+          return null;
+      }
   }
 
   public function generateSession($amount, $token)

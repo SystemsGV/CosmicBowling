@@ -52,7 +52,7 @@
                     <div class="position-sticky z-3 top-0" style="padding-top: 115px;">
                         <div class="px-5 px-md-0 ps-xl-5 ms-lg-3">
                             <img src="{{ asset('frontend/img/app-icons/logo.svg') }}" width="695"
-                            alt="Descripción del SVG">
+                                alt="Descripción del SVG">
                         </div>
                     </div>
                 </div>
@@ -61,43 +61,32 @@
                 <div
                     class="col-md-7 col-lg-6 col-xxl-5 order-md-1 position-relative z-3 text-center text-md-start pb-sm-3 pb-md-5 pt-4 mb-md-5 mt-2">
                     <h1 class="display-3 text-uppercase mb-sm-4">
-                        <span class="fw-medium">Choose only</span>
-                        <span class="text-info fw-bold">high quality sound</span>
-                        <img class="d-none d-xl-inline-block align-middle ms-3"
-                            src="{{ asset('frontend/img/landing/product/soundwave.svg') }}" width="200" alt="Sound wave">
+                        <span class="fw-medium">¡ QUE COMIENCEN</span>
+                        <span class="text-primary fw-bold">LAS CHUZAS!</span>
                     </h1>
                     <div class="mx-auto mx-md-0" style="max-width: 400px;">
-                        <p class="pb-2 pb-lg-0 mb-4 mb-lg-5">Now you can fully hear every detail and experience
-                            superior sound with a wide soundstage with deep tight bass that will surprise you.</p>
-                        <a class="btn btn-outline-dark" href="#">Support us on Kickstarter</a>
-                        <div
-                            class="d-flex justify-content-center justify-content-md-between pt-4 pt-sm-5 mt-2 mt-sm-0 mt-lg-4 mt-xl-5 ms-md-n3">
-                            <div class="px-3">
-                                <div class="h4 mb-1">60-200 Hz</div>
-                                <div class="fs-sm">frequency range</div>
-                            </div>
-                            <div class="px-3">
-                                <div class="h4 mb-1">0.75 kg</div>
-                                <div class="fs-sm">weight, kg</div>
-                            </div>
-                            <div class="px-3">
-                                <div class="h4 mb-1">60 h</div>
-                                <div class="fs-sm">working hours</div>
-                            </div>
-                        </div>
+                        <p class="pb-2 pb-lg-0 mb-4">¿Buscas un plan de otro planeta?</p>
+                        <p class="pb-2 pb-lg-0 mb-4">Juega boliche en un ambiente glow, con música moderna
+                            y mucha, pero mucha buena vibra</p>
+                        <p class="pb-2 pb-lg-0 mb-4 mb-lg-5">Tenemos más 20 de pistas, mesas de billar, juegos arcade,
+                            salón, snacks y bebidas alucinantes.
+                        </p>
+                        <a class="btn btn-primary" href="#">RESERVA AQUÍ</a>
                         <div class="d-none d-xxl-block" style="height: 290px;"></div>
                         <div class="d-none d-md-block d-xxl-none" style="height: 240px;"></div>
                         <div class="d-md-none" style="height: 50px;"></div>
                         <div data-aos="fade-up" data-aos-duration="800" data-aos-offset="250"
                             data-disable-parallax-down="md">
-                            <h2 class="h1 pb-sm-2 pb-md-3">You can take the music anywhere in posuere the music
+                            <h2 class="h1 pb-sm-2 pb-md-3">
+                                Reserva tu evento y marca la diferencia
                             </h2>
-                            <p>Turpis nullam netus sed aliquam consectetur at felis consequat tincidunt orci varius
-                                arcu urna neque eget maecenas consequat lacus habitasse adipiscing in.</p>
-                            <a class="btn btn-link text-dark px-0" href="#">
-                                Read more
-                                <i class="ai-arrow-right ms-2"></i>
-                            </a>
+                            <p>Somos especialistas en diversión
+                                para:</p>
+                            <p>Fiestas de cumpleaños
+                                Eventos corporativos
+                                Paseos escolares</p>
+                            <a class="btn btn-primary" href=" https://wa.link/igugmb" target="_blank">Quiero
+                                Información</a>
                         </div>
                     </div>
                 </div>
@@ -119,19 +108,20 @@
                 <div class="masonry-grid mb-2 mb-md-4 pb-lg-3" data-columns="3">
                     @foreach ($category->subcategories as $subcategory)
                         <article class="masonry-grid-item">
-                            <div class="card border-0 bg-secondary">
+                            <div class="card border-0 bg-secondary text-center">
                                 <a href="{{ url('Carrito/' . $subcategory->formatted_name) }}">
                                     <img class="card-img-top"
                                         src="{{ asset('storage/subcategory/' . $subcategory->img_subcategory) }}"
                                         alt="{{ $subcategory->name_subcategory }}">
                                 </a>
                                 <div class="card-body pb-4">
-                                    <h3 class="h4 card-title">
-                                        <a href="{{ url('Carrito/' . $subcategory->formatted_name) }}">
+                                    <h3 class="h3 card-title">
+                                        <a class="text-primary fw-bold"
+                                            href="{{ url('Carrito/' . $subcategory->formatted_name) }}">
                                             {{ $subcategory->name_subcategory }}
                                         </a>
                                     </h3>
-                                    <p class="card-text">{{ $subcategory->descr_subcategory }}</p>
+                                    {!! $subcategory->descr_subcategory !!}
                                 </div>
                             </div>
                         </article>

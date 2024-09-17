@@ -181,214 +181,6 @@
             <span>Cargando...</span>
         </div>
     </div>
-
-
-    <!-- Customizer modal -->
-    <div class="modal fade" id="customizer-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Your custom styles</h4>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body py-4">
-                    <p class="mb-3">Grab the generated styles below. Wrap them inside <code>&lt;style&gt;</code> tag
-                        and put in the <code>&lt;head&gt;</code> section of your HTML document.</p>
-                    <p class="mb-4"><span class="fw-medium">IMPORTANT:</span> In order for these styles to take effect
-                        you have to placed them below:<br><code>&lt;link rel=&quot;stylesheet&quot;
-                            media=&quot;screen&quot; href=&quot;assets/css/theme.min.css&quot;&gt;</code></p>
-                    <div class="bg-secondary overflow-hidden rounded-4">
-                        <pre class="text-wrap bg-transparent border-0 text-dark p-4" id="custom-generated-styles"></pre>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary w-100 w-sm-auto mb-3 mb-sm-0" type="button"
-                        data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button" id="copy-styles-btn">
-                        <i class="ai-copy me-2 ms-n1"></i>
-                        Copy styles
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Customizer toggler -->
-    <a class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow text-decoration-none"
-        href="#customizer" data-bs-toggle="offcanvas"
-        style="right: -1.75rem; margin-top: -1rem; padding: .25rem .75rem; transform: rotate(-90deg); font-size: calc(var(--ar-body-font-size) * .8125); letter-spacing: .075rem; z-index: 1030;">
-        <i class="ai-settings text-primary fs-base me-1 ms-n1"></i>
-        Customize
-    </a>
-
-    <!-- Customizer offcanvas -->
-    <div class="offcanvas offcanvas-end" id="customizer" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1">
-        <div class="offcanvas-header border-bottom">
-            <h4 class="offcanvas-title">Customize theme</h4>
-            <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="d-flex align-items-center mb-3">
-                <i class="ai-paint-roll text-body-secondary fs-4 me-2"></i>
-                <h5 class="mb-0">Colors</h5>
-            </div>
-            <div class="row row-cols-3 g-3 mb-5" id="theme-colors">
-                <div class="col">
-                    <div class="text-dark fs-sm fw-medium mb-2">Primary</div>
-                    <div class="color-swatch" id="theme-primary"
-                        data-color-labels="[&quot;theme-primary&quot;, &quot;primary&quot;, &quot;primary-rgb&quot;]">
-                        <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="primary"
-                            style="background-color: #448c74;" role="button"></label>
-                        <input class="form-control form-control-sm" type="text" value="#448c74">
-                        <input class="visually-hidden" type="color" id="primary" value="#448c74">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="text-dark fs-sm fw-medium mb-2">Warning</div>
-                    <div class="color-swatch" id="theme-warning"
-                        data-color-labels="[&quot;theme-warning&quot;, &quot;warning&quot;, &quot;warning-rgb&quot;]">
-                        <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="warning"
-                            style="background-color: #edcb50;" role="button"></label>
-                        <input class="form-control form-control-sm" type="text" value="#edcb50">
-                        <input class="visually-hidden" type="color" id="warning" value="#edcb50">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="text-dark fs-sm fw-medium mb-2">Info</div>
-                    <div class="color-swatch" id="theme-info"
-                        data-color-labels="[&quot;theme-info&quot;, &quot;info&quot;, &quot;info-rgb&quot;]">
-                        <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="info"
-                            style="background-color: #3f7fca;" role="button"></label>
-                        <input class="form-control form-control-sm" type="text" value="#3f7fca">
-                        <input class="visually-hidden" type="color" id="info" value="#3f7fca">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="text-dark fs-sm fw-medium pt-1 mb-2">Success</div>
-                    <div class="color-swatch" id="theme-success"
-                        data-color-labels="[&quot;theme-success&quot;, &quot;success&quot;, &quot;success-rgb&quot;]">
-                        <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="success"
-                            style="background-color: #3fca90;" role="button"></label>
-                        <input class="form-control form-control-sm" type="text" value="#3fca90">
-                        <input class="visually-hidden" type="color" id="success" value="#3fca90">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="text-dark fs-sm fw-medium pt-1 mb-2">Danger</div>
-                    <div class="color-swatch" id="theme-danger"
-                        data-color-labels="[&quot;theme-danger&quot;, &quot;danger&quot;, &quot;danger-rgb&quot;]">
-                        <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="danger"
-                            style="background-color: #ed5050;" role="button"></label>
-                        <input class="form-control form-control-sm" type="text" value="#ed5050">
-                        <input class="visually-hidden" type="color" id="danger" value="#ed5050">
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center mb-3"><i class="ai-align-left text-body-secondary fs-4 me-2"></i>
-                <h5 class="mb-0">Typography <span class="text-body-secondary fs-sm fw-normal">(1rem = 16px)</span>
-                </h5>
-            </div>
-            <div class="mb-5">
-                <div class="mb-3">
-                    <label class="text-dark fs-sm fw-medium pt-1 mb-2" for="font-url">Google font URL</label>
-                    <input class="form-control" type="url"
-                        value="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
-                        id="font-url">
-                </div>
-                <div class="mb-3">
-                    <label class="text-dark fs-sm fw-medium pt-1 mb-2" for="body-font-family">Font family</label>
-                    <input class="form-control" type="text" value="'Inter', sans-serif" id="body-font-family">
-                </div>
-                <div class="row row-cols-2">
-                    <div class="col mb-3">
-                        <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="root-font-size">Root font
-                            size, rem</label>
-                        <select class="form-select" id="root-font-size">
-                            <option value=".75rem">.75</option>
-                            <option value=".875rem">.875</option>
-                            <option value="1rem" selected="">1</option>
-                            <option value="1.05rem">1.05</option>
-                            <option value="1.1rem">1.1</option>
-                            <option value="1.15rem">1.15</option>
-                            <option value="1.25rem">1.25</option>
-                            <option value="1.375rem">1.375</option>
-                        </select>
-                    </div>
-                    <div class="col mb-3">
-                        <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="body-font-size">Body font
-                            size, rem</label>
-                        <select class="form-select" id="body-font-size">
-                            <option value=".75rem">.75</option>
-                            <option value=".875rem">.875</option>
-                            <option value="1rem" selected="">1</option>
-                            <option value="1.15rem">1.15</option>
-                            <option value="1.25rem">1.25</option>
-                            <option value="1.375rem">1.375</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center mt-n2 mb-3"><i
-                    class="ai-maximize text-body-secondary fs-5 me-2"></i>
-                <h5 class="mb-0">Borders / Rounding</h5>
-            </div>
-            <div class="mb-3">
-                <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-width">Border width,
-                    px</label>
-                <input class="form-control" type="number" min="0" step="1" value="1"
-                    id="border-width">
-            </div>
-            <div class="mb-3">
-                <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius">Rounded base,
-                    rem</label>
-                <input class="form-control" type="number" min="0" step=".05" value="1"
-                    id="border-radius">
-            </div>
-            <div id="theme-border-radiuses">
-                <div class="mb-3">
-                    <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-sm">
-                        Rounded SM<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied
-                            by</span></label>
-                    <input class="form-control" type="number" min="0" step=".05" value=".75"
-                        id="border-radius-sm">
-                </div>
-                <div class="mb-3">
-                    <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-lg">
-                        Rounded LG<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied
-                            by</span></label>
-                    <input class="form-control" type="number" min="0" step=".05" value="1.125"
-                        id="border-radius-lg">
-                </div>
-                <div class="mb-3">
-                    <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-xl">
-                        Rounded XL<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied
-                            by</span></label>
-                    <input class="form-control" type="number" min="0" step=".05" value="1.5"
-                        id="border-radius-xl">
-                </div>
-                <div class="mb-3">
-                    <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-xxl">
-                        Rounded 2XL<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied
-                            by</span></label>
-                    <input class="form-control" type="number" min="0" step=".05" value="2.25"
-                        id="border-radius-xxl">
-                </div>
-            </div>
-        </div>
-        <div class="offcanvas-header border-top d-none" id="customizer-btns">
-            <button class="btn btn-secondary w-100 me-3" type="button" id="customizer-reset-btn">
-                <i class="ai-undo fs-lg me-2 ms-n1"></i>
-                Reset
-            </button>
-            <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal"
-                data-bs-target="#customizer-modal">
-                <i class="ai-code-curly fs-lg me-2 ms-n1"></i>
-                Show styles
-            </button>
-        </div>
-    </div>
-
-
     <!-- Page wrapper -->
     <main class="page-wrapper">
 
@@ -422,8 +214,8 @@
                             $client = Auth::guard('client')->user();
                         @endphp
                         <div class="dropdown nav d-block order-lg-2 ms-auto">
-                            <a class="nav-link d-flex align-items-center p-0" href="#"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <img class="border rounded-circle" src="{{ asset('frontend/img/avatar/51.jpg') }}"
                                     width="48" alt="{{ $client->names_client }}">
                                 <div class="d-none d-sm-block ps-2">
@@ -464,7 +256,7 @@
                 <nav class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url('/')}}">Inicio</a>
+                            <a class="nav-link" href="{{ url('/') }}">Inicio</a>
                         </li>
 
                     </ul>
@@ -484,40 +276,44 @@
         <div class="container position-relative z-2 pb-xl-2 pt-2 pt-sm-3 pt-xl-4 pt-xxl-5">
             <div class="row pb-5 pt-md-3 pt-lg-4 mb-md-3 mb-lg-4">
                 <div class="col-md-6 col-xxl-5 pb-3 pb-md-0 mb-2 mb-sm-3 mb-md-0">
-                    <div class="h1 pb-3">Support us on Kickstarter and get <span
-                            style="background: linear-gradient(90.72deg, #cbfdb1 3.49%, #acbff1 50.67%, #efa7ec 100.79%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">20%
-                            discount</span> on headphones</div>
+                    <div class="h1 pb-3">Somos la mejor opción de entretenimiento familiar.
+                    </div>
                     <div class="d-flex flex-wrap pb-4 pb-xl-5 mb-md-2 mb-lg-3">
                         <div class="d-flex pe-3 me-3 mb-2">
                             <i class="ai-check-alt text-white fs-4 mt-n1 me-2"></i>
-                            <span class="text-body">$4,200 pledget</span>
+                            <span class="text-body">Adrenalina</span>
                         </div>
                         <div class="d-flex pe-3 me-3 mb-2">
                             <i class="ai-check-alt text-white fs-4 mt-n1 me-2"></i>
-                            <span class="text-body">45 funded</span>
+                            <span class="text-body">Diversión</span>
                         </div>
                         <div class="d-flex mb-2">
                             <i class="ai-check-alt text-white fs-4 mt-n1 me-2"></i>
-                            <span class="text-body">12 days to go</span>
+                            <span class="text-body">Música</span>
                         </div>
                     </div>
-                    <a class="btn btn-outline-light" href="#">Support us on Kickstarter</a>
                 </div>
                 <div class="col-md-5 col-xl-4 offset-md-1 offset-xl-2 offset-xxl-3">
                     <div class="row row-cols-2">
                         <div class="col">
                             <ul class="nav flex-column pb-4 mb-2 pb-md-5 mb-lg-1">
                                 <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0" href="#">Features</a>
+                                    <a class="nav-link py-1 px-0" href="#">Quienes Somos</a>
                                 </li>
                                 <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0" href="#">Colors</a>
+                                    <a class="nav-link py-1 px-0" href="#">Instalaciones</a>
                                 </li>
                                 <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0" href="#">Product details</a>
+                                    <a class="nav-link py-1 px-0" href="#">Tarifa</a>
                                 </li>
                                 <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0" href="#">Privacy policy</a>
+                                    <a class="nav-link py-1 px-0" href="#">Servicios</a>
+                                </li>
+                                <li class="nav-item mt-1">
+                                    <a class="nav-link py-1 px-0" href="#">Contacto</a>
+                                </li>
+                                <li class="nav-item mt-1">
+                                    <a class="nav-link py-1 px-0" href="#">Preguntas Frecuentes</a>
                                 </li>
                             </ul>
                             <div class="d-flex">
@@ -529,25 +325,25 @@
                                     href="#" aria-label="Facebook">
                                     <i class="ai-facebook"></i>
                                 </a>
-                                <a class="btn btn-icon btn-sm btn-secondary btn-youtube rounded-circle" href="#"
-                                    aria-label="YouTube">
-                                    <i class="ai-youtube"></i>
+                                <a class="btn btn-icon btn-sm btn-secondary btn-primary rounded-circle"
+                                    href="https://www.tiktok.com/@cosmic_bowling?_t=8pfSQKZBpxO&_r=1" target="_blank"
+                                    aria-label="Tik Tok">
+                                    <i class="ai-tiktok"></i>
                                 </a>
                             </div>
                         </div>
                         <div class="col">
-                            <ul class="nav flex-column">
-                                <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0"
-                                        href="mailto:email@example.com">email@example.com</a>
+                            <br>
+                            <ul class="list-unstyled mb-0">
+                                <li class="nav flex-nowrap mb-3">
+                                    <i class="ai-whatsapp lead text-primary me-2"></i>
+                                    <a class="nav-link fw-normal p-0 mt-n1" href="tel:+178632256040">Escríbenos¡por
+                                        whastapp</a>
                                 </li>
-                                <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0"
-                                        href="tel:+15262200459">+&nbsp;1&nbsp;526&nbsp;220&nbsp;0459</a>
-                                </li>
-                                <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0"
-                                        href="tel:+15262200444">+&nbsp;1&nbsp;526&nbsp;220&nbsp;0444</a>
+                                <li class="nav flex-nowrap mb-3">
+                                    <i class="ai-mail lead text-primary me-2"></i>
+                                    <a class="nav-link fw-normal p-0 mt-n1" href="mailto:chicago@example.com">Mándanos
+                                        un correo</a>
                                 </li>
                             </ul>
                         </div>
@@ -557,7 +353,7 @@
             <p class="nav fs-sm mb-0">
                 <span class="text-body-secondary">&copy; All rights reserved. Made by</span>
                 <a class="nav-link fw-normal p-0 ms-1" href="https://createx.studio/" target="_blank"
-                    rel="noopener">Createx Studio</a>
+                    rel="noopener">Cosmic Bowling</a>
             </p>
         </div>
     </footer>
