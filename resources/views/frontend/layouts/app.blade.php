@@ -383,9 +383,6 @@
     <!-- Bootstrap + Theme scripts -->
     <script src="{{ asset('frontend/js/theme.min.js') }}"></script>
 
-    <!-- Customizer -->
-    <script src="{{ asset('frontend/js/customizer.min.js') }}"></script>
-
 
 </body>
 

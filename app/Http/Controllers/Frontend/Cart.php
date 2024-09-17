@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\calendarIntervals;
+use App\Models\Admin\Cart as AdminCart;
 use App\Models\Admin\SubCategories;
 use App\Models\Admin\Order;
 use DateTime;
@@ -98,7 +99,7 @@ class Cart extends Controller
 
     public function cartData(Request $request)
     {
-        
+
         $sessionData = $request->json('sessionArray', []);
 
         $formattedData = [];
@@ -117,11 +118,18 @@ class Cart extends Controller
         $sessionData = $request->json()->all();
         session()->forget('billing');
         $client = Auth::guard('client')->user();
+        $registrationDate = $client->created_at;
+        $daysRegistered = Carbon::parse($registrationDate)->diffInDays(Carbon::now());
+
+        $reservationCount = AdminCart::countReservationsByClient($client->id_client);
+        $frequency = $reservationCount > 0 ? 1 : 0;
+
 
         if (isset($sessionData['type']) && $sessionData['type'] === 'Boleta') {
 
             // Obtener la descripción del documento
             $sunatDescription = $client->sunatTypedoc ? $client->sunatTypedoc->description_doc : null;
+
 
             // Preparar los datos del cliente
             $clientData = [
@@ -134,7 +142,9 @@ class Cart extends Controller
                 'email' => $client->email_client,
                 'phone' => $client->phone_client,
                 'address' => $client->address_client,
-                'document' => $sunatDescription,  // Agregar la descripción del documento
+                'document' => $sunatDescription,
+                'days_registered' => $daysRegistered,
+                'frequency' => $frequency,
             ];
 
             // Combinar los datos de la sesión con los datos del cliente
@@ -150,6 +160,8 @@ class Cart extends Controller
                 'names' => $client->names_client,
                 'email' => $client->email_client,
                 'phone' => $client->phone_client,
+                'days_registered' => $daysRegistered,
+                'frequency' => $frequency,
             ];
 
             $combinedData = array_merge($sessionData, $clientData);
@@ -256,7 +268,7 @@ class Cart extends Controller
 
         session(['summary' => $arrSummary]);
 
-        $data = $this->showFormPayment($amount, $order->id_order);
+        $data = $this->showFormPayment($amount, $order->id_order,);
 
         $sessionKey = $data['sessionKey'];
 
@@ -320,8 +332,9 @@ class Cart extends Controller
 
     public function showFormPayment($amount, $purchaseNumber)
     {
+
         $token =  $this->visanetService->generateToken();
-        $sessionKey = $this->visanetService->generateSession($amount, $token);
+        $sessionKey = $this->visanetService->generateSession($amount, $token, session('billing.email'), session('billing.frequency'), session('billing.number_doc'), session('billing.days_registered'));
         return [
             'token' => $token,
             'sessionKey' => $sessionKey,

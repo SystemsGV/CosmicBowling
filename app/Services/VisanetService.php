@@ -26,34 +26,34 @@ class VisaNetService
 
   public function generateToken()
   {
-      try {
-          $response = Http::withHeaders([
-              'Authorization' => 'Basic ' . base64_encode($this->user . ":" . $this->password),
-          ])->post($this->urlSecurity);
-  
-          if ($response->successful()) {
-              return $response->body();
-          } else {
-              // Si la respuesta no es exitosa, puedes lanzar una excepción
-              throw new \Exception('Error al generar el token: ' . $response->body());
-          }
-      } catch (\Exception $e) {
-          // Manejo del error (por ejemplo, registrar el error o mostrar un mensaje)
-          Log::error($e->getMessage());
-          return null;
+    try {
+      $response = Http::withHeaders([
+        'Authorization' => 'Basic ' . base64_encode($this->user . ":" . $this->password),
+      ])->post($this->urlSecurity);
+
+      if ($response->successful()) {
+        return $response->body();
+      } else {
+        throw new \Exception('Error al generar el token: ' . $response->body());
       }
+    } catch (\Exception $e) {
+      Log::error($e->getMessage());
+      return null;
+    }
   }
 
-  public function generateSession($amount, $token)
+  public function generateSession($amount, $token, $email, $frecuency, $id_client, $days)
   {
     $session = [
       'amount' => $amount,
       'antifraud' => [
         'clientIp' => request()->ip(),
         'merchantDefineData' => [
-          'MDD4' => "mail@domain.com",
-          'MDD33' => "DNI",
-          'MDD34' => '87654321'
+          'MDD4' => $email,
+          'MDD21' => $frecuency,
+          'MDD32' => $id_client,
+          'MDD75' => 'Registrado',
+          'MDD77' =>  $days
         ],
       ],
       'channel' => 'web',
@@ -106,4 +106,3 @@ class VisaNetService
     return $purchaseNumber;
   }
 }
-?>

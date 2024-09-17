@@ -38,12 +38,16 @@ class Booking extends Controller
 
         $this->storeTransactionData($data);
 
+        // Acceder a los datos del array
+        $names = $billing['lastname_pat'] . ' ' . $billing['lastname_mat'] . ' ' . $billing['names'];
         // Verifica si hay un error en los datos
         if (isset($data['errorCode'])) {
-            $errorMessage = PaymentHelper::getErrorMessage($data['errorCode']);
-            // Maneja el mensaje de error como prefieras
-            return response()->json(['error' => $errorMessage], 400);
+            $actionCode = isset($data['data']['ACTION_CODE']) ? $data['data']['ACTION_CODE'] : null;
+            $errorMessage = PaymentHelper::getErrorMessage($actionCode);
+            return view('frontend.cart.err', compact('actionCode', 'errorMessage', 'names'));
         }
+
+        $card = $data['dataMap']['CARD'] . " (" . $data['dataMap']['BRAND'] . ")";
 
         $subcategoryNamesSingular = [
             1 => 'Pista General',
@@ -67,16 +71,11 @@ class Booking extends Controller
 
         $this->saveCart($description);
 
-
-
-        // Acceder a los datos del array
-        $card = $data['dataMap']['CARD'] . " (" . $data['dataMap']['BRAND'] . ")";
-
         $datetime = $cart['date'] . ' ' . $cart['time'];
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $datetime);
         $formattedDateTime = $date->format('d/m/Y h:i A');
 
-        $names = $billing['lastname_pat'] . ' ' . $billing['lastname_mat'] . ' ' . $billing['names'];
+
 
 
         $emailDetails = [

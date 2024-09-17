@@ -21,4 +21,15 @@ class Cart extends Model
     {
         return self::where('client_id', $clientId)->orderByDesc('id_cart')->get();
     }
+
+    /**
+     * Cuenta las reservas de un cliente.
+     *
+     * @param  int  $clientId
+     * @return int
+     */
+    static public function countReservationsByClient($clientId)
+    {
+        return self::where('client_id', $clientId)->count();
+    }
 }
