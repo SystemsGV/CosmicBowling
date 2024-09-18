@@ -10,10 +10,10 @@
 
     <!-- SEO meta tags -->
     <title>ComisBowling | Cuenta Verificada</title>
-    <meta name="description" content="Around - Multipurpose Bootstrap HTML Template">
-    <meta name="keywords"
-        content="bootstrap, business, corporate, coworking space, services, creative agency, dashboard, e-commerce, mobile app showcase, saas, multipurpose, product landing, shop, software, ui kit, web studio, landing, light and dark mode, html5, css3, javascript, gallery, slider, touch, creative">
-    <meta name="author" content="Createx Studio">
+    <meta name="description"
+        content="¿Buscas un plan de otro planeta? Juega boliche en un ambiente glow, con música moderna y mucha, pero mucha buena vibra">
+    <meta name="keywords" content="bowling, perú, bolos, glow, ambiente, cosmicbowling, cosmic, juego de bolos">
+    <meta name="author" content="Cosmic Bowling">
 
     <!-- Webmanifest + Favicon / App icons -->
     <link rel="manifest" href="{{ asset('frontend/manifest.json') }}">
