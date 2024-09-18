@@ -323,9 +323,10 @@
                                                             <tr>
                                                                 <td align="center"
                                                                     style="padding:0;Margin:0;font-size:0px"><a
-                                                                        target="_blank" href="https://reservascosmicbowling.com.pe"
+                                                                        target="_blank"
+                                                                        href="https://reservascosmicbowling.com.pe"
                                                                         style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:14px"><img
-                                                                            src="{{ url('frontend/logo.svg')}}"
+                                                                            src="{{ url('frontend/logo.png') }}"
                                                                             alt="Logo"
                                                                             style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"
                                                                             height="120" title="Logo"></a></td>
@@ -394,7 +395,7 @@
                                                                 <td align="left" style="padding:20px;Margin:0">
                                                                     <h3
                                                                         style="Margin:0;line-height:34px;mso-line-height-rule:exactly;font-family:Imprima, Arial, sans-serif;font-size:28px;font-style:normal;font-weight:bold;color:#2D3142">
-                                                                        Bienvenido,&nbsp;{{$name}}</h3>
+                                                                        Bienvenido,&nbsp;{{ $name }}</h3>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Imprima, Arial, sans-serif;line-height:27px;color:#2D3142;font-size:18px">
                                                                         <br>
@@ -443,9 +444,10 @@
                                                                 <td align="center" style="padding:0;Margin:0"><span
                                                                         class="msohide es-button-border"
                                                                         style="border-style:solid;border-color:#2CB543;background:#7630f3;border-width:0px;display:block;border-radius:30px;width:auto;mso-hide:all"><a
-                                                                            href="{{ url('/verify?token=' . $token) }}" class="es-button msohide"
-                                                                            target="_blank"
-                                                                            style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:22px;padding:15px 20px 15px 20px;display:block;background:#7630f3;border-radius:30px;font-family:Imprima, Arial, sans-serif;font-weight:bold;font-style:normal;line-height:26px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid  #7630f3;mso-hide:all;padding-left:5px;padding-right:5px">Confirmar Correo</a></span><!--<![endif]--></td>
+                                                                            href="{{ url('/verify?token=' . $token) }}"
+                                                                            class="es-button msohide" target="_blank"
+                                                                            style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:22px;padding:15px 20px 15px 20px;display:block;background:#7630f3;border-radius:30px;font-family:Imprima, Arial, sans-serif;font-weight:bold;font-style:normal;line-height:26px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid  #7630f3;mso-hide:all;padding-left:5px;padding-right:5px">Confirmar
+                                                                            Correo</a></span><!--<![endif]--></td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -606,14 +608,16 @@
 
                                                                             <td align="center" valign="top"
                                                                                 style="padding:0;Margin:0;padding-right:5px">
-                                                                                <a href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank">
-                                                                                <img src="https://fflueec.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png"
-                                                                                    alt="Fb" title="Facebook"
-                                                                                    height="24"
-                                                                                    style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
+                                                                                <a href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d"
+                                                                                    target="_blank">
+                                                                                    <img src="https://fflueec.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png"
+                                                                                        alt="Fb"
+                                                                                        title="Facebook"
+                                                                                        height="24"
+                                                                                        style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
                                                                                 </a>
                                                                             </td>
-                
+
                                                                         </tr>
                                                                     </table>
                                                                 </td>
