@@ -275,7 +275,7 @@
                                                                             role="presentation">
                                                                             <tr>
                                                                                 <td align="center">
-                                                                                    <img src="https://cosmicbowling.com.pe/new/images/logo.png"
+                                                                                    <img src="{{ url('frontend/logo.svg')}}"
                                                                                         alt="Logo" width="320"
                                                                                         class="logo">
                                                                                 </td>
@@ -568,25 +568,13 @@
                                     align="center" bgcolor="#f1f1f1" class="social-icons">
                                     <tr>
                                         <td style="padding:0 10px 0 10px;">
-                                            <a href="https://www.MailerSend.com/" target="_blank"><img
+                                            <a href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank"><img
                                                     src="{{ url('frontend/img/socials/social-facebook.png') }}"
                                                     alt="Social Icons" width="30" height="30"
                                                     class="social-icon"></a>
                                         </td>
-                                        <td style="padding:0 10px 0 10px;;">
-                                            <a href="https://www.MailerSend.com/" target="_blank"><img
-                                                    src="{{ url('frontend/img/socials/social-twitter.png') }}"
-                                                    alt="Social Icons" width="30" height="30"
-                                                    class="social-icon"></a>
-                                        </td>
                                         <td style="padding:0 10px 0 10px;">
-                                            <a href="https://www.MailerSend.com/" target="_blank"><img
-                                                    src="{{ url('frontend/img/socials/social-linkedin.png') }}"
-                                                    alt="Social Icons" width="30" height="30"
-                                                    class="social-icon"></a>
-                                        </td>
-                                        <td style="padding:0 10px 0 10px;">
-                                            <a href="https://www.MailerSend.com/" target="_blank"><img
+                                            <a href="https://www.instagram.com/cosmic_bowling/profilecard/?igsh=dXJzZGV4eDg5OG1z" target="_blank"><img
                                                     src="{{ url('frontend/img/socials/social-instagram.png') }}"
                                                     alt="Social Icons" width="30" height="30"
                                                     class="social-icon"></a>

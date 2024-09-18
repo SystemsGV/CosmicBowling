@@ -323,9 +323,9 @@
                                                             <tr>
                                                                 <td align="center"
                                                                     style="padding:0;Margin:0;font-size:0px"><a
-                                                                        target="_blank" href="https://cosmicbowling.com.pe/"
+                                                                        target="_blank" href="https://reservascosmicbowling.com.pe"
                                                                         style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:14px"><img
-                                                                            src="https://bowling.syvec.com.pe/frontend/logo.svg"
+                                                                            src="{{ url('frontend/logo.svg')}}"
                                                                             alt="Logo"
                                                                             style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"
                                                                             height="120" title="Logo"></a></td>
@@ -526,7 +526,7 @@
                                                                             <td align="center" class="es-m-txt-l"
                                                                                 style="padding:0;Margin:0;font-size:0px">
                                                                                 <a target="_blank"
-                                                                                    href="https://cosmicbowling.com.pe/"
+                                                                                    href="https://reservascosmicbowling.com.pe"
                                                                                     style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:18px"><img
                                                                                         src="https://fflueec.stripocdn.email/content/guids/CABINET_ee77850a5a9f3068d9355050e69c76d26d58c3ea2927fa145f0d7a894e624758/images/group_4076325.png"
                                                                                         alt="Demo"
@@ -561,7 +561,7 @@
                                                                                     tienes preguntas, <a
                                                                                         target="_blank"
                                                                                         style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#2D3142;font-size:16px"
-                                                                                        href="https://cosmicbowling.com.pe/Contactenos">estamos
+                                                                                        href="https://reservascosmicbowling.com.pe/Contactenos">estamos
                                                                                         aquí para ayudarte.</a></p>
                                                                             </td>
                                                                         </tr>
@@ -603,27 +603,17 @@
                                                                         role="presentation"
                                                                         style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                                         <tr>
+
                                                                             <td align="center" valign="top"
                                                                                 style="padding:0;Margin:0;padding-right:5px">
-                                                                                <img src="https://fflueec.stripocdn.email/content/assets/img/social-icons/logo-black/twitter-logo-black.png"
-                                                                                    alt="Tw" title="Twitter"
-                                                                                    height="24"
-                                                                                    style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
-                                                                            </td>
-                                                                            <td align="center" valign="top"
-                                                                                style="padding:0;Margin:0;padding-right:5px">
+                                                                                <a href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank">
                                                                                 <img src="https://fflueec.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png"
                                                                                     alt="Fb" title="Facebook"
                                                                                     height="24"
                                                                                     style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
+                                                                                </a>
                                                                             </td>
-                                                                            <td align="center" valign="top"
-                                                                                style="padding:0;Margin:0"><img
-                                                                                    src="https://fflueec.stripocdn.email/content/assets/img/social-icons/logo-black/linkedin-logo-black.png"
-                                                                                    alt="In" title="Linkedin"
-                                                                                    height="24"
-                                                                                    style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
-                                                                            </td>
+                
                                                                         </tr>
                                                                     </table>
                                                                 </td>

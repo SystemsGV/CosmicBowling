@@ -284,7 +284,7 @@
 
             <!-- Cover image -->
             <div class="w-50 bg-size-cover bg-repeat-0 bg-position-center"
-                style="background-image: url(frontend/img/account/cover.jpg);"></div>
+                style="background-image: url(frontend/images/login.webp);"></div>
         </div>
     </main>
 

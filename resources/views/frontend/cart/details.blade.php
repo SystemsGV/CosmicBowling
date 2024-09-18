@@ -8,7 +8,7 @@
         <div class="d-flex justify-content-center align-items-center">
             <div class="alert d-flex alert-success text-center" role="alert">
                 <i class="ai-circle-check-filled fs-xl pe-1 me-2"></i>
-                <div>El pago de la reserva se realizó de forma exitosa. En breve le estara llegando un mail con la
+                <div>El pago de la reserva se realizó de forma exitosa. En breve le estará llegando un mail con la
                     confirmación de la reserva.</div>
             </div>
         </div>
