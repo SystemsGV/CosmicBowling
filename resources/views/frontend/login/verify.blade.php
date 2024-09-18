@@ -172,7 +172,7 @@
             <div class="d-flex d-lg-none justify-content-center pt-4 px-3 mx-auto" style="max-width: 420px;">
                 <a class="navbar-brand text-dark p-0 m-0" href="index.html">
                     <span class="text-primary flex-shrink-0 me-2">
-                        <img src="{{ url('frontend/logo.png')}}" alt="">
+                        <img src="{{ url('frontend/logo.svg') }}" height="35" alt="">
                     </span>
                     Cosmic Bowling
                 </a>
@@ -233,8 +233,8 @@
                                     </path>
                                 </svg>
                             </div>
-                            <div class="parallax-layer d-flex align-items-end"
-                                style="padding: 0 11.58% 89.64% 81.28%;" data-depth="-0.15">
+                            <div class="parallax-layer d-flex align-items-end" style="padding: 0 11.58% 89.64% 81.28%;"
+                                data-depth="-0.15">
                                 <svg class="text-warning" width="69" height="55" viewbox="0 0 69 55"
                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -301,15 +301,17 @@
                 </div>
 
                 <div class="w-100 text-center text-lg-start mt-auto pt-lg-5 pb-5" style="max-width: 420px;">
-                  <h1 class="display-3 mb-4">Correo Verificado Exitosamente</h1>
-                  <p class="fs-lg pb-3 mb-4 mb-xl-5">Gracias por verificar tu correo electrónico. Ahora puedes iniciar sesión o explorar nuestro sitio.</p>
-              
-                  <!-- Botones de Redirección -->
-                  <div class="d-flex justify-content-center justify-content-lg-start">
-                      <a href="{{route('client.login')}}" class="btn btn-primary mx-2">Iniciar Sesión</a>
-                      <a href="{{route('home.index')}}" class="btn btn-secondary mx-2">Ir a la Página Principal</a>
-                  </div>
-              </div>
+                    <h1 class="display-3 mb-4">Correo Verificado Exitosamente</h1>
+                    <p class="fs-lg pb-3 mb-4 mb-xl-5">Gracias por verificar tu correo electrónico. Ahora puedes
+                        iniciar sesión o explorar nuestro sitio.</p>
+
+                    <!-- Botones de Redirección -->
+                    <div class="d-flex justify-content-center justify-content-lg-start">
+                        <a href="{{ route('client.login') }}" class="btn btn-primary mx-2">Iniciar Sesión</a>
+                        <a href="{{ route('home.index') }}" class="btn btn-secondary mx-2">Ir a la Página
+                            Principal</a>
+                    </div>
+                </div>
 
                 <!-- Social links -->
                 <div class="w-100 mt-auto pb-5" style="max-width: 420px;">
