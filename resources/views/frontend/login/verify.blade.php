@@ -172,7 +172,7 @@
             <div class="d-flex d-lg-none justify-content-center pt-4 px-3 mx-auto" style="max-width: 420px;">
                 <a class="navbar-brand text-dark p-0 m-0" href="{{ url('/') }}">
                     <span class="text-primary flex-shrink-0 me-2">
-                        <img src="{{ url('frontend/img/app-icons/logo.svg') }}">
+                        <img src="{{ url('frontend/img/app-icons/logo.svg') }}" width="95" height="92">
                     </span>
                     Cosmic Bowling
                 </a>
@@ -289,7 +289,7 @@
                 <div class="w-100 d-none d-lg-block" style="max-width: 420px;">
                     <a class="navbar-brand text-dark p-0 m-0" href="index.html">
                         <span class="text-primary flex-shrink-0 me-2">
-                            <img src="{{ url('frontend/img/app-icons/logo.svg') }}" alt="">
+                            <img src="{{ url('frontend/img/app-icons/logo.svg') }}" width="95" height="92" alt="">
 
                         </span>
                         Cosmic Bowling
