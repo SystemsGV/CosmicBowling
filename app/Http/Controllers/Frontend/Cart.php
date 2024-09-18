@@ -31,6 +31,7 @@ class Cart extends Controller
         session()->forget('billing');
         session()->forget('cart');
         session()->forget('summary');
+        $title = "Reserva";
 
         try {
             $tomorrow = Carbon::tomorrow()->toDateString();
@@ -49,7 +50,7 @@ class Cart extends Controller
             // return response()->json($hours);
 
             // Return the view with the subcategory, associated products, enabled product, and hours data
-            return view('frontend.cart.cart', compact('subcategory', 'hours'));
+            return view('frontend.cart.cart', compact('subcategory', 'hours', 'title'));
         } catch (\Exception $e) {
             dd($e->getMessage());
         }

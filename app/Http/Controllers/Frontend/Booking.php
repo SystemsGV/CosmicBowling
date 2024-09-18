@@ -21,7 +21,7 @@ class Booking extends Controller
 
     public function summaryPayment(Request $request)
     {
-
+        $title = 'Detalles de Reserva';
         $summary = session('summary');
         $cart = session('cart');
         $billing = session('billing');
@@ -89,7 +89,7 @@ class Booking extends Controller
 
         SendPaymentSummaryMail::dispatch($emailDetails);
 
-        return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests'));
+        return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests', 'title'));
 
     }
 
