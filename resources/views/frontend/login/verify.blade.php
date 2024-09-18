@@ -174,7 +174,6 @@
                     <span class="text-primary flex-shrink-0 me-2">
                         <img src="{{ url('frontend/img/app-icons/logo.svg') }}" width="95" height="92">
                     </span>
-                    Cosmic Bowling
                 </a>
             </div>
 
@@ -292,7 +291,6 @@
                             <img src="{{ url('frontend/img/app-icons/logo.svg') }}" width="95" height="92" alt="">
 
                         </span>
-                        Cosmic Bowling
                     </a>
                 </div>
 
