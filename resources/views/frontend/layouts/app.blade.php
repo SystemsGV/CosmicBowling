@@ -341,8 +341,7 @@
                                 <li class="nav flex-nowrap mb-3">
                                     <i class="ai-whatsapp lead text-primary me-2"></i>
                                     <a class="nav-link fw-normal p-0 mt-n1" href="https://wa.link/l9mreh"
-                                        target="_blank">Escríbenos¡por
-                                        whastapp</a>
+                                        target="_blank">Escríbenos por whastapp</a>
                                 </li>
                                 <li class="nav flex-nowrap mb-3">
                                     <i class="ai-mail lead text-primary me-2"></i>

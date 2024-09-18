@@ -101,7 +101,7 @@
             <div class="row align-items-center text-center gy-2 mb-4 pb-1 pb-sm-2 pb-lg-3">
                 <div class="col-lg-12">
                     <h1 class="mb-lg-0">{{ $category->name_category }}</h1>
-                    <p class="fs-lg text-center pb-3 pb-lg-0">Maximo
+                    <p class="fs-lg text-center pb-3 pb-lg-0">Máximo
                         {{ $category->id_category == 1 ? '5 personas por pista' : '3 personas por mesa' }}</p>
                 </div>
             </div>
