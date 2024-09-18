@@ -13,8 +13,7 @@
     <title>ComisBowling | {{ $title }}</title>
     <meta name="description"
         content="¿Buscas un plan de otro planeta? Juega boliche en un ambiente glow, con música moderna y mucha, pero mucha buena vibra">
-    <meta name="keywords"
-        content="bowling, perú, bolos, glow, ambiente, cosmicbowling, cosmic, juego de bolos">
+    <meta name="keywords" content="bowling, perú, bolos, glow, ambiente, cosmicbowling, cosmic, juego de bolos">
     <meta name="author" content="Cosmic Bowling">
 
     <!-- Webmanifest + Favicon / App icons -->
@@ -277,19 +276,20 @@
         <div class="container position-relative z-2 pb-xl-2 pt-2 pt-sm-3 pt-xl-4 pt-xxl-5">
             <div class="row pb-5 pt-md-3 pt-lg-4 mb-md-3 mb-lg-4">
                 <div class="col-md-6 col-xxl-5 pb-3 pb-md-0 mb-2 mb-sm-3 mb-md-0">
-                    <div class="h1 pb-3">Somos la mejor opción de entretenimiento familiar.
+                    <div class="h1 pb-3">Somos la mejor opción de <b class="text-primary">entretenimiento
+                            familiar.</b>
                     </div>
                     <div class="d-flex flex-wrap pb-4 pb-xl-5 mb-md-2 mb-lg-3">
                         <div class="d-flex pe-3 me-3 mb-2">
-                            <i class="ai-check-alt text-white fs-4 mt-n1 me-2"></i>
+                            <i class="ai-check-alt fs-4 mt-n1 me-2 text-primary"></i>
                             <span class="text-body">Adrenalina</span>
                         </div>
                         <div class="d-flex pe-3 me-3 mb-2">
-                            <i class="ai-check-alt text-white fs-4 mt-n1 me-2"></i>
+                            <i class="ai-check-alt fs-4 mt-n1 me-2 text-primary"></i>
                             <span class="text-body">Diversión</span>
                         </div>
                         <div class="d-flex mb-2">
-                            <i class="ai-check-alt text-white fs-4 mt-n1 me-2"></i>
+                            <i class="ai-check-alt fs-4 mt-n1 me-2 text-primary"></i>
                             <span class="text-body">Música</span>
                         </div>
                     </div>
@@ -318,17 +318,17 @@
                                 </li>
                             </ul>
                             <div class="d-flex">
-                                <a class="btn btn-icon btn-sm btn-secondary btn-instagram rounded-circle me-3"
+                                <a class="btn btn-icon btn-sm btn-secondary btn-instagram rounded-circle me-3 bg-primary"
                                     href="https://www.instagram.com/cosmic_bowling/profilecard/?igsh=dXJzZGV4eDg5OG1z"
                                     target="_blank" aria-label="Instagram">
                                     <i class="ai-instagram"></i>
                                 </a>
-                                <a class="btn btn-icon btn-sm btn-secondary btn-facebook rounded-circle me-3"
+                                <a class="btn btn-icon btn-sm btn-secondary rounded-circle me-3 bg-primary"
                                     href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank"
                                     aria-label="Facebook">
                                     <i class="ai-facebook"></i>
                                 </a>
-                                <a class="btn btn-icon btn-sm btn-secondary btn-primary rounded-circle"
+                                <a class="btn btn-icon btn-sm btn-secondary btn-primary rounded-circle bg-primary"
                                     href="https://www.tiktok.com/@cosmic_bowling?_t=8pfSQKZBpxO&_r=1" target="_blank"
                                     aria-label="Tik Tok">
                                     <i class="ai-tiktok"></i>

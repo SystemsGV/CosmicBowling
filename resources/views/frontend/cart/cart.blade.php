@@ -69,7 +69,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">1. Selecciona una Fecha</h4>
+                                <h4 class=" ms-1">1. Selecciona una fecha</h4>
                             </h3>
 
                             <div class="position-relative">

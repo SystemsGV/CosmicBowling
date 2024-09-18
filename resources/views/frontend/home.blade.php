@@ -82,9 +82,9 @@
                             </h2>
                             <p>Somos especialistas en diversión
                                 para:</p>
-                            <p>Fiestas de cumpleaños
-                                Eventos corporativos
-                                Paseos escolares</p>
+                                <p class="sin-salto">Fiestas de cumpleaños</p>
+                                <p class="sin-salto">Eventos corporativos</p>
+                                <p>Paseos escolares</p>
                             <a class="btn btn-primary" href=" https://wa.link/igugmb" target="_blank">Quiero
                                 Información</a>
                         </div>
@@ -136,6 +136,11 @@
     @endsection()
 
     @section('styles')
+        <style>
+            .sin-salto {
+                margin: 1px 0;
+            }
+        </style>
     @endsection()
 
     @section('scripts')
