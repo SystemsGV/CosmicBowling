@@ -170,7 +170,7 @@
 
             <!-- Logo visible on screens < 992px -->
             <div class="d-flex d-lg-none justify-content-center pt-4 px-3 mx-auto" style="max-width: 420px;">
-                <a class="navbar-brand text-dark p-0 m-0" href="index.html">
+                <a class="navbar-brand text-dark p-0 m-0" href="{{ url('/') }}">
                     <span class="text-primary flex-shrink-0 me-2">
                         <img src="{{ url('frontend/logo.svg') }}" height="35" alt="">
                     </span>
