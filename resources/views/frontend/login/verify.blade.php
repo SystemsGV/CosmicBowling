@@ -286,7 +286,7 @@
 
                 <!-- Logo visible on screens > 991px -->
                 <div class="w-100 d-none d-lg-block" style="max-width: 420px;">
-                    <a class="navbar-brand text-dark p-0 m-0" href="index.html">
+                    <a class="navbar-brand text-dark p-0 m-0" href="{{url('/')}}">
                         <span class="text-primary flex-shrink-0 me-2">
                             <img src="{{ url('frontend/img/app-icons/logo.svg') }}" width="95" height="92" alt="">
 

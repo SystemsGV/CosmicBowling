@@ -71,7 +71,7 @@
                         <p class="pb-2 pb-lg-0 mb-4 mb-lg-5">Tenemos más 20 de pistas, mesas de billar, juegos arcade,
                             salón, snacks y bebidas alucinantes.
                         </p>
-                        <a class="btn btn-primary" href="#">RESERVA AQUÍ</a>
+                        <a class="btn btn-primary" href="#reserva-section">RESERVA AQUÍ</a>
                         <div class="d-none d-xxl-block" style="height: 290px;"></div>
                         <div class="d-none d-md-block d-xxl-none" style="height: 240px;"></div>
                         <div class="d-md-none" style="height: 50px;"></div>
@@ -82,9 +82,9 @@
                             </h2>
                             <p>Somos especialistas en diversión
                                 para:</p>
-                                <p class="sin-salto">Fiestas de cumpleaños</p>
-                                <p class="sin-salto">Eventos corporativos</p>
-                                <p>Paseos escolares</p>
+                            <p class="sin-salto">Fiestas de cumpleaños</p>
+                            <p class="sin-salto">Eventos corporativos</p>
+                            <p>Paseos escolares</p>
                             <a class="btn btn-primary" href=" https://wa.link/igugmb" target="_blank">Quiero
                                 Información</a>
                         </div>
@@ -95,7 +95,7 @@
     </section>
 
 
-    <div class="container pt-5 pb-lg-5 pb-md-4 pb-2 my-5">
+    <div class="container pt-5 pb-lg-5 pb-md-4 pb-2 my-5" id="reserva-section">
         @foreach ($categories as $category)
             <!-- Blog grid (masonry) -->
             <div class="row align-items-center text-center gy-2 mb-4 pb-1 pb-sm-2 pb-lg-3">
@@ -131,17 +131,22 @@
                 </div>
             </div>
         @endforeach
+    </div>
 
-        </main>
-    @endsection()
+    </main>
+@endsection()
 
-    @section('styles')
-        <style>
-            .sin-salto {
-                margin: 1px 0;
-            }
-        </style>
-    @endsection()
+@section('styles')
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
 
-    @section('scripts')
-    @endsection
+        .sin-salto {
+            margin: 1px 0;
+        }
+    </style>
+@endsection()
+
+@section('scripts')
+@endsection
