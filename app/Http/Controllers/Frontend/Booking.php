@@ -43,9 +43,11 @@ class Booking extends Controller
         $names = $billing['lastname_pat'] . ' ' . $billing['lastname_mat'] . ' ' . $billing['names'];
         // Verifica si hay un error en los datos
         if (isset($data['errorCode'])) {
+            $title = 'Reserva Fallida';
+
             $actionCode = isset($data['data']['ACTION_CODE']) ? $data['data']['ACTION_CODE'] : null;
             $errorMessage = PaymentHelper::getErrorMessage($actionCode);
-            return view('frontend.cart.err', compact('actionCode', 'errorMessage', 'names', 'purchaseNumber'));
+            return view('frontend.cart.err', compact('actionCode', 'errorMessage', 'names', 'purchaseNumber', 'title'));
         }
 
         $card = $data['dataMap']['CARD'] . " (" . $data['dataMap']['BRAND'] . ")";
@@ -90,7 +92,6 @@ class Booking extends Controller
         SendPaymentSummaryMail::dispatch($emailDetails);
 
         return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests', 'title'));
-
     }
 
     private function saveCart($description)

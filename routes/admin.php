@@ -8,10 +8,12 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HolidaysController;
+use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SubCategoriesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\Admin\Coupons;
+use App\Models\Admin\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +96,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ClientController::class)->group(function ($route) {
         Route::get('Clientes', 'index')->name('clients.index');
         Route::get('tableClients', 'show');
+    });
+
+    Route::controller(OrdersController::class)->group(function ($route) {
+        Route::get('Reservas', 'index')->name('orders.index');
+        Route::get('TableBooking', 'show');
     });
 
 

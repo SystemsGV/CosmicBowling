@@ -160,6 +160,13 @@
                     </li>
 
                     <li class="menu-item">
+                        <a href="{{ route('orders.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-file-sign"></i>
+                            <div data-i18n="Reservations">Reservas</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
                         <a href="{{ route('holidays.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-calendar-star-outline"></i>
                             <div data-i18n="Holidays">Feriados</div>

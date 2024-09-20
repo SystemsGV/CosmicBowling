@@ -42,11 +42,12 @@ class Client extends Controller
 
     public function show()
     {
+        $title = "Perfil";
         $client = Auth::guard('client')->user();
 
         $reservations = Cart::getReservationsByClient($client->id_client);
 
-        return view('frontend.client.profile', compact('client', 'reservations'));
+        return view('frontend.client.profile', compact('client', 'reservations', 'title'));
     }
 
     /**
