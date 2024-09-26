@@ -76,5 +76,39 @@ class Booking extends Model
         return $data;
     }
 
-    public static function getBooking($id) {}
+    public static function getBooking($code)
+    {
+        $data = self::where('reservation_code', $code)->first();
+
+        // Verificamos que exista un registro antes de continuar
+        if (!$data) {
+            return null; // O manejar el error según sea necesario
+        }
+
+        // Obtener la fecha y hora en formato deseado
+        $dateReserved = $data->date_reserved; // "2024-09-21"
+        $hourInit = $data->hour_init;         // "20:00:00"
+        $combinedDateTime = $dateReserved . ' ' . $hourInit;
+        $formattedDate = date('d/m/Y h:i A', strtotime($combinedDateTime));
+
+        // Preparar el resultado
+        $result = [
+            'id' => $data->id_cart,
+            'code' => $data->reservation_code,
+            'subcategory' => optional($data->subcategory)->name_subcategory,
+            'client' => optional($data->client)->lastname_pat . " " . optional($data->client)->lastname_mat . " " . optional($data->client)->names_client,
+            'typeDoc' => optional($data->client->sunatTypedoc)->name_doc, // Accedemos al tipo de documento desde sunat_typedoc
+            'numberDoc' => optional($data->client)->number_doc,
+            'coupon' => $data->coupon ? $data->coupon->code : null,
+            'description' => $data->description,
+            'quantity' => $data->quantity_lane,
+            'guests' => $data->quantity_guests,
+            'hours' => $data->quantity_hours,
+            'price' => $data->amount,
+            'shop' =>  $formattedDate,
+            'status' => $data->status,
+        ];
+
+        return $result;
+    }
 }

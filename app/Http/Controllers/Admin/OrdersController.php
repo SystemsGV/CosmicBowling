@@ -52,4 +52,29 @@ class OrdersController extends Controller
     $data = Booking::getAllBooking($startDate, $endDate, $column);
     return response()->json(['data' => $data]);
   }
+
+  public function showReservation()
+  {
+    return view('admin.orders.validate');
+  }
+
+  public function search($code)
+  {
+    $data = Booking::getBooking($code);
+    return response()->json($data);
+  }
+
+  public function validateReservation($code)
+  {
+    $booking = Booking::where('reservation_code', $code)->first();
+
+    if ($booking) {
+      $booking->status = "used";
+      $booking->save();
+
+      return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.']);
+    } else {
+      return response()->json(['icon' => 'error', 'message' => 'No se encontro la reserva.']);
+    }
+  }
 }

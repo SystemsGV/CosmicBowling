@@ -115,6 +115,18 @@
                         </ul>
                     </li>
 
+                    <!-- Reports -->
+                    <li class="menu-header fw-medium mt-4">
+                        <span class="menu-header-text" data-i18n="Reports">Validaciones</span>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('orders.validate') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-qrcode-scan"></i>
+                            <div data-i18n="Validate Reservation">Validar Reserva</div>
+                        </a>
+                    </li>
+
                     <!-- Boxes -->
                     <li class="menu-header fw-medium mt-4">
                         <span class="menu-header-text" data-i18n="Master Products">Master Products</span>

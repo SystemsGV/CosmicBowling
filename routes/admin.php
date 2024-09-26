@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SubCategoriesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\Admin\Coupons;
 use App\Models\Admin\Order;
+use Spatie\Permission\Contracts\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +101,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(OrdersController::class)->group(function ($route) {
         Route::get('Reservas', 'index')->name('orders.index');
+        Route::get('Validar_Reserva', 'showReservation')->name('orders.validate');
         Route::get('TableBooking', 'show');
+        Route::get('searchReserve/{code}', 'search');
+        Route::get('validateR/{code}', 'validateReservation');
     });
 
 

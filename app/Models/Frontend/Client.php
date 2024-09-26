@@ -33,7 +33,7 @@ class Client extends Authenticatable
 
     public function sunatTypedoc()
     {
-        return $this->belongsTo(SunatTypeDoc::class, 'document_id', 'id_doc');
+        return $this->belongsTo(SunatTypeDoc::class, 'document_id');
     }
 
     public function getSunatDocAttribute()
