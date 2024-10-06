@@ -356,10 +356,7 @@
                                 <input class="form-check-input check-input" type="checkbox" id="save-info">
                                 <label class="form-check-label" for="save-info-1">
                                     <span class="text-body-secondary">Su información personal se utilizará para
-                                        procesar su reserva, para respaldar su experiencia en este sitio y para otros
-                                        fines descritos en el
-                                    </span><a class="fw-medium" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#modalScroll">Términos y Condiciones</a>
+                                        procesar su reserva, para respaldar su experiencia en este sitio.
                                 </label>
                             </div>
 
@@ -454,7 +451,8 @@
 
                     <div class="d-none d-lg-block pt-5 mt-n3">
                         <div class="form-check mb-4">
-                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-desktop">
+                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-desktop"
+                                disabled>
                             <label class="form-check-label" for="check-payment-desktop">
                                 <span class="text-body-secondary">Acepte los</span>
                                 <a class="fw-medium" href="#" data-bs-toggle="modal"
@@ -465,7 +463,8 @@
 
                     <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
                         <div class="form-check mb-4">
-                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-mobile">
+                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-mobile"
+                                disabled>
                             <label class="form-check-label" for="check-payment-mobile">
                                 <span class="text-body-secondary">Acepte los</span>
                                 <a class="fw-medium" href="#" data-bs-toggle="modal"
@@ -641,54 +640,129 @@
     </div>
 
     <div class="modal fade" id="modalScroll" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-d modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Terminos y Condiciones</h4>
+                    <h4 class="modal-title">Términos y Condiciones</h4>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body fs-sm">
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <!-- Contenido de los términos -->
+                    <h4>Términos y Condiciones</h4>
+
+                    <p><strong>En cuanto al pago y código de reserva:</strong></p>
+
+                    <ul>
+                        <li>La transacción se realiza a través de Niubiz, lo que asegura la autenticidad y confiabilidad del
+                            procedimiento. Al confirmar las identidades de los titulares de las tarjetas, se reducen las
+                            transacciones de comercio electrónico fraudulentas o en disputa, eliminando las inquietudes del
+                            consumidor con respecto a las compras en línea.</li>
+
+                        <li>Luego de realizar la compra, recibirá la reserva electrónica en el correo registrado. El cliente
+                            acepta no divulgar ni compartir la información contenida en este correo por ningún medio, ya que
+                            podría afectar su reserva.</li>
+
+                        <li>Chaxra S.A.C. no se hace responsable por copias de la reserva electrónica que pudieran haber
+                            utilizado previa o paralelamente, ya que la entera responsabilidad por la confidencialidad del
+                            mismo, corresponde al cliente. En caso de generarse duplicados de la reserva electrónica, el
+                            servicio de verificación de reservas sólo registrará la primera reserva, siendo todos los demás
+                            considerados copias divulgadas por el cliente.</li>
+                        <li>Es indispensable que el titular de la compra presente su DNI en físico el día de su reserva. Así
+                            mismo, debe presentar el código enviado por mail después de la compra.</li>
+                        <li>Las reservas se realizan con 24 h de anticipación, como mínimo. Son intransferibles, ni
+                            revendibles. </li>
+                        <li>Para realizar cualquier pago dentro del local con tarjeta de crédito es indispensable presentar
+                            su DNI. En el caso de ser extranjero, debe presentar su pasaporte o carnet de extranjería.</li>
+                        <li>No se realizan anulaciones ni devoluciones de compra. </li>
+                        <li>Si no asiste a la reserva, esta se perderá. No se permiten las reprogramaciones. </li>
+
+
+                    </ul>
+                    <p><strong>En cuanto a su reserva:</strong></p>
+                    <ul>
+
+                        <li>Las pistas se activan a la hora de la reserva. Si llega tarde, podrá hacer uso del tiempo
+                            restante.</li>
+                        <li>Se recomienda estar en el local 20 minutos antes de la reserva.</li>
+                        <li>La ubicación y asignación del número de la pista se asigna automáticamente por nuestro sistema
+                            Brunswick. No se puede asignar una pista específica a solicitud del cliente. </li>
+                        <li>Si los participantes son menores de edad, deben estar acompañados y supervisados por un adulto
+                            responsable. </li>
+                        <li>Ingresan máximo 5 personas por pista. Está normativa incluye bebés no caminantes, niños y
+                            adultos. </li>
+                        <li>Si son más de 5 personas (y menos de 10), tendrá que alquilar 2 pistas. </li>
+                        <li>Una vez terminada la hora de bowling, los jugadores deberán salir de la zona de pistas y
+                            devolver los zapatos antideslizantes. </li>
+                        <li>Si realiza más de una reserva con diferentes datos, no se garantiza que las pistas sean
+                            paralelas. Para tal caso, deberá indicar las pistas necesarias en una sola reserva. </li>
+                        <li>Si desea agregar más tiempo de juego, deberá avisar con anticipación (antes de terminar su
+                            reserva) a nuestro personal y se respetará la tarifa del día. El tiempo se agregará de acuerdo a
+                            la disponibilidad del local. </li>
+                        <li>Las reservas no incluyen la organización de eventos especiales, como cumpleaños o reuniones
+                            grupales. No está permitido utilizar estas reservas para emitir invitaciones con nuestra marca o
+                            coordinar celebraciones dentro del local.</li>
+                        <li>El alquiler de equipos adicionales, como zapatos y/o rampas, está limitado al tiempo de uso de
+                            la pista reservada. Al finalizar el juego, los equipos deberán ser devueltos de inmediato. No
+                            está permitido el uso de estos fuera del tiempo reservado, ni en su salida del local. </li>
+                        <li>En caso se presenten fallas técnicas de la pista, el establecimiento podrá modificar la reserva
+                            y/o pista en coordinación con el cliente.</li>
+                        <li>La reserva de pistas no incluye el acceso a las demás zonas de juego del establecimiento (como
+                            la zona de billar o arcade).</li>
+                        <li>Nuestro personal realizará una inspección de todas las mochilas, bolsos, morrales y canguros que
+                            ingresen a nuestro establecimiento. Esto nos garantiza una estadía segura para todos. </li>
+                        <li>Nuestro personal realizará una inspección de todas las mochilas, bolsos, morrales y canguros que
+                            ingresen a nuestro establecimiento. Esto nos garantiza una estadía segura para todos. </li>
+                        <li>Por seguridad, no está permitido el ingreso de alimentos, bebidas, mascotas, armas, pelotas,
+                            globos, inflables, colores, cigarros, instrumentos musicales, juegos de propulsión a chorro de
+                            agua, megáfonos, triciclos, bicicletas, scooters, skates, patines, carritos, envases de vidrio,
+                            objetos que generen fuego o sean punzocortantes.</li>
+                        <li>Si porta algún objeto que no ingrese al local, debe guardarlo en los lockers de ingreso al
+                            precio de S/1.00. </li>
+                        <li>Conforme a las recomendaciones para la prevención y cuidado de la salud dentro de nuestras
+                            instalaciones, no se permite el ingreso de personas que demuestren signos de una enfermedad
+                            eruptiva o infectocontagiosa, en virtud de preservar la salud de nuestra comunidad y del propio
+                            cliente. Cabe indicar que el Ministerio de Salud cuenta con programas de vacunación gratuita y
+                            que las recomendaciones de aislamiento temporal responden a condiciones médicas generales, a
+                            efectos de evitar la transmisión y difusión del virus.</li>
+                        <li>Por la privacidad de terceras personas, no se permiten las fotografías o grabaciones a personas
+                            que no sean de su círculo amical o familiar.</li>
+                        <li>No se permite la venta de ningún tipo de mercadería dentro de nuestras instalaciones. </li>
+                    </ul>
+
+                    <p><strong>En cuanto a su reserva:</strong></p>
+
+                    <ul>
+                        <li>Al realizar la reserva, el cliente se compromete a respetar la guía de seguridad del
+                            establecimiento. Si vulnera alguna de las indicaciones dadas por la guía de seguridad o por
+                            nuestro personal, el cliente será retirado del local sin lugar a reclamo ni devolución. Para más
+                            detalle dale click aquí:<a href="https://cosmicbowling.com.pe/Guia-de-Seguridad"
+                                target="_blank"> https://cosmicbowling.com.pe/Guia-de-Seguridad</a></li>
+                        <li>Cualquier daño causado a nuestros equipos o instalaciones será responsabilidad del usuario, por
+                            lo que deberá asumir el costo de reparación. </li>
+                        <li>El uso de zapatos antideslizantes es obligatorio para todos los jugadores, así como portar
+                            medias de algodón altas. No se permiten medias nylon, panties, ni tobilleras. </li>
+                        <li>No se permite el intercambio ni el reemplazo de jugadores. Las personas fuera de la zona de
+                            juego (espectadores) no pueden ingresar. </li>
+                        <li>Los niños en la zona de espectadores deberán estar a cargo de un adulto responsable.</li>
+                        <li>Es deber del cliente informarnos de alguna condición especial que alguno de los jugadores
+                            presente. </li>
+                        <li>Si alguno de los jugadores presenta signos de embriaguez o un comportamiento violento, será
+                            retirado del local sin lugar a reclamo. El juego se finalizará sin reembolso ni reprogramación.
+                        </li>
+                    </ul>
+
+                    <p><strong>Cumplir las normativas no es discriminación.</strong></p>
+
+                    <p>Ante cualquier consulta, puede comunicarse al <a href="whatsapp://send?text=Cosmic%20Bowling"
+                            target="_blank">+51 999 9999 9999</a> o a <a href="mailto:cosmicbowling@gmail.com"
+                            target="_blank">cosmicbowling@gmail.com</a></p>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary w-100 w-sm-auto mb-3 mb-sm-0" type="button"
                         data-bs-dismiss="modal">No Acepto</button>
-                    <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button">Acepto</button>
+                    <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button"
+                        id="btn-accept-terms">Acepto</button>
                 </div>
             </div>
         </div>

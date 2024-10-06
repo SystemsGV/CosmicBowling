@@ -838,7 +838,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         console.log(observation.value);
-        
 
         if (facturaRadio.checked) {
             const rsocial = document.getElementById("rsocial").value;
@@ -856,7 +855,6 @@ document.addEventListener("DOMContentLoaded", function () {
             bodyData = {
                 type: "Boleta",
                 observation: observation.value,
-
             };
         }
 
@@ -1050,6 +1048,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    document
+        .getElementById("btn-accept-terms")
+        .addEventListener("click", function () {
+            // Verificar si el checkbox ya está marcado
+            if (!checkPaymentDesktop.checked) {
+                // Habilitar y marcar el checkbox solo la primera vez
+                checkPaymentDesktop.checked = true;
+
+                // Ejecutar la función getPayment solo una vez
+                getPayment();
+            }
+
+            // Cerrar el modal
+            let modal = bootstrap.Modal.getInstance(
+                document.getElementById("modalScroll")
+            );
+            modal.hide();
+        });
 
     document
         .getElementById("btnRegister")
