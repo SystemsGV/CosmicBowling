@@ -119,6 +119,7 @@ class Booking extends Controller
         $newCart->rsocial = $billing['type'] == 'Factura' ? $billing['rsocial'] : null;
         $newCart->ruc = $billing['type'] == 'Factura' ? $billing['ruc'] : null;
         $newCart->dir = $billing['type'] == 'Factura' ? $billing['dir'] : null;
+        $newCart->observation_client = $billing['observation'];
         $newCart->status = 'paid';
         $newCart->save();
     }

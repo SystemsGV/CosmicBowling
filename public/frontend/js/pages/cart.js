@@ -676,8 +676,8 @@ document.addEventListener("DOMContentLoaded", function () {
         c_fn = document.getElementById("c-fn"),
         c_email = document.getElementById("c-email"),
         c_phone = document.getElementById("c-phone"),
-        c_document = document.getElementById("c-document");
-
+        c_document = document.getElementById("c-document"),
+        observation = document.getElementById("observation");
     const loginModalElement = document.getElementById("modal-login");
     const registerModalElement = document.getElementById("modal-register"),
         subjectToast = document.getElementById("subjectToast");
@@ -837,6 +837,8 @@ document.addEventListener("DOMContentLoaded", function () {
             wToast.show();
             return;
         }
+        console.log(observation.value);
+        
 
         if (facturaRadio.checked) {
             const rsocial = document.getElementById("rsocial").value;
@@ -848,10 +850,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 rsocial: rsocial,
                 ruc: ruc,
                 dir: dir,
+                observation: observation.value,
             };
         } else if (boletaRadio.checked) {
             bodyData = {
                 type: "Boleta",
+                observation: observation.value,
+
             };
         }
 

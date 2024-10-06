@@ -146,6 +146,7 @@ class Cart extends Controller
                 'document' => $sunatDescription,
                 'days_registered' => $daysRegistered,
                 'frequency' => $frequency,
+                'observation' => $request->input('observation')
             ];
 
             // Combinar los datos de la sesión con los datos del cliente
@@ -163,6 +164,7 @@ class Cart extends Controller
                 'phone' => $client->phone_client,
                 'days_registered' => $daysRegistered,
                 'frequency' => $frequency,
+                'observation' => $request->input('observation')
             ];
 
             $combinedData = array_merge($sessionData, $clientData);
@@ -200,31 +202,29 @@ class Cart extends Controller
         // Calcular los intervalos de 30 minutos
         $halfHourIntervals = $this->getHalfHourIntervals($cart['time'], $cart['hours']);
 
-        // Verificar disponibilidad de todos los intervalos
+        // Verificar disponibilidad de todos los intervalos de pistas
         $isAvailable = $this->checkAvailability($halfHourIntervals, $cart['product'], $cart['date'], $numberOfTracksNeeded);
 
         if (!$isAvailable) {
             return response()->json(['status' => false, 'message' => 'Ya no se encuentra disponible su horario. Por favor Verificar nuevamente.']);
         }
 
-        $amount = $numberOfTracksNeeded * $calendar['price'];
+        $amount = ($numberOfTracksNeeded * $calendar['price']) * $cart['hours'];
 
         if ($couponCode) {
-            // Traer los datos del cupón desde la base de datos
             $coupon = DB::table('coupons')
                 ->where('code', $couponCode)
                 ->where('is_active', 1)
                 ->first();
 
             if ($coupon) {
-                // Calcular el descuento si el cupón es válido
                 if ($coupon->discount_type === 'percentage') {
                     $discount = ($amount * $coupon->discount_amount) / 100;
                 } elseif ($coupon->discount_type === 'fixed') {
                     $discount = $coupon->discount_amount;
                 }
 
-                // Aplicar el descuento al precio de la pista
+
                 $amount -= $discount;
             }
         }

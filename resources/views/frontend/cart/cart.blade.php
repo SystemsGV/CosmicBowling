@@ -126,8 +126,10 @@
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">4. Selecciona los integrantes</h4>
-                                <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }} jugadores por pista. Proporcione un recuento
-                                    exacto de invitados. No podemos garantizar alojamiento para cambios en el tamaño del grupo.
+                                <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }}
+                                    jugadores por pista. Proporcione un recuento
+                                    exacto de invitados. No podemos garantizar alojamiento para cambios en el tamaño del
+                                    grupo.
                                 </span>
                                 <div class="count-input bg-gray rounded-3">
                                     <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement=""
@@ -137,7 +139,15 @@
                                         id="increment-btn">+</button>
                                 </div>
                             </h3>
-
+                            <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
+                                <h4 class=" ms-1">5. Observación </h4>
+                                <div class="input-group">
+                                    <span class="input-group-text align-self-start mt-1">
+                                        <i class="ai-message"></i>
+                                    </span>
+                                    <textarea id="observation" class="form-control" rows="3" placeholder="Observaciones"></textarea>
+                                </div>
+                            </h3>
                         </div>
 
                         <!-- Order summary -->

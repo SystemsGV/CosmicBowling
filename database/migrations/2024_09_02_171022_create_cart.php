@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('rsocial')->nullable(); // Razón social (solo para factura)
             $table->string('ruc')->nullable(); // RUC (solo para factura)
             $table->string('dir')->nullable(); // Dirección (solo para factura)
+            $table->string('observation_client')->nullable(); // Dirección (solo para factura)
             $table->string('status');
             $table->timestamps();
 
