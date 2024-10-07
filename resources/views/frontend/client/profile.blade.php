@@ -32,8 +32,8 @@
                             </nav>
 
                             <nav class="nav flex-column">
-                                <a class="nav-link fw-semibold py-2 px-0" href="account-signin.html">
-                                    <i class="ai-logout fs-5 opacity-60 me-2"></i>
+                                <a class="nav-link fw-semibold py-2 px-0" href="javascript:void(0)" id="logoutbtn">
+                                    <i class="ai-logout fs-5 opacity-60 me-2"></i> 
                                     Cerrar Sesión
                                 </a>
                             </nav>
@@ -54,9 +54,9 @@
                             <i class="ai-user text-primary lead pe-1 me-2"></i>
                             <h2 class="h4 mb-0">Información básica</h2>
                             <!-- <a class="btn btn-sm btn-secondary ms-auto" href="account-settings.html">
-                                                                            <i class="ai-edit ms-n1 me-2"></i>
-                                                                            Editar Información
-                                                                        </a>-->
+                                                                                <i class="ai-edit ms-n1 me-2"></i>
+                                                                                Editar Información
+                                                                            </a>-->
                         </div>
                         <div class="d-md-flex align-items-center">
                             <div class="d-sm-flex align-items-center">
@@ -134,8 +134,8 @@
                                         </div>
                                         <div class="accordion-button-img d-none d-sm-flex ms-auto">
                                             <div class="mx-1">
-                                                <img src="{{ Storage::url('subcategory/' . $reservation->subcategory->img_subcategory) }}" width="48"
-                                                    alt="Product">
+                                                <img src="{{ Storage::url('subcategory/' . $reservation->subcategory->img_subcategory) }}"
+                                                    width="48" alt="Product">
                                             </div>
                                         </div>
                                     </a>
