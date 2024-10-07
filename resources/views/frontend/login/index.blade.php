@@ -214,8 +214,8 @@
                                 <input class="form-check-input" type="checkbox" id="keep-signedin">
                                 <label class="form-check-label ms-1" for="keep-signedin">Recuérdame</label>
                             </div>
-                            <a class="fs-sm fw-semibold text-decoration-none my-1"
-                                href="account-password-recovery.html">He olvidado mi contraseña</a>
+                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="#">He olvidado mi
+                                contraseña</a>
                         </div>
                         <button id="login-button" class="btn btn-lg btn-primary w-100 mb-4"
                             type="submit">Ingresar</button>

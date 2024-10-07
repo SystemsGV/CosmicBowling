@@ -231,7 +231,7 @@
                 <div class="container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2">
                     <div class="row">
                         <div class="col-lg-7">
-                            <h1 class="h2 pb-3">DATOS FACTURACION</h1>
+                            <h1 class="h2 pb-3">DATOS FACTURACIÓN</h1>
                             <!-- Checkout form fields -->
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 1.<span class="text-decoration-underline ms-1">Información de Facturación</span>
@@ -298,7 +298,7 @@
                                 <div class="collapse" id="collapseExample">
                                     <div class="card">
                                         <div class="card-header">
-                                            <i class="fa fa-university"></i> Ingrese Datos para la facturación
+                                            <i class="fa fa-university"></i> Ingrese datos para la facturación
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
@@ -355,8 +355,7 @@
                             <div class="form-check mb-4">
                                 <input class="form-check-input check-input" type="checkbox" id="save-info">
                                 <label class="form-check-label" for="save-info-1">
-                                    <span class="text-body-secondary">Su información personal se utilizará para
-                                        procesar su reserva, para respaldar su experiencia en este sitio.
+                                    <span class="text-body-secondary">Su información personal se utilizará para procesar su reserva y para respaldar su experiencia en este sitio.
                                 </label>
                             </div>
 
@@ -392,12 +391,12 @@
             <div class="tab-pane fade" id="fly-yoga" role="tabpanel">
                 <div class="row align-items-lg-center">
                     <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
-                        <h1 class="h2 pb-3">DATOS FACTURACION</h1>
+                        <h1 class="h2 pb-3">DATOS FACTURACIÓN</h1>
 
                         <div class="card-body">
                             <div class="d-flex align-items-center mt-sm-n1 mb-0 mb-xl-3">
                                 <i class="ai-wallet text-primary lead pe-1 me-2"></i>
-                                <h2 class="h4 mb-0">Información Facturación</h2>
+                                <h2 class="h4 mb-0">Información de facturación</h2>
                             </div>
                             <div class="d-md-flex align-items-center">
                             </div>
@@ -454,7 +453,7 @@
                             <input class="form-check-input check-payment" type="checkbox" id="check-payment-desktop"
                                 disabled>
                             <label class="form-check-label" for="check-payment-desktop">
-                                <span class="text-body-secondary">Acepte los</span>
+                                <span class="text-body-secondary">Acepto los</span>
                                 <a class="fw-medium" href="#" data-bs-toggle="modal"
                                     data-bs-target="#modalScroll">Términos y Condiciones</a>
                             </label>
@@ -520,7 +519,7 @@
                                 <input class="form-check-input" type="checkbox" id="keep-signedin">
                                 <label class="form-check-label ms-1" for="keep-signedin">Recuérdame</label>
                             </div>
-                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="account-password-recovery.html">
+                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="#">
                                 He olvidado mi contraseña</a>
                         </div>
 
@@ -647,8 +646,6 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body fs-sm">
-                    <!-- Contenido de los términos -->
-                    <h4>Términos y Condiciones</h4>
 
                     <p><strong>En cuanto al pago y código de reserva:</strong></p>
 
@@ -729,7 +726,7 @@
                         <li>No se permite la venta de ningún tipo de mercadería dentro de nuestras instalaciones. </li>
                     </ul>
 
-                    <p><strong>En cuanto a su reserva:</strong></p>
+                    <p><strong>IMPORTANTE:</strong></p>
 
                     <ul>
                         <li>Al realizar la reserva, el cliente se compromete a respetar la guía de seguridad del
@@ -753,8 +750,8 @@
 
                     <p><strong>Cumplir las normativas no es discriminación.</strong></p>
 
-                    <p>Ante cualquier consulta, puede comunicarse al <a href="whatsapp://send?text=Cosmic%20Bowling"
-                            target="_blank">+51 999 9999 9999</a> o a <a href="mailto:cosmicbowling@gmail.com"
+                    <p>Ante cualquier consulta, puede comunicarse al <a href="https://api.whatsapp.com/send?phone=51995953955"
+                            target="_blank">(+51) 995 953 955</a> o envíanos un correo a: <a href="mailto:cosmicbowling@gmail.com"
                             target="_blank">cosmicbowling@gmail.com</a></p>
 
                 </div>

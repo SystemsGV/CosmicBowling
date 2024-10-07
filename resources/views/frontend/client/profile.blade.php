@@ -20,7 +20,7 @@
                                 <p class="fs-sm text-body-secondary mb-0">bocouse@example.com</p>
                             </div>
                             <nav class="nav flex-column pb-2 pb-lg-4 mb-3">
-                                <h4 class="fs-xs fw-medium text-body-secondary text-uppercase pb-1 mb-2">Account</h4>
+                                <h4 class="fs-xs fw-medium text-body-secondary text-uppercase pb-1 mb-2">Cuenta</h4>
                                 <a class="nav-link fw-semibold py-2 px-0 active" href="account-overview.html">
                                     <i class="ai-user-check fs-5 opacity-60 me-2"></i>
                                     Perfil
@@ -30,14 +30,7 @@
                                     Configuración
                                 </a>
                             </nav>
-                            <nav class="nav flex-column pb-2 pb-lg-4 mb-1">
-                                <h4 class="fs-xs fw-medium text-body-secondary text-uppercase pb-1 mb-2">Dashboard</h4>
-                                <a class="nav-link fw-semibold py-2 px-0" href="account-orders.html">
-                                    <i class="ai-cart fs-5 opacity-60 me-2"></i>
-                                    Reservas
-                                </a>
 
-                            </nav>
                             <nav class="nav flex-column">
                                 <a class="nav-link fw-semibold py-2 px-0" href="account-signin.html">
                                     <i class="ai-logout fs-5 opacity-60 me-2"></i>
@@ -52,7 +45,7 @@
 
             <!-- Page content -->
             <div class="col-lg-9 pt-4 pb-2 pb-sm-4">
-                <h1 class="h2 mb-4">Perfil</h1>
+                <h1 class="h2 mb-4 mt-4">Perfil</h1>
 
                 <!-- Basic info -->
                 <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4">
@@ -61,9 +54,9 @@
                             <i class="ai-user text-primary lead pe-1 me-2"></i>
                             <h2 class="h4 mb-0">Información básica</h2>
                             <!-- <a class="btn btn-sm btn-secondary ms-auto" href="account-settings.html">
-                                                                    <i class="ai-edit ms-n1 me-2"></i>
-                                                                    Editar Información
-                                                                </a>-->
+                                                                        <i class="ai-edit ms-n1 me-2"></i>
+                                                                        Editar Información
+                                                                    </a>-->
                         </div>
                         <div class="d-md-flex align-items-center">
                             <div class="d-sm-flex align-items-center">
@@ -107,7 +100,7 @@
                         <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3">
                             <i class="ai-cart text-primary lead pe-1 me-2"></i>
                             <h2 class="h4 mb-0">Reservas Realizadas</h2>
-                            <a class="btn btn-sm btn-secondary ms-auto" href="account-orders.html">Ver Todo</a>
+                            <!-- <a class="btn btn-sm btn-secondary ms-auto" href="account-orders.html">Ver Todo</a> -->
                         </div>
 
                         @foreach ($reservations as $index => $reservation)
@@ -141,7 +134,8 @@
                                         </div>
                                         <div class="accordion-button-img d-none d-sm-flex ms-auto">
                                             <div class="mx-1">
-                                                <img src="{{asset('frontend/img/account/orders/07.jpg')}}" width="48" alt="Product">
+                                                <img src="{{ asset('frontend/img/account/orders/07.jpg') }}" width="48"
+                                                    alt="Product">
                                             </div>
                                         </div>
                                     </a>
@@ -157,8 +151,8 @@
                                                             <div class="d-flex align-items-center">
                                                                 <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3"
                                                                     href="javascript:void(0)l">
-                                                                    <img src="{{asset('frontend/img/account/orders/07.jpg')}}" width="110"
-                                                                        alt="Product">
+                                                                    <img src="{{ asset('frontend/img/account/orders/07.jpg') }}"
+                                                                        width="110" alt="Product">
                                                                 </a>
                                                                 <div class="ps-3 ps-sm-4">
                                                                     <h4 class="h6 mb-2">
@@ -205,6 +199,12 @@
             </div>
         </div>
     </div>
+
+    <button class="d-lg-none btn btn-sm fs-sm btn-primary w-100 rounded-0 fixed-bottom" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#sidebarAccount">
+        <i class="ai-menu me-2"></i>
+        Menú de Cuenta
+    </button>
 @endsection()
 
 @section('styles')

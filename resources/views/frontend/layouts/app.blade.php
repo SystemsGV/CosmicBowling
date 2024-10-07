@@ -266,6 +266,7 @@
 
         @yield('content')
 
+
     </main>
 
 
@@ -299,7 +300,7 @@
                         <div class="col">
                             <ul class="nav flex-column pb-4 mb-2 pb-md-5 mb-lg-1">
                                 <li class="nav-item mt-1">
-                                    <a class="nav-link py-1 px-0" href="#">Quienes Somos</a>
+                                    <a class="nav-link py-1 px-0" href="#">Quiénes Somos</a>
                                 </li>
                                 <li class="nav-item mt-1">
                                     <a class="nav-link py-1 px-0" href="#">Instalaciones</a>

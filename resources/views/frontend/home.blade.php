@@ -67,7 +67,7 @@
                     <div class="mx-auto mx-md-0" style="max-width: 400px;">
                         <p class="pb-2 pb-lg-0 mb-4">¿Buscas un plan de otro planeta?</p>
                         <p class="pb-2 pb-lg-0 mb-4">Juega boliche en un ambiente glow, con música moderna
-                            y mucha, pero mucha buena vibra</p>
+                            y mucha, pero mucha buena vibra.</p>
                         <p class="pb-2 pb-lg-0 mb-4 mb-lg-5">Tenemos más 20 de pistas, mesas de billar, juegos arcade,
                             salón, snacks y bebidas alucinantes.
                         </p>
