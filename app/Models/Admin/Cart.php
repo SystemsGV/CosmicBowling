@@ -10,6 +10,12 @@ class Cart extends Model
     use HasFactory;
     protected $table = 'cart';
     protected $primaryKey = 'id_cart';
+    protected $fillable = ['subcategory_id', 'coupon_id', 'description', 'date_reserved', 'hour_init', 'quantity_lane', 'quantity_hours', 'quantity_guests', 'payment_type', 'amount_discount', 'amount', 'document_type', 'rsocial', 'ruc', 'dir', 'observation_client', 'status', 'client_id'];
+
+    public function subcategory()
+    {
+        return $this->belongsTo(SubCategories::class, 'subcategory_id');
+    }
 
     /**
      * Obtiene todas las reservas de un cliente de forma estática.
@@ -19,7 +25,10 @@ class Cart extends Model
      */
     static public function getReservationsByClient($clientId)
     {
-        return self::where('client_id', $clientId)->orderByDesc('id_cart')->get();
+        return self::where('client_id', $clientId)
+            ->with('subcategory:img_subcategory,id_subcategory')
+            ->orderByDesc('id_cart')
+            ->get();
     }
 
     /**

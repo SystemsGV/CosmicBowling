@@ -54,9 +54,9 @@
                             <i class="ai-user text-primary lead pe-1 me-2"></i>
                             <h2 class="h4 mb-0">Información básica</h2>
                             <!-- <a class="btn btn-sm btn-secondary ms-auto" href="account-settings.html">
-                                                                        <i class="ai-edit ms-n1 me-2"></i>
-                                                                        Editar Información
-                                                                    </a>-->
+                                                                            <i class="ai-edit ms-n1 me-2"></i>
+                                                                            Editar Información
+                                                                        </a>-->
                         </div>
                         <div class="d-md-flex align-items-center">
                             <div class="d-sm-flex align-items-center">
@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="accordion-button-img d-none d-sm-flex ms-auto">
                                             <div class="mx-1">
-                                                <img src="{{ asset('frontend/img/account/orders/07.jpg') }}" width="48"
+                                                <img src="{{ Storage::url('subcategory/' . $reservation->subcategory->img_subcategory) }}" width="48"
                                                     alt="Product">
                                             </div>
                                         </div>
@@ -151,7 +151,7 @@
                                                             <div class="d-flex align-items-center">
                                                                 <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3"
                                                                     href="javascript:void(0)l">
-                                                                    <img src="{{ asset('frontend/img/account/orders/07.jpg') }}"
+                                                                    <img src="{{ Storage::url('subcategory/' . $reservation->subcategory->img_subcategory) }}"
                                                                         width="110" alt="Product">
                                                                 </a>
                                                                 <div class="ps-3 ps-sm-4">

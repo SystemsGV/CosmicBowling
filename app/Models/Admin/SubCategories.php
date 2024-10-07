@@ -4,6 +4,7 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class SubCategories extends Model
 {
@@ -78,5 +79,10 @@ class SubCategories extends Model
     public function getFormattedNameAttribute()
     {
         return str_replace(' ', '_', ucwords(strtolower($this->name_subcategory)));
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return Storage::url('subcategory/' . $this->img_subcategory);
     }
 }
