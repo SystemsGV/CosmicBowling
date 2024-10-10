@@ -309,27 +309,38 @@ class Cart extends Controller
 
     public function checkAvailability($intervals, $subcategory, $date, $requiredHours)
     {
-        $availability = [];
+        // Obtener los registros de los intervalos en una sola consulta
+        $availability = DB::table('calendar_intervals')
+            ->where('subcategory_id', $subcategory)
+            ->whereDate('date_citem', $date)
+            ->whereIn('time_interval', $intervals)
+            ->get(['id_citem', 'time_interval', 'available_quantity']); // Obtener los IDs, intervalos y cantidades
 
-        // Consultar la base de datos para obtener la disponibilidad de cada intervalo específico
-        foreach ($intervals as $interval) {
-            $availability[$interval] = DB::table('calendar_intervals')
-                ->where('subcategory_id', $subcategory)
-                ->whereDate('date_citem', $date)
-                ->where('time_interval', $interval)
-                ->value('available_quantity');
-        }
+        // Crear un array para guardar los IDs de los intervalos
+        $intervalsAvailability = [];
 
-        // Verificar si todos los intervalos están disponibles
-        foreach ($intervals as $interval) {
-            // Comprobar si la cantidad disponible es menor que las horas requeridas
-            if (!isset($availability[$interval]) || $availability[$interval] < $requiredHours) {
-                return false; // Al menos un intervalo no tiene suficiente cantidad disponible
+        foreach ($availability as $interval) {
+            // Verificar si la cantidad disponible es suficiente
+            if ($interval->available_quantity >= $requiredHours) {
+
+                // Verificar si la cantidad disponible es suficiente
+                if ($interval->available_quantity < $requiredHours) {
+                    // Si no es suficiente, retornar false inmediatamente
+                    return false;
+                }
+
+
+                // Guardar el ID del intervalo y la cantidad disponible
+                $intervalsAvailability[] = $interval->id_citem;
             }
         }
 
-        return true; // Todos los intervalos tienen suficiente cantidad disponible
+        // Guardar los IDs de los intervalos en la sesión
+        session(['intervals_availability' => $intervalsAvailability]);
+
+        return $intervalsAvailability; // Devolver los intervalos y sus IDs almacenados en la sesión
     }
+
 
     public function showFormPayment($amount, $purchaseNumber)
     {

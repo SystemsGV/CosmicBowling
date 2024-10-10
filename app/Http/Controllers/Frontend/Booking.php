@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\PaymentHelper;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendPaymentSummaryMail;
+use App\Models\Admin\calendarIntervals;
 use App\Models\Admin\Cart;
 use App\Services\VisaNetService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Booking extends Controller
 {
@@ -78,6 +80,8 @@ class Booking extends Controller
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $datetime);
         $formattedDateTime = $date->format('d/m/Y h:i A');
 
+        $this->modifiedInterval($summary['quantity']);
+
         $emailDetails = [
             'email' => $billing['email'],
             'purchaseNumber' => $purchaseNumber,
@@ -122,6 +126,25 @@ class Booking extends Controller
         $newCart->observation_client = $billing['observation'];
         $newCart->status = 'paid';
         $newCart->save();
+    }
+
+    private function modifiedInterval($hours)
+    {
+        // Obtener los intervalos guardados en la sesión
+        $intervals = session('intervals_availability');
+
+
+        // Recorrer cada intervalo y modificar la cantidad disponible usando el modelo
+        foreach ($intervals as $id) {
+            // Buscar el intervalo usando Eloquent
+            $interval = calendarIntervals::find($id);
+
+            // Restar las horas usadas a la cantidad disponible
+            if ($interval && $interval->available_quantity >= $hours) {
+                $interval->available_quantity -= $hours;
+                $interval->save(); // Guardar los cambios
+            }
+        }
     }
 
     /**

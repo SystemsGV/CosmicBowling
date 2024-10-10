@@ -275,7 +275,7 @@
                                                                             role="presentation">
                                                                             <tr>
                                                                                 <td align="center">
-                                                                                    <img src="{{ url('frontend/logo.png')}}"
+                                                                                    <img src="{{ url('frontend/logo.png') }}"
                                                                                         alt="Logo" width="320"
                                                                                         class="logo">
                                                                                 </td>
@@ -447,7 +447,7 @@
                                                         <td bgcolor="#FFFFFF" align="right"
                                                             style="border-top:2px solid #CCCCCC;border-bottom:2px solid #CCCCCC;color:#5a5a5a;padding:10px 40px 10px 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:16px;-webkit-font-smoothing:antialiased;line-height:1.4;"
                                                             class="table-container">
-                                                            {{ $data['amount'] }}
+                                                            S/. {{ $data['amount'] }}
                                                         </td>
                                                         <td bgcolor="#FFF" width="40" align="left"
                                                             style="color:#5a5a5a;padding:10px 0 10px 0;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:bold;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;">
@@ -455,67 +455,6 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="640"
-                                    style="width: 640px; min-width: 640px;" role="presentation" bgcolor="#FFFFFF">
-                                    <tr>
-                                        <td height="60" style="line-height:60px;min-height:60px;">
-                                        </td>
-                                    </tr>
-                                </table>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="640"
-                                    style="width: 640px; min-width: 640px;" bgcolor="#FFFFFF" role="presentation"
-                                    class="table-container ">
-                                    <tbody>
-                                        <tr>
-                                            <td style="padding:0 40px;">
-                                                <table cellpadding="0" cellspacing="0" border="0" align="left"
-                                                    width="270" role="presentation" class="table-container">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td height="20"
-                                                                style="line-height:20px;min-height:20px;">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left" valign="top"
-                                                                style="color: #111111; font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 16px; line-height: 16px;font-weight:bold;">
-                                                                <a href="">Ver políticas del parque</a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td height="10"
-                                                                style="line-height:10px;min-height:10px;">
-                                                            </td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <table cellpadding="0" cellspacing="0" border="0" align="right"
-                                                    width="270" role="presentation" class="table-container">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td height="20"
-                                                                style="line-height:20px;min-height:20px;">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left" valign="top"
-                                                                style="color: #111111; font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 16px; line-height: 16px;font-weight:bold;">
-                                                                <a href=""> términos y condiciones</a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td height="10"
-                                                                style="line-height:10px;min-height:10px;">
-                                                            </td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -568,13 +507,15 @@
                                     align="center" bgcolor="#f1f1f1" class="social-icons">
                                     <tr>
                                         <td style="padding:0 10px 0 10px;">
-                                            <a href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank"><img
+                                            <a href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d"
+                                                target="_blank"><img
                                                     src="{{ url('frontend/img/socials/social-facebook.png') }}"
                                                     alt="Social Icons" width="30" height="30"
                                                     class="social-icon"></a>
                                         </td>
                                         <td style="padding:0 10px 0 10px;">
-                                            <a href="https://www.instagram.com/cosmic_bowling/profilecard/?igsh=dXJzZGV4eDg5OG1z" target="_blank"><img
+                                            <a href="https://www.instagram.com/cosmic_bowling/profilecard/?igsh=dXJzZGV4eDg5OG1z"
+                                                target="_blank"><img
                                                     src="{{ url('frontend/img/socials/social-instagram.png') }}"
                                                     alt="Social Icons" width="30" height="30"
                                                     class="social-icon"></a>

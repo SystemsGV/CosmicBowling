@@ -202,6 +202,7 @@ function handleRadioChange(selectedRadio) {
     document.getElementById(
         "l-guests"
     ).innerHTML = ` ${typeLane} <strong> X ${selectGuests} Invitados </strong>`;
+
     sessionStorage.setItem("guests", selectGuests);
     priceLeft(1, selectGuests, selectedPrice, priceShoe, line);
 }
@@ -349,6 +350,8 @@ const updateGuests = async (date, one, two, three, four) => {
             guests.innerHTML = ` ${typeLane} <strong> X ${data.calculated} Invitados </strong>`;
             line = Math.ceil(inputGuests.value / data.limit);
             labelLine.innerHTML = line;
+
+            console.log(line);
 
             const selectedPrice = document
                 .getElementById(selectedButtonId)
@@ -837,7 +840,6 @@ document.addEventListener("DOMContentLoaded", function () {
             wToast.show();
             return;
         }
-        console.log(observation.value);
 
         if (facturaRadio.checked) {
             const rsocial = document.getElementById("rsocial").value;
