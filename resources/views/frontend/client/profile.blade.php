@@ -13,11 +13,11 @@
                         <button class="btn-close position-absolute top-0 end-0 mt-3 me-3 d-lg-none" type="button"
                             data-bs-dismiss="offcanvas" data-bs-target="#sidebarAccount" aria-label="Close"></button>
                         <div class="offcanvas-body">
-                            <div class="pb-2 pb-lg-0 mb-4 mb-lg-5">
+                           <div class="pb-2 pb-lg-0 mb-4 mb-lg-5">
                                 <img class="d-block rounded-circle mb-2" src="{{ asset('frontend/img/avatar/51.jpg') }}"
-                                    width="80" alt="Isabella Bocouse">
-                                <h3 class="h5 mb-1">Isabella Bocouse</h3>
-                                <p class="fs-sm text-body-secondary mb-0">bocouse@example.com</p>
+                                    width="80" alt="{{ $client->names_client }} {{$client->lastname_pat}}">
+                                <h3 class="h5 mb-1">{{ $client->names_client }} {{$client->lastname_pat}}</h3>
+                                <p class="fs-sm text-body-secondary mb-0">{{ $client->email_client }}</p>
                             </div>
                             <nav class="nav flex-column pb-2 pb-lg-4 mb-3">
                                 <h4 class="fs-xs fw-medium text-body-secondary text-uppercase pb-1 mb-2">Cuenta</h4>
@@ -25,16 +25,16 @@
                                     <i class="ai-user-check fs-5 opacity-60 me-2"></i>
                                     Perfil
                                 </a>
-                                <a class="nav-link fw-semibold py-2 px-0 disabled" href="account-settings.html">
+                                <!--<a class="nav-link fw-semibold py-2 px-0 disabled" href="account-settings.html">
                                     <i class="ai-settings fs-5 opacity-60 me-2"></i>
                                     Configuración
-                                </a>
+                                </a>-->
                             </nav>
 
                             <nav class="nav flex-column">
                                 <a class="nav-link fw-semibold py-2 px-0" href="javascript:void(0)" id="logoutbtn">
                                     <i class="ai-logout fs-5 opacity-60 me-2"></i> 
-                                    Cerrar Sesión
+                                    Cerrar sesión
                                 </a>
                             </nav>
                         </div>
@@ -99,7 +99,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3">
                             <i class="ai-cart text-primary lead pe-1 me-2"></i>
-                            <h2 class="h4 mb-0">Reservas Realizadas</h2>
+                            <h2 class="h4 mb-0">Reservas realizadas</h2>
                             <!-- <a class="btn btn-sm btn-secondary ms-auto" href="account-orders.html">Ver Todo</a> -->
                         </div>
 
