@@ -110,7 +110,7 @@ class PaymentSummaryClient extends Mailable
         $pdf->Cell(50, 10, $this->data['names'], 0, 1);
 
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(50, 10, $this->data['document'] . "", 0, 0);
+        $pdf->Cell(50, 10, 'Doc. Identidad' . "", 0, 0);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(50, 10, $this->data['names'], 0, 1);
 

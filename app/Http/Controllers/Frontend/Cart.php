@@ -130,7 +130,7 @@ class Cart extends Controller
         if (isset($sessionData['type']) && $sessionData['type'] === 'Boleta') {
 
             // Obtener la descripción del documento
-            
+
 
 
             // Preparar los datos del cliente
