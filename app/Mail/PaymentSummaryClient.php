@@ -58,11 +58,9 @@ class PaymentSummaryClient extends Mailable
     {
         if (file_exists($this->pdfPath)) {
             return [
-                [
-                    'path' => $this->pdfPath,
-                    'as' => 'ticket_' . $this->data['purchaseNumber'] . '.pdf',
-                    'mime' => 'application/pdf'
-                ]
+                \Illuminate\Mail\Mailables\Attachment::fromPath($this->pdfPath)
+                    ->as('ticket_' . $this->data['purchaseNumber'] . '.pdf')
+                    ->withMime('application/pdf'),
             ];
         }
     }
