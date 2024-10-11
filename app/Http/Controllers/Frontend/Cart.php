@@ -125,18 +125,16 @@ class Cart extends Controller
         $reservationCount = AdminCart::countReservationsByClient($client->id_client);
         $frequency = $reservationCount > 0 ? 1 : 0;
 
+        // Obtener la descripción del documento
         $sunatDescription = $client->sunatTypedoc ? $client->sunatTypedoc->description_doc : null;
 
         if (isset($sessionData['type']) && $sessionData['type'] === 'Boleta') {
-
-            // Obtener la descripción del documento
-
-
 
             // Preparar los datos del cliente
             $clientData = [
                 'id_client' => $client->id_client,
                 'document_id' => $client->document_id,
+                'number_client' => $client->number_doc,
                 'number_doc' => $client->number_doc,
                 'lastname_pat' => $client->lastname_pat,
                 'lastname_mat' => $client->lastname_mat,
@@ -160,6 +158,7 @@ class Cart extends Controller
                 'id_client' => $client->id_client,
                 'lastname_pat' => $client->lastname_pat,
                 'lastname_mat' => $client->lastname_mat,
+                'number_client' => $client->number_doc,
                 'names' => $client->names_client,
                 'email' => $client->email_client,
                 'phone' => $client->phone_client,

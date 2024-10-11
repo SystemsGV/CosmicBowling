@@ -85,6 +85,7 @@ class Booking extends Controller
         $emailDetails = [
             'email' => $billing['email'],
             'document' => $billing['document'],
+            'client' => $billing['number_client'],
             'purchaseNumber' => $purchaseNumber,
             'description' => $description,
             'formattedDateTime' => $formattedDateTime,
