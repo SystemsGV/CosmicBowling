@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\PaymentHelper;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendPaymentSummaryMail;
+use App\Mail\PaymentSummaryClient;
 use App\Models\Admin\calendarIntervals;
 use App\Models\Admin\Cart;
 use App\Services\VisaNetService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class Booking extends Controller
 {
@@ -93,7 +95,7 @@ class Booking extends Controller
             'guests' => $guests,
         ];
 
-        SendPaymentSummaryMail::dispatch($emailDetails);
+        Mail::to('jsistemasgv@gmail.com')->send(new PaymentSummaryClient($emailDetails));
 
         return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests', 'title'));
     }
