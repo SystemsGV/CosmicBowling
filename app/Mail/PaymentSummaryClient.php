@@ -21,7 +21,7 @@ class PaymentSummaryClient extends Mailable
         $this->data = $data;
 
         $this->pdfPath = public_path('tickets/ticket_' . $this->data['purchaseNumber'] . '.pdf');
-        $this->generatePDF(); // Método para generar el PDF
+        $this->generatePDF($this->data['purchaseNumber']); // Método para generar el PDF
     }
 
     /**
@@ -59,22 +59,19 @@ class PaymentSummaryClient extends Mailable
         if (file_exists($this->pdfPath)) {
             return [
                 [
-                    'path' => $this->pdfPath, 
-                    'as' => 'ticket_' . $this->data['purchaseNumber'] . '.pdf', 
+                    'path' => $this->pdfPath,
+                    'as' => 'ticket_' . $this->data['purchaseNumber'] . '.pdf',
                     'mime' => 'application/pdf'
                 ]
             ];
-        } else {
-            \Log::error('El archivo PDF no existe: ' . $this->pdfPath);
-            return [];
         }
     }
 
-    public function generatePDF()
+    public function generatePDF($number)
     {
         require(public_path('fpdf/fpdf.php'));
 
-        $qr = $this->generarQRTransparente('1240515151');
+        $qr = $this->generarQRTransparente($number);
 
         // Crear una nueva instancia de FPDF
         $pdf = new \FPDF('P', 'mm', 'A4');
