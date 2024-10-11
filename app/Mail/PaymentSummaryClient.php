@@ -67,7 +67,7 @@ class PaymentSummaryClient extends Mailable
 
     public function generatePDF($number)
     {
-        require(public_path('fpdf/fpdf.php'));
+        require_once 'public/fpdf/fpdf.php';
 
         $qr = $this->generarQRTransparente($number);
 
