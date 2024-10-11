@@ -107,38 +107,38 @@ class PaymentSummaryClient extends Mailable
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Cell(50, 10, 'APELLIDOS Y NOMBRES:', 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, 'GORA RAMOS Marlon Emerson', 0, 1);
+        $pdf->Cell(50, 10, $this->data['names'], 0, 1);
 
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(50, 10, 'DNI:', 0, 0);
+        $pdf->Cell(50, 10, $this->data['document'] . "", 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, '75214038', 0, 1);
+        $pdf->Cell(50, 10, $this->data['names'], 0, 1);
 
         // Añadir la información del ticket
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Cell(50, 10, 'NRO TICKET:', 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, '#110758', 0, 1);
+        $pdf->Cell(50, 10, '#' . $this->data['purchaseNumber'], 0, 1);
 
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Cell(50, 10, 'PRECIO:', 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, 'S/. 96', 0, 1);
+        $pdf->Cell(50, 10, 'S/. ' . $this->data['amount'], 0, 1);
 
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Cell(50, 10, 'FECHA ENTRADA:', 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, '31/10/2024', 0, 1);
+        $pdf->Cell(50, 10, $this->data['formattedDateTime'], 0, 1);
 
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Cell(50, 10, 'DETALLE:', 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, '31/10/2024', 0, 1);
+        $pdf->Cell(50, 10, utf8_encode($this->data['description']), 0, 1);
 
 
         // Añadir el código QR
         $pdf->Ln(10);
-        $pdf->Image($qr, 80, $pdf->GetY(), 50, 50);
+        $pdf->Image($qr, 130, 46, 60, 60);
 
         // Añadir la fecha
         $pdf->Ln(60);

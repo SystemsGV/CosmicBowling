@@ -83,7 +83,7 @@ class TestView extends Controller
 
         // Añadir el código QR
         $pdf->Ln(10);
-        $pdf->Image($qr, 80, $pdf->GetY(), 50, 50);
+        $pdf->Image($qr, 130, 46, 60, 60);
 
         // Añadir la fecha
         $pdf->Ln(60);
