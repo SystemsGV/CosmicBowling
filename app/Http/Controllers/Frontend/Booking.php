@@ -11,8 +11,6 @@ use App\Models\Admin\Cart;
 use App\Services\VisaNetService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class Booking extends Controller
 {
@@ -95,7 +93,7 @@ class Booking extends Controller
             'guests' => $guests,
         ];
 
-        Mail::to('jsistemasgv@gmail.com')->send(new PaymentSummaryClient($emailDetails));
+        SendPaymentSummaryMail::dispatch($emailDetails);
 
         return view('frontend.cart.details', compact('purchaseNumber', 'description', 'formattedDateTime', 'card', 'amount', 'names', 'hours', 'guests', 'title'));
     }

@@ -1,22 +1,100 @@
-@extends('frontend/layouts/app')
+<!DOCTYPE html>
+<html lang="es">
 
-@section('content')
-    <div class="container pt-5 pb-lg-4 pb-xl-5 mt-5">
-        <div class="row pt-xl-4">
-            <a href="#" class="card card-hover-primary bg-secondary border-0 h-100 text-decoration-none ">
-                <div class="card-body text-center">
-                    <i class="ai-clock h1 fw-normal d-block mb-4"></i>
-                    <h3>No hay horarios disponibles</h3>
-                    <p class="card-text">Actualmente no hay horarios disponibles para este servicio. Por favor, intenta más
-                        tarde.</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket de Ingreso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .ticket {
+            width: 550px;
+            border: 2px solid black;
+            padding: 10px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #b12b77;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .header .title {
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .content {
+            padding: 10px;
+        }
+
+        .content .section {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content .section div {
+            width: 45%;
+        }
+
+        .content .section div p {
+            margin: 5px 0;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .qr-code img {
+            width: 160px;
+            height: 160px;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ticket">
+        <div class="header">
+            <div class="title">COSMIC BOWLING</div>
+            <div class="subtitle">TICKET DE RESERVA</div>
+        </div>
+        <div class="content">
+            <div class="section">
+                <div>
+                    <p><strong>APELLIDOS Y NOMBRES</strong><br>GORA RAMOS Marlon Emerson</p>
+                    <p><strong>DNI</strong><br>75214038</p>
+                    <p><strong>DETALLE</strong><br></p>
                 </div>
-            </a>
+                <div>
+                    <p><strong>NRO TICKET</strong><br>110758</p>
+                    <p><strong>PRECIO</strong><br>96</p>
+                </div>
+            </div>
+            <div class="qr-code">
+                <!-- Aquí insertas la imagen del QR -->
+                <img src="{{ $qr }}" alt="QR Code">
+            </div>
+        </div>
+        <div class="footer">
+            <p><strong>FECHA ENTRADA</strong><br>31/10/2024</p>
         </div>
     </div>
-@endsection()
+</body>
 
-@section('styles')
-@endsection()
-
-@section('scripts')
-@endsection
+</html>

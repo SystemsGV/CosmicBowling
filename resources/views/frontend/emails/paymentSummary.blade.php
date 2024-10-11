@@ -332,7 +332,7 @@
                                                 style="color:#5a5a5a;padding:20px 40px 0 40px;font-family: 'Lato', Arial, Helvetica, sans-serif;font-weight:normal;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.4;"
                                                 class="table-container">
                                                 Adjunto a este correo encontrará su QR de reserva, en el ingreso se le
-                                                solicitará una copia impresa del QR adjunto y el DNI de la persona que
+                                                solicitará el QR adjunto y el DNI de la persona que
                                                 reservo para validar sus datos.
                                             </td>
                                         </tr>

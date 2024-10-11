@@ -24,7 +24,8 @@ class SendPaymentSummaryMail implements ShouldQueue
 
     public function handle()
     {
+        $email = $this->data['email'];
         // Enviar el correo
-        Mail::to('jsistemasgv@gmail.com')->send(new PaymentSummaryClient($this->data));
+        Mail::to($email)->send(new PaymentSummaryClient($this->data));
     }
 }
