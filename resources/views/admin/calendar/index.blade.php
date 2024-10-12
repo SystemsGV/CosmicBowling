@@ -16,7 +16,7 @@
                             <button class="btn btn-primary btn-toggle-sidebar" data-bs-toggle="offcanvas"
                                 data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
                                 <i class="mdi mdi-plus me-1"></i>
-                                <span class="align-middle">Agregar Evento</span>
+                                <span class="align-middle">Agregar Horario</span>
                             </button>
                         </div>
                     </div>
@@ -49,10 +49,10 @@
                             </div>
 
                             <!-- <div class="form-check mb-3">
-                                                                                                                                <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                                                                                                                    data-value="business" checked="">
-                                                                                                                                <label class="form-check-label" for="select-business">Business</label>
-                                                                                                                            </div>-->
+                                                                                                                                    <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                                                                                                                        data-value="business" checked="">
+                                                                                                                                    <label class="form-check-label" for="select-business">Business</label>
+                                                                                                                                </div>-->
 
                             <div class="form-check form-check-warning mb-3">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-family"

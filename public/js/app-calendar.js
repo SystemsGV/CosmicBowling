@@ -125,16 +125,26 @@ isRtl && (direction = "rtl"),
 
                 // Verifica si es feriado y ajusta el precio si es necesario
                 promise = promise.then((price) => {
-                    return checkHoliday(k.value).then(
-                        (isHoliday) => (isHoliday ? prices[0] : price) // Usa el precio del domingo si es feriado
-                    );
+                   let dayF = moment(k.value);
+
+                    return checkHoliday(k.value).then((isHoliday) => {
+                        if (isHoliday) {
+                            // Si es feriado, establecer la hora en 1:30 PM y usar el precio del domingo
+                            k.value = dayF
+                                .hour(13)
+                                .minute(30)
+                                .second(0)
+                                .format("YYYY-MM-DD HH:mm");
+                            return prices[0]; // Precio del domingo
+                        }
+                        return price; // Si no es feriado, devolver el precio actual
+                    });
                 });
 
                 // Asigna el precio final o maneja errores
                 promise
                     .then((price) => {
                         M.value = price; // Asigna el precio al campo M
-                        console.log("Precio final:", price);
                     })
                     .catch((error) => {
                         console.error(
@@ -204,32 +214,36 @@ isRtl && (direction = "rtl"),
                     const formattedDate = date.format("YYYY-MM-DD");
                     const dayOfWeek = date.day();
 
-                    // Mapeo de días de la semana a horas
+                    // Mapeo de días de la semana a horas con minutos en 30
                     const defaultHours = {
-                        0: 13, // Domingo
-                        1: 15, // Lunes
-                        2: 15, // Martes
-                        3: 15, // Miércoles
-                        4: 15, // Jueves
-                        5: 15, // Viernes
-                        6: 13, // Sábado
+                        0: "13:30", // Domingo
+                        1: "15:30", // Lunes
+                        2: "15:30", // Martes
+                        3: "15:30", // Miércoles
+                        4: "15:30", // Jueves
+                        5: "15:00", // Viernes
+                        6: "13:30", // Sábado
                     };
 
                     const defaultHour = defaultHours[dayOfWeek]; // Obtener la hora predeterminada según el día de la semana
 
+                    // Descomponer la hora y minutos de defaultHour
+                    const [hour, minute] = defaultHour.split(":").map(Number);
+
                     u(),
                         C.show(),
-                        b && (b.innerHTML = "Agregar Evento"), // DOM Init Button
+                        b && (b.innerHTML = "Agregar Horario"), // DOM Init Button
                         (y.innerHTML = "Agregar");
                     y.classList.remove("btn-update-event");
                     y.classList.add("btn-add-event");
                     S.classList.add("d-none");
 
                     k.value = date
-                        .hour(defaultHour)
-                        .minute(0)
+                        .hour(hour)
+                        .minute(minute)
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
+
                     w.value = date
                         .hour(23)
                         .minute(0)
@@ -242,7 +256,7 @@ isRtl && (direction = "rtl"),
                             (e.jsEvent.preventDefault(),
                             window.open(a.url, "_blank")),
                         C.show(),
-                        b && (b.innerHTML = "Actualizar Evento"), // DOM Update OffCanvas
+                        b && (b.innerHTML = "Actualizar Horario"), // DOM Update OffCanvas
                         (y.innerHTML = "Actualizar"),
                         y.classList.add("btn-update-event"),
                         y.classList.remove("btn-add-event"),
