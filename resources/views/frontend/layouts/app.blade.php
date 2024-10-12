@@ -298,7 +298,7 @@
                 <div class="col-md-5 col-xl-4 offset-md-1 offset-xl-2 offset-xxl-3">
                     <div class="row row-cols-2">
                         <div class="col">
-                            <ul class="nav flex-column pb-4 mb-2 pb-md-5 mb-lg-1">
+                            <!--  <ul class="nav flex-column pb-4 mb-2 pb-md-5 mb-lg-1">
                                 <li class="nav-item mt-1">
                                     <a class="nav-link py-1 px-0" href="#">Quiénes Somos</a>
                                 </li>
@@ -334,7 +334,7 @@
                                     aria-label="Tik Tok">
                                     <i class="ai-tiktok"></i>
                                 </a>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="col">
                             <br>
@@ -350,6 +350,23 @@
                                         un correo</a>
                                 </li>
                             </ul>
+                            <div class="d-flex">
+                                <a class="btn btn-icon btn-sm btn-secondary btn-instagram rounded-circle me-3 bg-primary"
+                                    href="https://www.instagram.com/cosmic_bowling/profilecard/?igsh=dXJzZGV4eDg5OG1z"
+                                    target="_blank" aria-label="Instagram">
+                                    <i class="ai-instagram"></i>
+                                </a>
+                                <a class="btn btn-icon btn-sm btn-secondary rounded-circle me-3 bg-primary"
+                                    href="https://www.facebook.com/cosmicbowling1?mibextid=LQQJ4d" target="_blank"
+                                    aria-label="Facebook">
+                                    <i class="ai-facebook"></i>
+                                </a>
+                                <a class="btn btn-icon btn-sm btn-secondary btn-primary rounded-circle bg-primary"
+                                    href="https://www.tiktok.com/@cosmic_bowling?_t=8pfSQKZBpxO&_r=1" target="_blank"
+                                    aria-label="Tik Tok">
+                                    <i class="ai-tiktok"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
