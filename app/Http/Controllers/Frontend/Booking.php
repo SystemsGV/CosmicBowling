@@ -80,7 +80,7 @@ class Booking extends Controller
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $datetime);
         $formattedDateTime = $date->format('d/m/Y h:i A');
 
-        $this->modifiedInterval($summary['quant ity']);
+        $this->modifiedInterval($summary['quantity']);
 
         $emailDetails = [
             'email' => $billing['email'],
