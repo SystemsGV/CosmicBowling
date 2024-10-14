@@ -818,6 +818,8 @@
     <script src="{{ asset('frontend/vendor/flatpickr/dist/flatpickr.min.js') }}"></script>
     <script src="{{ asset('frontend/vendor/flatpickr/lang/es.js') }}"></script>
     <script>
+        const holiday = @json($isHoliday);
+
         const calendarItems = @json($hours);
     </script>
     <script src="{{ asset('frontend/js/pages/cart.js') }}"></script>

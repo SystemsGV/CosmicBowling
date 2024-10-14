@@ -22,10 +22,10 @@ localStorage.setItem("limit", "");
 sessionStorage.clear();
 
 const radioHours = document.querySelectorAll('input[name="c-hour"]'),
-    priceShoe = xwyz === "4" ? 0 : 8,
     typeLane = xwyz == 4 ? "" : "Alquiler Calzado";
 let selectedButtonId = null,
     selectedPrice,
+    priceShoe = xwyz === "4" ? 0 : holiday,
     line = 1,
     globalDiscount = 0,
     globalDiscountType = "",
@@ -71,7 +71,6 @@ function getNextHalfHours(timeString) {
     const twoHalfHoursLater = new Date(now);
     const threeHalfHoursLater = new Date(now);
 
-    // Agregar 30 minutos para obtener la siguiente media hora
     oneHalfHourLater.setMinutes(now.getMinutes() + 30);
 
     // Manejar el desbordamiento de los minutos
@@ -292,6 +291,8 @@ const getProductCalendar = async (subcategory, date) => {
         }
         const data = await response.json();
         preloader.classList.add("hidden");
+        console.log(data);
+        
         return data;
     } catch (error) {
         console.error("Error al obtener la data:", error);
@@ -317,10 +318,13 @@ const updateUI = async () => {
         lHour2.innerHTML = "2 Horas";
         cHour2.checked = false;
         cHour2.disabled = true;
+        
 
         const hours = await getProductCalendar(xwyz, selectedDate);
 
-        generateRadioButtons(hours);
+        priceShoe = xwyz === "4" ? 0 : hours['isHoliday'];
+
+        generateRadioButtons(hours['hours']);
     } catch (error) {
         console.error("Error al actualizar la interfaz de usuario:", error);
     }
@@ -1239,7 +1243,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (result.error) {
             displayErrorMessage(loginForm, result.error);
         } else {
-            // Si no hay error, limpiar cualquier alerta de error existente
             clearErrorMessage(loginForm);
         }
         resetButtonState(loginButton, buttonText);

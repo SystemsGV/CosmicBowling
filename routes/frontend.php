@@ -38,6 +38,7 @@ Route::controller(Cart::class)->group(function () {
   Route::post('/cartsession', 'cartData');
   Route::post('/billingsession', 'billingData');
   Route::get('/sesiones', 'showSession');
+  Route::get('/holiday/{date}', 'verifyHoliday');
   Route::post('/getBtnPayment', 'paymentData');
 });
 

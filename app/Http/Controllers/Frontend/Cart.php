@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\calendarIntervals;
 use App\Models\Admin\Cart as AdminCart;
+use App\Models\Admin\Holidays;
 use App\Models\Admin\SubCategories;
 use App\Models\Admin\Order;
 use DateTime;
@@ -47,10 +48,10 @@ class Cart extends Controller
             // Get enabled items grouped by product and date for the selected subcategory
             $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory->id_subcategory, $tomorrow);
 
-            // return response()->json($hours);
+            $isHoliday = $this->verifyHoliday($tomorrow);
 
             // Return the view with the subcategory, associated products, enabled product, and hours data
-            return view('frontend.cart.cart', compact('subcategory', 'hours', 'title'));
+            return view('frontend.cart.cart', compact('subcategory', 'hours', 'title', 'isHoliday'));
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
@@ -95,7 +96,13 @@ class Cart extends Controller
     public function show($subcategory, $date)
     {
         $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory, $date);
-        return response()->json($hours);
+        $isHoliday = $this->verifyHoliday($date); // Obtiene el dato directamente del JSON
+    
+        // Combina ambos valores en un array
+        return response()->json([
+            'hours' => $hours,
+            'isHoliday' => $isHoliday
+        ]);
     }
 
     public function cartData(Request $request)
@@ -362,8 +369,26 @@ class Cart extends Controller
         return response()->json(session()->all());
     }
 
+    public function verifyHoliday($date)
+    {
+        // Convierte la fecha a un objeto DateTime
+        $date = new DateTime($date);
+        $dateIn = $date->format('Y-m-d');
 
+        // Verifica si es un día feriado activo
+        $isHoliday = Holidays::where('date_holiday', $dateIn)
+            ->where('status_holiday', 1)
+            ->exists();
 
+        // Verifica si es sábado (6) o domingo (0)
+        $dayOfWeek = $date->format('w'); // 0 para domingo, 6 para sábado
+        $isWeekend = in_array($dayOfWeek, [0, 6]);
+
+        // Retorna 10 si es feriado o fin de semana, 8 en caso contrario
+        $result = ($isHoliday || $isWeekend) ? 10 : 8;
+
+        return $result;
+    }
 
 
     public function destroy($id)
