@@ -66,7 +66,10 @@ class OrdersController extends Controller
 
   public function validateReservation($code)
   {
-    $booking = Booking::where('reservation_code', $code)->first();
+    $booking = Booking::where('reservation_code', $code)
+      ->orWhere('order_id', $code)
+      ->first();
+
 
     if ($booking) {
       $booking->status = "used";
