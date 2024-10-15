@@ -97,7 +97,7 @@ class Cart extends Controller
     {
         $hours = calendarIntervals::filterBySubcategoryAndDate($subcategory, $date);
         $isHoliday = $this->verifyHoliday($date); // Obtiene el dato directamente del JSON
-    
+
         // Combina ambos valores en un array
         return response()->json([
             'hours' => $hours,

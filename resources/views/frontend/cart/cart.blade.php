@@ -29,7 +29,7 @@
     </div>
 
     <section class="container py-5 mt-4 mt-5 mt-lg-5 mb-lg-4 my-xl-5">
-        <h2 class="h1 text-center pt-2 pt-sm-3">COMIENZE SU RESERVA DE CARRIL</h2>
+        <h2 class="h1 text-center pt-2 pt-sm-3">COMIENCE SU RESERVA DE BOWLING</h2>
         <p class="text-center pb-3 mb-3 mb-lg-4" id="xwyz" data-id={{ $subcategory->id_subcategory }}>
             {{ $subcategory->name_subcategory }}</p>
 
@@ -101,7 +101,7 @@
                             </div>
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
-                                <h4 class=" ms-1">3. Selecciona el tiempo para jugar bolos </h4>
+                                <h4 class=" ms-1">3. Selecciona el tiempo de juego </h4>
                             </h3>
 
                             <div class="container">
@@ -128,8 +128,7 @@
                                 <h4 class=" ms-1">4. Selecciona los integrantes</h4>
                                 <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }}
                                     jugadores por pista. Proporcione un recuento
-                                    exacto de invitados. No podemos garantizar alojamiento para cambios en el tamaño del
-                                    grupo.
+                                    exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
                                 </span>
                                 <div class="count-input bg-gray rounded-3">
                                     <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement=""
@@ -155,7 +154,7 @@
                             <div class="position-md-sticky top-0 ps-md-4 ps-lg-5 ps-xl-0">
                                 <div class="d-none d-md-block" style="padding-top: 90px;"></div>
                                 <h2 class="pb-2 pt-md-2 my-4">
-                                    Resumen de la Reserva
+                                    Resumen de la reserva
                                 </h2>
 
                                 <!-- Item -->
@@ -164,7 +163,7 @@
                                         <div class="d-flex">
                                             <div class="me-3">
                                                 <h3 class="h4 mb-2">
-                                                    Fecha de Reserva :
+                                                    Fecha de reserva :
                                                 </h3>
                                                 <div class="d-sm-flex flex-wrap">
                                                     <div class="text-body-secondary  me-3">
@@ -231,7 +230,7 @@
                 <div class="container position-relative z-2 pt-5 pb-lg-5 pb-md-4 pb-2">
                     <div class="row">
                         <div class="col-lg-7">
-                            <h1 class="h2 pb-3">DATOS FACTURACIÓN</h1>
+                            <h1 class="h2 pb-3">DATOS DE FACTURACIÓN</h1>
                             <!-- Checkout form fields -->
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 1.<span class="text-decoration-underline ms-1">Información de Facturación</span>
@@ -266,7 +265,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label fs-base" for="c-email">Documento Identidad</label>
+                                    <label class="form-label fs-base" for="c-email">Documento de Identidad</label>
                                     <div class="position-relative"><i
                                             class="ai-dashboard fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                         <input class="form-control form-control-lg ps-5" type="text"
@@ -355,7 +354,8 @@
                             <div class="form-check mb-4">
                                 <input class="form-check-input check-input" type="checkbox" id="save-info">
                                 <label class="form-check-label" for="save-info-1">
-                                    <span class="text-body-secondary">Su información personal se utilizará para procesar su reserva y para respaldar su experiencia en este sitio.
+                                    <span class="text-body-secondary">Su información personal se utilizará para procesar su
+                                        reserva y para respaldar su experiencia en este sitio.
                                 </label>
                             </div>
 
@@ -391,7 +391,7 @@
             <div class="tab-pane fade" id="fly-yoga" role="tabpanel">
                 <div class="row align-items-lg-center">
                     <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
-                        <h1 class="h2 pb-3">DATOS FACTURACIÓN</h1>
+                        <h1 class="h2 pb-3">DATOS DE FACTURACIÓN</h1>
 
                         <div class="card-body">
                             <div class="d-flex align-items-center mt-sm-n1 mb-0 mb-xl-3">
@@ -483,7 +483,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center w-100">
-                    <h4 class="modal-title w-100">Ingresar a cuenta</h4>
+                    <h4 class="modal-title w-100">Ingresar a tu cuenta</h4>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
@@ -750,8 +750,9 @@
 
                     <p><strong>Cumplir las normativas no es discriminación.</strong></p>
 
-                    <p>Ante cualquier consulta, puede comunicarse al <a href="https://api.whatsapp.com/send?phone=51995953955"
-                            target="_blank">(+51) 995 953 955</a> o envíanos un correo a: <a href="mailto:cosmicbowling@gmail.com"
+                    <p>Ante cualquier consulta, puede comunicarse al <a
+                            href="https://api.whatsapp.com/send?phone=51995953955" target="_blank">(+51) 995 953 955</a> o
+                        envíanos un correo a: <a href="mailto:cosmicbowling@gmail.com"
                             target="_blank">cosmicbowling@gmail.com</a></p>
 
                 </div>

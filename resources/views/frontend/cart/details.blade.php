@@ -26,7 +26,7 @@
                     <tr>
                         <td scope="row" class="border-0 text-start py-3 ps-4">
                             <span class="d-flex align-items-center text-body fw-medium">
-                                Nombre y Apellido
+                                Nombre y Apellidos
                             </span>
                         </td>
                         <td class="border-0 py-3"><span class="text-dark">{{ $names }}</span></td>

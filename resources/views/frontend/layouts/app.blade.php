@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SEO meta tags -->
-    <title>ComisBowling | {{ $title }}</title>
+    <title>Cosmic Bowling | {{ $title }}</title>
     <meta name="description"
         content="¿Buscas un plan de otro planeta? Juega boliche en un ambiente glow, con música moderna y mucha, pero mucha buena vibra">
     <meta name="keywords" content="bowling, perú, bolos, glow, ambiente, cosmicbowling, cosmic, juego de bolos">
