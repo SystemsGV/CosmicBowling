@@ -7,8 +7,9 @@
 
         <h4 class="py-3 mb-2">Feriados</h4>
 
-        <p class="mb-4">Each category (Basic, Professional, and Business) includes the four predefined roles shown
-            below.</p>
+        <p class="mb-4">Esta tabla muestra la lista de feriados registrados, incluyendo su nombre, fecha y estado actual.
+            Puedes realizar acciones como editar cada feriado desde la columna de acciones.</p>
+
 
 
         <!-- Permission Table -->

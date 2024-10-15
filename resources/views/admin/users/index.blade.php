@@ -39,7 +39,7 @@
                     <div class="form-floating form-floating-outline mb-4">
                         <input type="text" class="form-control" id="add-user-fullname" name="fullname" placeholder="John Doe"
                             name="userFullname" aria-label="John Doe">
-                        <label for="add-user-fullname">Full Name</label>
+                        <label for="add-user-fullname">Nombres</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-4">
                         <input type="text" id="add-user-email" name="UserEmail" class="form-control" placeholder="john.doe@example.com"

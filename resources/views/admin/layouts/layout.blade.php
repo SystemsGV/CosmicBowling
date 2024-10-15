@@ -100,7 +100,7 @@
                 </div>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                    <li class="menu-item">
+                  <!--  <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
                             <div data-i18n="Dashboards">Dashboards</div>
@@ -113,11 +113,11 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
 
                     <!-- Reports -->
                     <li class="menu-header fw-medium mt-4">
-                        <span class="menu-header-text" data-i18n="Reports">Validaciones</span>
+                        <span class="menu-header-text" data-i18n="Booking">Reserva</span>
                     </li>
 
                     <li class="menu-item">

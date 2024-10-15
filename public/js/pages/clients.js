@@ -319,7 +319,7 @@ $(function () {
                                 });
                         }),
                         this.api()
-                            .columns(6)
+                            .columns(7)
                             .every(function () {
                                 var t = this,
                                     a = $(

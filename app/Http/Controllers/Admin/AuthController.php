@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('orders.validate');
         }
 
         return view('admin.login');
@@ -49,7 +49,7 @@ class AuthController extends Controller
                 return response()->json([
                     'icon' => 'success',
                     'message' => 'Inicio de sesión exitoso',
-                    'redirect_url' => route('admin.dashboard'), // Asegúrate de tener esta ruta definida
+                    'redirect_url' => route('orders.validate'), // Asegúrate de tener esta ruta definida
                 ]);
             } else {
                 // Contraseña incorrecta
