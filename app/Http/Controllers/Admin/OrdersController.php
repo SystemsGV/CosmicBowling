@@ -66,18 +66,22 @@ class OrdersController extends Controller
 
   public function validateReservation($code)
   {
-    $booking = Booking::where('reservation_code', $code)
-      ->orWhere('order_id', $code)
-      ->first();
-
-
-    if ($booking) {
-      $booking->status = "used";
-      $booking->save();
-
-      return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.']);
-    } else {
-      return response()->json(['icon' => 'error', 'message' => 'No se encontro la reserva.']);
-    }
+      $booking = Booking::where('reservation_code', $code)
+        ->orWhere('order_id', $code)
+        ->first();
+  
+      if ($booking) {
+          if ($booking->status === "used") {
+              return response()->json(['icon' => 'warning', 'message' => 'Esta reserva ya ha sido utilizada.']);
+          }
+  
+          $booking->status = "used";
+          $booking->save();
+  
+          return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.']);
+      } else {
+          return response()->json(['icon' => 'error', 'message' => 'No se encontró la reserva.']);
+      }
   }
+  
 }

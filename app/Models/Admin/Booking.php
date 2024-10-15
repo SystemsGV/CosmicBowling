@@ -78,7 +78,8 @@ class Booking extends Model
 
     public static function getBooking($code)
     {
-        $data = self::where('reservation_code', $code)->first();
+        $data = self::where('reservation_code', $code)
+        ->orWhere('order_id', $code)->first();
 
         // Verificamos que exista un registro antes de continuar
         if (!$data) {
@@ -106,6 +107,7 @@ class Booking extends Model
             'hours' => $data->quantity_hours,
             'price' => $data->amount,
             'shop' =>  $formattedDate,
+            'observation' =>  $formattedDate,
             'status' => $data->status,
         ];
 
