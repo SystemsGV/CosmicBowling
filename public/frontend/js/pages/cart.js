@@ -292,7 +292,7 @@ const getProductCalendar = async (subcategory, date) => {
         const data = await response.json();
         preloader.classList.add("hidden");
         console.log(data);
-        
+
         return data;
     } catch (error) {
         console.error("Error al obtener la data:", error);
@@ -318,13 +318,12 @@ const updateUI = async () => {
         lHour2.innerHTML = "2 Horas";
         cHour2.checked = false;
         cHour2.disabled = true;
-        
 
         const hours = await getProductCalendar(xwyz, selectedDate);
 
-        priceShoe = xwyz === "4" ? 0 : hours['isHoliday'];
+        priceShoe = xwyz === "4" ? 0 : hours["isHoliday"];
 
-        generateRadioButtons(hours['hours']);
+        generateRadioButtons(hours["hours"]);
     } catch (error) {
         console.error("Error al actualizar la interfaz de usuario:", error);
     }

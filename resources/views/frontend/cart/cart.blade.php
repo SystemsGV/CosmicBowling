@@ -76,10 +76,7 @@
                                 <input class="form-control date-picker pe-5  form-control-lg" type="text"
                                     placeholder="Choose date and time"
                                     data-datepicker-options='
-                                    {"altInput": true, 
-                                    "altFormat": "F j, Y", 
-                                    "dateFormat": "Y-m-d", 
-                                    "locale": "es"}'
+                                    {"altInput": true, "altFormat": "F j, Y", "dateFormat": "Y-m-d", "defaultDate": "today", "minDate": "today", "locale" : "es"}'
                                     id="c-date">
                                 <i class="ai-calendar position-absolute top-50 end-0 translate-middle-y me-3"></i>
                             </div>

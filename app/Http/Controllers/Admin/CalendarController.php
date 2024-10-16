@@ -73,9 +73,6 @@ class CalendarController extends Controller
             $timeIntervals = $this->getTimeIntervals($request->input('eventStartDate'), $request->input('eventEndDate'));
 
             foreach ($timeIntervals as $time) {
-                if ($time === '23:00') {
-                    continue; // Saltar esta iteración si el tiempo es 23:00
-                }
                 calendarIntervals::create([
                     'subcategory_id' => $request->input('data-id'),
                     'calendar_id' => $calendarId,
