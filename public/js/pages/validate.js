@@ -105,6 +105,16 @@
                         icon: data.icon,
                         title: data.message,
                     });
+
+                    var pdfUrl = data.pdfUrl;
+
+                    console.log(pdfUrl);
+
+                    var newWindow = window.open(pdfUrl);
+
+                    newWindow.onload = function () {
+                        newWindow.print();
+                    };
                 })
                 .catch((error) => {
                     console.error(

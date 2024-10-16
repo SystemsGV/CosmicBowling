@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Booking;
 use Carbon\Carbon;
 use DateTime;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -71,14 +73,66 @@ class OrdersController extends Controller
       ->first();
 
     if ($booking) {
-      if ($booking->status === "used") {
-        return response()->json(['icon' => 'warning', 'message' => 'Esta reserva ya ha sido utilizada.']);
-      }
+
 
       $booking->status = "used";
       $booking->save();
 
-      return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.']);
+      $html = '<!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>PDF</title>
+          <style>
+          @page { margin-left: 23px; }
+          *	  		{ font-family: "century gothic"; }
+          table 		{ margin: 5px; font-size:12px; border-collapse: collapse; }
+          thead tr td { background-color: #00BCD4; text-align: center; padding: 5px; color: white; }
+          thead 		{ border-bottom: 1px solid #000; border-style: dotted; }
+          tbody tr td	{ padding: 1em; }
+          </style>
+      </head>
+      <body>
+          <h4>Validación de Reserva Web</h4>
+          <p>Fecha: ' . date('Y-m-d H:i:s') . '</p>
+          <table border="1">
+              <thead>
+                  <tr>
+                      <th>Nº Reserva</th>
+                      <th>Producto</th>
+                      <th>Precio</th>
+                  </tr>
+              </thead>
+              <tbody>';
+
+
+      $html .= '<tr>
+                    <td>' . $booking->order_id . '</td>
+                    <td>' . $booking->description . '</td>
+                    <td>S/. ' . $booking->amount . '</td>
+                </tr>';
+
+      $html .= '</tbody></table></body></html>';
+
+      $options = new \Dompdf\Options();
+      $options->set('isRemoteEnabled', true);
+
+      $dompdf = new Dompdf($options);
+
+      $dompdf->loadHtml($html);
+      $dompdf->setPaper([0, 0, 200, 426]);
+
+      $dompdf->render();
+
+      $pdfContent = $dompdf->output();
+
+      $url = public_path('vouchers/' . $booking->order_id . '.pdf');
+      $path = asset('vouchers/' . $booking->order_id . '.pdf');
+
+      file_put_contents($url, $pdfContent);
+
+      return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.', 'pdfUrl' => $path]);
     } else {
       return response()->json(['icon' => 'error', 'message' => 'No se encontró la reserva.']);
     }
