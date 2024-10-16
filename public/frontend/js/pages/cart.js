@@ -233,7 +233,7 @@ function generateRadioButtons(calendarItems) {
         (item) => item.hour !== "23:00:00"
     );
 
-    filteredItems.forEach((item) => {
+    calendarItems.forEach((item) => {
         const formattedTime = formatTime(item.hour);
 
         const radioInput = document.createElement("input");
