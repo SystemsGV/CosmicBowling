@@ -236,9 +236,11 @@ class Cart extends Controller
                 $amount -= $discount;
             }
         }
+        $holidayResult = session('holiday_result');
+
 
         // Agregar el costo de los zapatos después de aplicar el descuento
-        $amount += $totalGuests * self::SHOES_PRICE;
+        $amount += $totalGuests * $holidayResult;
 
         // Guardar los detalles del pedido en la base de datos
         $order = new Order();
@@ -382,10 +384,11 @@ class Cart extends Controller
 
         // Verifica si es sábado (6) o domingo (0)
         $dayOfWeek = $date->format('w'); // 0 para domingo, 6 para sábado
-        $isWeekend = in_array($dayOfWeek, [0, 6]);
+        $isWeekend = in_array($dayOfWeek, [0, 5, 6]);
 
         // Retorna 10 si es feriado o fin de semana, 8 en caso contrario
-        $result = ($isHoliday || $isWeekend) ? 10 : 8;
+        $result = ($isHoliday || $isWeekend) ? 12 : 8;
+        session(['holiday_result' => $result]);
 
         return $result;
     }

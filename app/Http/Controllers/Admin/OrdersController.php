@@ -83,7 +83,7 @@ class OrdersController extends Controller
       return response()->json(['icon' => 'error', 'message' => 'No se encontró la reserva.']);
     }
   }
-  
 
-  public function ticket(){}
+
+  public function ticket() {}
 }
