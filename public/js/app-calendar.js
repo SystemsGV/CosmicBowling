@@ -125,7 +125,7 @@ isRtl && (direction = "rtl"),
 
                 // Verifica si es feriado y ajusta el precio si es necesario
                 promise = promise.then((price) => {
-                   let dayF = moment(k.value);
+                    let dayF = moment(k.value);
 
                     return checkHoliday(k.value).then((isHoliday) => {
                         if (isHoliday) {
@@ -225,10 +225,24 @@ isRtl && (direction = "rtl"),
                         6: "13:30", // Sábado
                     };
 
+                    const defaultFinshHours = {
+                        0: "22:30", // Domingo
+                        1: "22:30", // Lunes
+                        2: "22:30", // Martes
+                        3: "22:30", // Miércoles
+                        4: "22:30", // Jueves
+                        5: "23:00", // Viernes
+                        6: "23:00", // Sábado
+                    };
+
                     const defaultHour = defaultHours[dayOfWeek]; // Obtener la hora predeterminada según el día de la semana
+
+                    const defaultFinsh = defaultFinshHours[dayOfWeek]; // Obtener la hora predeterminada según el día de la semana
 
                     // Descomponer la hora y minutos de defaultHour
                     const [hour, minute] = defaultHour.split(":").map(Number);
+
+                    const [finshHour, finshMinute] = defaultFinsh.split(":").map(Number);
 
                     u(),
                         C.show(),
@@ -245,8 +259,8 @@ isRtl && (direction = "rtl"),
                         .format("YYYY-MM-DD HH:mm");
 
                     w.value = date
-                        .hour(23)
-                        .minute(0)
+                        .hour(finshHour)
+                        .minute(finshMinute)
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
                 },
