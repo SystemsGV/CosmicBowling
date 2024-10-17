@@ -154,19 +154,21 @@
             .table-container img {
                 width: 100% !important;
                 max-width: 100% !important;
-                display: block;
                 height: auto !important;
             }
+
 
             .table-container a {
                 width: 50% !important;
                 max-width: 100% !important;
             }
 
-            .table-container .logo {
-                width: 200px !important;
-                height: 30px !important;
-            }
+            .table-container .logo,
+.table-container .logo-footer {
+    width: auto !important;
+    height: auto !important;
+    max-width: 200px !important;
+}
 
             .table-container .alert-icon {
                 width: 120px !important;
@@ -199,13 +201,7 @@
 
             .mobile-title {
                 font-size: 34px !important;
-            }
-
-            .table-container .logo-footer {
-                width: 129px !important;
-                height: 29px !important;
-                margin-bottom: 20px !important;
-            }
+            
 
             .block-img {
                 width: 100%;
