@@ -107,6 +107,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('validateR/{code}', 'validateReservation');
     });
 
-
-    Route::resource('Usuarios', UserController::class)->names('admin.users');
+    Route::controller(UserController::class)->group(function ($route) {
+        Route::get('Usuarios', 'index')->name('users.index');
+        Route::get('Users/show', 'show');
+        Route::post('Users/add', 'store');
+    });
 });

@@ -10,7 +10,7 @@
             <div class="card-header border-bottom">
                 <h5 class="card-title">Filtro de búsqueda</h5>
                 <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
-                    <div class="col-md-4 user_role"></div>  
+                    <div class="col-md-4 user_role"></div>
                     <div class="col-md-4 user_plan"></div>
                     <div class="col-md-4 user_status"></div>
                 </div>
@@ -37,19 +37,25 @@
             <div class="offcanvas-body mx-0 flex-grow-0 h-100">
                 <form class="add-new-user pt-0" id="UserForm">
                     <div class="form-floating form-floating-outline mb-4">
-                        <input type="text" class="form-control" id="add-user-fullname" name="fullname" placeholder="John Doe"
-                            name="userFullname" aria-label="John Doe">
+                        <input type="text" class="form-control" id="add-user-fullname" name="fullname"
+                            placeholder="John Doe" name="userFullname" aria-label="John Doe">
                         <label for="add-user-fullname">Nombres</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-4">
-                        <input type="text" id="add-user-email" name="UserEmail" class="form-control" placeholder="john.doe@example.com"
-                            aria-label="john.doe@example.com" name="userEmail">
+                        <input type="text" id="add-user-email" name="UserEmail" class="form-control"
+                            placeholder="john.doe@example.com" aria-label="john.doe@example.com" >
                         <label for="add-user-email">Email</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-4">
-                        <input type="text" id="add-user-company" name="UserName" class="form-control" placeholder="Web Developer"
-                            aria-label="jdoe1" name="companyName">
+                        <input type="text" id="add-user-company" name="UserName" class="form-control"
+                            placeholder="Web Developer" aria-label="jdoe1">
                         <label for="add-user-company">Usuario</label>
+                    </div>
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" id="add-user-company" name="password" class="form-control"
+                            placeholder="Web Developer" aria-label="jdoe1">
+                        <label for="add-user-company">Contraseña</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-4">
                         <select id="user-role" name="UserRol" class="form-select">

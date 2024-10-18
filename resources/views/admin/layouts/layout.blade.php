@@ -199,7 +199,7 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{ route('admin.users.index') }}" class="menu-link">
+                        <a href="{{ route('users.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-account-group"></i>
                             <div data-i18n="Users">Usuarios</div>
                         </a>

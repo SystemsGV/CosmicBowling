@@ -43,7 +43,7 @@ $(function () {
         };
     s.length &&
         (e = s.DataTable({
-            ajax: "Usuarios/show",
+            ajax: "Users/show",
             columns: [
                 { data: "id" },
                 { data: "name" },
@@ -346,13 +346,9 @@ $(function () {
             .attr("data-i18n", "Edit User")
             .text("Editar Usuario");
 
-        
-
         $("#offcanvasUser").offcanvas("show");
 
-
         $(".data-submit").text("EDITAR");
-
     });
 
     const f = document.getElementById("UserForm");
@@ -399,9 +395,7 @@ $(function () {
     });
 
     fv.on("core.form.valid", function () {
-        const method = $(".offcanvas-title").attr(
-            "data-i18n"
-        );
+        const method = $(".offcanvas-title").attr("data-i18n");
         if (method == "Edit User") {
             updateDataServe();
         } else {
@@ -409,9 +403,62 @@ $(function () {
         }
     });
 
-    function updateDataServe() {
-        
+    function sendDataServe() {
+        const formData = new FormData(f);
+
+        formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
+
+        fetch("Users/add", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((data) => {
+                        if (data.errors) {
+                            // Mostrar errores en los campos correspondientes
+                            Object.keys(data.errors).forEach((key) => {
+                                const input = document.querySelector(
+                                    `[name=${key}]`
+                                );
+                                if (input) {
+                                    input.classList.add("is-invalid");
+                                    const errorElement =
+                                        input.nextElementSibling;
+                                    if (
+                                        errorElement &&
+                                        errorElement.classList.contains(
+                                            "invalid-feedback"
+                                        )
+                                    ) {
+                                        errorElement.textContent =
+                                            data.errors[key][0];
+                                    }
+                                }
+                            });
+                        }
+                        throw new Error(data.message || "Error en el servidor");
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                f.reset();
+                document
+                    .getElementById("ecommerce-category-title")
+                    .classList.remove("is-valid");
+                e.DataTable().ajax.reload();
+                Toast.fire({
+                    icon: data.icon,
+                    title: data.message,
+                });
+                $("#offcanvasUser").offcanvas("hide");
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
     }
+    function updateDataServe() {}
 
     const Toast = Swal.mixin({
         toast: true,
