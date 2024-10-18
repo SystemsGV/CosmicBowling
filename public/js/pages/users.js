@@ -414,31 +414,9 @@ $(function () {
         })
             .then((response) => {
                 if (!response.ok) {
-                    return response.json().then((data) => {
-                        if (data.errors) {
-                            // Mostrar errores en los campos correspondientes
-                            Object.keys(data.errors).forEach((key) => {
-                                const input = document.querySelector(
-                                    `[name=${key}]`
-                                );
-                                if (input) {
-                                    input.classList.add("is-invalid");
-                                    const errorElement =
-                                        input.nextElementSibling;
-                                    if (
-                                        errorElement &&
-                                        errorElement.classList.contains(
-                                            "invalid-feedback"
-                                        )
-                                    ) {
-                                        errorElement.textContent =
-                                            data.errors[key][0];
-                                    }
-                                }
-                            });
-                        }
-                        throw new Error(data.message || "Error en el servidor");
-                    });
+                    throw new Error(
+                        "Hubo un problema al procesar el formulario."
+                    );
                 }
                 return response.json();
             })
