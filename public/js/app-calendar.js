@@ -226,13 +226,13 @@ isRtl && (direction = "rtl"),
                     };
 
                     const defaultFinshHours = {
-                        0: "22:30", // Domingo
-                        1: "22:30", // Lunes
-                        2: "22:30", // Martes
-                        3: "22:30", // Miércoles
-                        4: "22:30", // Jueves
-                        5: "23:00", // Viernes
-                        6: "23:00", // Sábado
+                        0: "22:00", // Domingo
+                        1: "22:00", // Lunes
+                        2: "22:00", // Martes
+                        3: "22:00", // Miércoles
+                        4: "22:00", // Jueves
+                        5: "22:30", // Viernes
+                        6: "22:30", // Sábado
                     };
 
                     const defaultHour = defaultHours[dayOfWeek]; // Obtener la hora predeterminada según el día de la semana
@@ -242,7 +242,9 @@ isRtl && (direction = "rtl"),
                     // Descomponer la hora y minutos de defaultHour
                     const [hour, minute] = defaultHour.split(":").map(Number);
 
-                    const [finshHour, finshMinute] = defaultFinsh.split(":").map(Number);
+                    const [finshHour, finshMinute] = defaultFinsh
+                        .split(":")
+                        .map(Number);
 
                     u(),
                         C.show(),
