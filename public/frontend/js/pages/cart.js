@@ -1061,6 +1061,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!checkPaymentDesktop.checked) {
                 // Habilitar y marcar el checkbox solo la primera vez
                 checkPaymentDesktop.checked = true;
+                checkPaymentMobile.checked = true;
 
                 // Ejecutar la función getPayment solo una vez
                 getPayment();
@@ -1072,6 +1073,15 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             modal.hide();
         });
+
+    document.querySelectorAll(".open-modal").forEach(function (label) {
+        label.addEventListener("click", function () {
+            var modal = new bootstrap.Modal(
+                document.getElementById("modalScroll")
+            );
+            modal.show();
+        });
+    });
 
     document
         .getElementById("btnRegister")

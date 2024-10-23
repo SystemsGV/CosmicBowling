@@ -382,6 +382,7 @@
                         </button>
                     </div>
                 </div>
+
             </div>
 
             <!-- Fly-yoga -->
@@ -437,6 +438,33 @@
                                     </table>
                                 </div>
                             </div>
+
+
+                            <div class="d-none d-lg-block pt-5 mt-n3">
+                                <div class="form-check mb-4 open-modal">
+                                    <input class="form-check-input check-payment" type="checkbox"
+                                        id="check-payment-desktop" disabled>
+                                    <label class="form-check-label fs-6" for="check-payment-desktop">
+                                        <span class="text-body-secondary">Acepto los</span>
+                                        <a class="fw-medium" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#modalScroll">Términos y Condiciones</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
+                                <div class="form-check mb-4 open-modal">
+                                    <input class="form-check-input check-payment" type="checkbox"
+                                        id="check-payment-mobile" disabled>
+                                    <label class="form-check-label fs-6" for="check-payment-mobile">
+                                        <span class="text-body-secondary">Acepte los</span>
+                                        <a class="fw-medium" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#modalScroll">Términos y Condiciones</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 mt-n3" id="visaNetContainer"></div>
                         </div>
 
                     </div>
@@ -445,31 +473,6 @@
 
                     </div>
 
-                    <div class="d-none d-lg-block pt-5 mt-n3">
-                        <div class="form-check mb-4">
-                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-desktop"
-                                disabled>
-                            <label class="form-check-label" for="check-payment-desktop">
-                                <span class="text-body-secondary">Acepto los</span>
-                                <a class="fw-medium" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
-                        <div class="form-check mb-4">
-                            <input class="form-check-input check-payment" type="checkbox" id="check-payment-mobile"
-                                disabled>
-                            <label class="form-check-label" for="check-payment-mobile">
-                                <span class="text-body-secondary">Acepte los</span>
-                                <a class="fw-medium" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modalScroll">Términos y Condiciones</a>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 mt-n3" id="visaNetContainer"></div>
 
                 </div>
             </div>
@@ -794,6 +797,13 @@
     <link rel="stylesheet" href="{{ asset('frontend/vendor/flatpickr/dist/flatpickr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/loader.css') }}">
     <style>
+        .form-check-label {
+            opacity: 1 !important;
+            /* Asegura que el texto no se vuelva opaco */
+            color: inherit;
+            /* Mantiene el color original del texto */
+        }
+
         .btn-custom {
             padding: 20px;
             font-size: 18px;
