@@ -1054,6 +1054,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    let modalScroll = new bootstrap.Modal(
+        document.getElementById("modalScroll")
+    );
+
+    // Evento para aceptar los términos
     document
         .getElementById("btn-accept-terms")
         .addEventListener("click", function () {
@@ -1067,20 +1072,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 getPayment();
             }
 
-            // Cerrar el modal
-            let modal = bootstrap.Modal.getInstance(
-                document.getElementById("modalScroll")
-            );
-
-            modal.hide();
+            // Cerrar el modal utilizando la instancia reutilizada
+            modalScroll.hide();
         });
 
+    // Evento para abrir el modal
     document.querySelectorAll(".open-modal").forEach(function (label) {
         label.addEventListener("click", function () {
-            var modal = new bootstrap.Modal(
-                document.getElementById("modalScroll")
-            );
-            modal.show();
+            // Mostrar el modal utilizando la instancia reutilizada
+            modalScroll.show();
         });
     });
 
