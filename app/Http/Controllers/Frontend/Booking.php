@@ -87,6 +87,7 @@ class Booking extends Controller
             'document' => $billing['document'],
             'client' => $billing['number_client'],
             'purchaseNumber' => $purchaseNumber,
+            'code' => $summary['code'],
             'description' => $description,
             'formattedDateTime' => $formattedDateTime,
             'amount' => $amount,

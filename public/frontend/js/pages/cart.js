@@ -1071,6 +1071,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let modal = bootstrap.Modal.getInstance(
                 document.getElementById("modalScroll")
             );
+
             modal.hide();
         });
 

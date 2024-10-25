@@ -20,8 +20,8 @@ class PaymentSummaryClient extends Mailable
     {
         $this->data = $data;
 
-        $this->pdfPath = public_path('tickets/ticket_' . $this->data['purchaseNumber'] . '.pdf');
-        $this->generatePDF($this->data['purchaseNumber']); // Método para generar el PDF
+        $this->pdfPath = public_path('tickets/ticket_' . $this->data['code'] . '.pdf');
+        $this->generatePDF($this->data['code']); // Método para generar el PDF
     }
 
     /**
@@ -59,7 +59,7 @@ class PaymentSummaryClient extends Mailable
         if (file_exists($this->pdfPath)) {
             return [
                 \Illuminate\Mail\Mailables\Attachment::fromPath($this->pdfPath)
-                    ->as('ticket_' . $this->data['purchaseNumber'] . '.pdf')
+                    ->as('ticket_' . $this->data['code'] . '.pdf')
                     ->withMime('application/pdf'),
             ];
         }
@@ -116,9 +116,9 @@ class PaymentSummaryClient extends Mailable
 
         // Añadir la información del ticket
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(50, 10, 'NRO TICKET:', 0, 0);
+        $pdf->Cell(50, 10, 'CODIGO RESERVA:', 0, 0);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, '#' . $this->data['purchaseNumber'], 0, 1);
+        $pdf->Cell(50, 10, $this->data['code'], 0, 1);
 
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->Cell(50, 10, 'PRECIO:', 0, 0);

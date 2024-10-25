@@ -86,11 +86,12 @@ class OrdersController extends Controller
           <title>PDF</title>
           <style>
           @page { margin-left: 23px; }
-          *	  		{ font-family: "century gothic"; }
-          table 		{ margin: 5px; font-size:12px; border-collapse: collapse; }
-          thead tr td { background-color: #00BCD4; text-align: center; padding: 5px; color: white; }
-          thead 		{ border-bottom: 1px solid #000; border-style: dotted; }
-          tbody tr td	{ padding: 1em; }
+          * { font-family: "century gothic"; }
+          table { margin: 1px; font-size:12px; border-collapse: collapse; width: 100%; }
+          thead tr td { background-color: #00BCD4; text-align: center; padding: 3px; color: white; }
+          thead { border-bottom: 1px solid #000; border-style: dotted; }
+          tbody tr td { padding: 1em; text-align: center; }
+          .combo-cell { text-align: center; }
           </style>
       </head>
       <body>
@@ -99,32 +100,31 @@ class OrdersController extends Controller
           <table border="1">
               <thead>
                   <tr>
-                      <th>Nº Reserva</th>
+                      <th>Cod. y Nº Reserva</th>
                       <th>Producto</th>
                       <th>Precio</th>
                   </tr>
               </thead>
               <tbody>';
-
-
+      
       $html .= '<tr>
-                    <td>' . $booking->order_id . '</td>
-                    <td>' . $booking->description . '</td>
-                    <td>S/. ' . $booking->amount . '</td>
-                </tr>';
-
+                  <td class="combo-cell">' . $booking->reservation_code . '<br>Nº ' . $booking->order_id . '</td>
+                  <td>' . $booking->description . '</td>
+                  <td>S/. ' . $booking->amount . '</td>
+              </tr>';
+      
       $html .= '</tbody></table></body></html>';
-
+      
       $options = new \Dompdf\Options();
       $options->set('isRemoteEnabled', true);
-
+      
       $dompdf = new Dompdf($options);
-
+      
       $dompdf->loadHtml($html);
       $dompdf->setPaper([0, 0, 200, 426]);
-
+      
       $dompdf->render();
-
+      
       $pdfContent = $dompdf->output();
 
       $url = public_path('vouchers/' . $booking->order_id . '.pdf');

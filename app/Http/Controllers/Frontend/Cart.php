@@ -198,7 +198,7 @@ class Cart extends Controller
         $coupon = null;
 
         // Generar un código de reserva único
-        $reservationCode = strtoupper(Str::random(9));
+        $reservationCode = strtoupper(Str::random(7));
 
         // Obtén otros datos como el precio y la subcategoría
         $calendar = calendarIntervals::filterPayment($cart['product'], $cart['date'], $cart['time']);
