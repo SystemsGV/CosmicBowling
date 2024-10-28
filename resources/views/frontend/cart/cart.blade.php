@@ -441,7 +441,7 @@
 
 
                             <div class="d-none d-lg-block pt-5 mt-n3">
-                                <div class="form-check mb-4 open-modal">
+                                <div class="form-check mb-4 open-modal cursor-pointer">
                                     <input class="form-check-input check-payment" type="checkbox"
                                         id="check-payment-desktop" disabled>
                                     <label class="form-check-label fs-6" for="check-payment-desktop">
@@ -453,7 +453,7 @@
                             </div>
 
                             <div class="d-lg-none pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
-                                <div class="form-check mb-4 open-modal">
+                                <div class="form-check mb-4 open-modal cursor-pointer">
                                     <input class="form-check-input check-payment" type="checkbox"
                                         id="check-payment-mobile" disabled>
                                     <label class="form-check-label fs-6" for="check-payment-mobile">

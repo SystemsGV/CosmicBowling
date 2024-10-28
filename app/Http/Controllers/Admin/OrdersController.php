@@ -106,25 +106,25 @@ class OrdersController extends Controller
                   </tr>
               </thead>
               <tbody>';
-      
+
       $html .= '<tr>
                   <td class="combo-cell">' . $booking->reservation_code . '<br>Nº ' . $booking->order_id . '</td>
                   <td>' . $booking->description . '</td>
                   <td>S/. ' . $booking->amount . '</td>
               </tr>';
-      
+
       $html .= '</tbody></table></body></html>';
-      
+
       $options = new \Dompdf\Options();
       $options->set('isRemoteEnabled', true);
-      
+
       $dompdf = new Dompdf($options);
-      
+
       $dompdf->loadHtml($html);
       $dompdf->setPaper([0, 0, 200, 426]);
-      
+
       $dompdf->render();
-      
+
       $pdfContent = $dompdf->output();
 
       $url = public_path('vouchers/' . $booking->order_id . '.pdf');

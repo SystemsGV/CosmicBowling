@@ -127,6 +127,10 @@ $(function () {
                     { data: "price" },
                     { data: "date" },
                     { data: "shop" },
+                    { data: "doctype" },
+                    { data: "ruc" },
+                    { data: "rsocial" },
+                    { data: "dir" },
                     { data: "status" },
                 ],
                 columnDefs: [
@@ -147,7 +151,6 @@ $(function () {
                             return `<a href="javascript:void(0)"><span>${e}</span></a>`;
                         },
                     },
-
                     {
                         targets: 2,
                         render: function (e, t, a, n) {
@@ -163,10 +166,14 @@ $(function () {
                     },
 
                     {
-                        targets: -3,
+                        targets: 8,
                         render: function (e, t, a, n) {
                             return `${e} ${a.hour}`;
                         },
+                    },
+                    {
+                        targets: [10, 11, 12, 13],
+                        visible: false,
                     },
                     {
                         targets: -1,
@@ -244,9 +251,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-document-outline me-1" ></i>Csv',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [
-                                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                    ],
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -278,9 +283,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [
-                                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                    ],
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -312,9 +315,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [
-                                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                    ],
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -346,9 +347,7 @@ $(function () {
                                 text: '<i class="mdi mdi-content-copy me-1"></i>Copy',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [
-                                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                    ],
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -426,7 +425,7 @@ $(function () {
                     $("#shift2").text(contadorShift2);
 
                     this.api()
-                        .columns(10)
+                        .columns(14)
                         .every(function () {
                             var t = this,
                                 a = $(
@@ -467,6 +466,13 @@ $(function () {
                     "form-select-sm"
                 );
         }, 300);
+
+    e.on("click", "datatable_details", function () {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+        console.log(rowData.id);
+    });
+
     function formatDate(date) {
         var year = date.getFullYear();
         var month = (date.getMonth() + 1).toString().padStart(2, "0");

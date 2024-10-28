@@ -57,6 +57,9 @@ class Booking extends Model
 
             $createdAtLocal = Carbon::parse($row->created_at)->timezone('America/Lima')->format('d-m-Y H:i:s');
             $dateReserved = Carbon::parse($row->date_reserved)->format('d-m-Y');
+            $doctype = ($row->document_type == 'B') ? 'BOLETA' : 'FACTURA';
+            $numberDoc = ($row->document_type == 'B') ? optional($row->client)->number_doc : $row->ruc;
+            $rsocial = ($row->document_type == 'B') ? $clientFullName : $row->rsocial;
 
             $data[] = [
                 'id' => $row->id_cart,
@@ -69,6 +72,10 @@ class Booking extends Model
                 'shop' => $createdAtLocal,
                 'date' => $dateReserved,
                 'hour' => $row->hour_init,
+                'doctype' => $doctype,
+                'ruc' =>  $numberDoc,
+                'rsocial' => $rsocial,
+                'dir' =>  $row->dir,
                 'status' => $row->status,
             ];
         }
@@ -79,7 +86,7 @@ class Booking extends Model
     public static function getBooking($code)
     {
         $data = self::where('reservation_code', $code)
-        ->orWhere('order_id', $code)->first();
+            ->orWhere('order_id', $code)->first();
 
         // Verificamos que exista un registro antes de continuar
         if (!$data) {
@@ -107,7 +114,7 @@ class Booking extends Model
             'hours' => $data->quantity_hours,
             'price' => $data->amount,
             'shop' =>  $formattedDate,
-            'observation' =>  $formattedDate,
+            'observation' =>  $data->observation_client,
             'status' => $data->status,
         ];
 

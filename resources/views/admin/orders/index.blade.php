@@ -107,6 +107,10 @@
                             <th>Monto</th>
                             <th>Fecha/Hora Reserva</th>
                             <th>Fecha De Compra</th>
+                            <th>Tipo Comprobante</th>
+                            <th>Número Documento</th>
+                            <th>Razón Social</th>
+                            <th>Dirección</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
