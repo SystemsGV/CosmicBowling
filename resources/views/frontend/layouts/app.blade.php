@@ -258,8 +258,22 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Inicio</a>
                         </li>
-
+                        @if (Auth::guard('client')->check())
+                            @php
+                                $client = Auth::guard('client')->user();
+                            @endphp
+                        @else
+                            <li class="nav-item border-top mt-2 py-2 d-sm-none">
+                                <!-- Mostrar el enlace de cuenta cuando no está autenticado -->
+                                <a class="nav-link" href="{{ route('client.login') }}"
+                                    role="button
+                            aria-label="Account">
+                                    <i class="ai-user fs-lg me-2"></i> Iniciar Sesion
+                                </a>
+                            </li>
+                        @endif
                     </ul>
+
                 </nav>
             </div>
         </header>
