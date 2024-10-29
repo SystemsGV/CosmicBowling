@@ -268,7 +268,7 @@
                                 <a class="nav-link" href="{{ route('client.login') }}"
                                     role="button
                             aria-label="Account">
-                                    <i class="ai-user fs-lg me-2"></i> Iniciar Sesion
+                                    <i class="ai-user fs-lg me-2"></i> Iniciar Sesión
                                 </a>
                             </li>
                         @endif
