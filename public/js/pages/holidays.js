@@ -211,7 +211,6 @@ $(function () {
                     icon: response.icon,
                     title: response.message,
                 });
-
             })
             .fail(function (xhr, status, error) {
                 console.error("Hubo un error en la solicitud AJAX:", error);

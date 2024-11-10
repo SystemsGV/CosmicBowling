@@ -87,6 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Bienvenido, " + result.user.name + ". Te llevare a inicio";
                 resetButtonState(loginButton, "Ingresar");
                 a.show();
+                localStorage.setItem("user", JSON.stringify(result.user));
+
                 setTimeout(() => {
                     document.getElementById("back-home").click();
                 }, 2200);
