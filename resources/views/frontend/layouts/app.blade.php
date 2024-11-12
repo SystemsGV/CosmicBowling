@@ -20,7 +20,7 @@
     <meta property="og:title" content="Cosmic Bowling - Un Plan de Otro Planeta">
     <meta property="og:description"
         content="¿Buscas un plan de otro planeta? Juega boliche en un ambiente glow, con música moderna y mucha, pero mucha buena vibra">
-    <meta property="og:image" content="https://reservascosmicbowling.com.pe/frontend/img/app-icons/logo200.png.png"> <!-- Replace with the actual image URL -->
+    <meta property="og:image" content="https://reservascosmicbowling.com.pe/frontend/img/app-icons/logo200.png"> <!-- Replace with the actual image URL -->
     <meta property="og:url" content="https://reservascosmicbowling.com.pe/"> <!-- Replace with your website URL -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_PE"> <!-- Set locale to Spanish for Peru -->
