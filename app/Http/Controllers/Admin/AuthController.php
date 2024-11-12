@@ -41,21 +41,26 @@ class AuthController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-
+    
         // Intentar encontrar el usuario por el nombre de usuario
         $user = User::where('username', $request->username)->first();
-
+    
         if ($user) {
             // Verificar la contraseña
             if (Hash::check($request->password, $user->password)) {
                 // Iniciar sesión al usuario manualmente
                 Auth::login($user);
-
+    
+                // Redireccionar según el rol del usuario
+                $redirectUrl = $request->username === 'CONTADOR' 
+                    ? route('orders.index') // Ruta para el rol "contador" (Reservas)
+                    : route('orders.validate'); // Ruta por defecto para otros roles (Validar Reserva)
+    
                 // Autenticación exitosa
                 return response()->json([
                     'icon' => 'success',
                     'message' => 'Inicio de sesión exitoso',
-                    'redirect_url' => route('orders.validate'), // Asegúrate de tener esta ruta definida
+                    'redirect_url' => $redirectUrl,
                 ]);
             } else {
                 // Contraseña incorrecta
@@ -72,6 +77,7 @@ class AuthController extends Controller
             ]);
         }
     }
+    
     
     public function logout(Request $request)
     {
