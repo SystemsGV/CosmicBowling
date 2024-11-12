@@ -100,110 +100,105 @@
                 </div>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                  <!--  <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                            <div data-i18n="Dashboards">Dashboards</div>
-                            <div class="badge bg-primary rounded-pill ms-auto">1</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="" class="menu-link">
-                                    <div data-i18n="Web Reservations">Reservas Webs</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>-->
 
-                    <!-- Reports -->
-                    <li class="menu-header fw-medium mt-4">
-                        <span class="menu-header-text" data-i18n="Booking">Reserva</span>
-                    </li>
+                    @if (Auth::user()->username === 'CONTADOR')
+                        <li class="menu-item">
+                            <a href="{{ route('orders.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-file-sign"></i>
+                                <div data-i18n="Reservations">Reservas</div>
+                            </a>
+                        </li>
+                    @else
+                        <!-- Reports -->
+                        <li class="menu-header fw-medium mt-4">
+                            <span class="menu-header-text" data-i18n="Booking">Reserva</span>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="{{ route('orders.validate') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-qrcode-scan"></i>
-                            <div data-i18n="Validate Reservation">Validar Reserva</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('orders.validate') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-qrcode-scan"></i>
+                                <div data-i18n="Validate Reservation">Validar Reserva</div>
+                            </a>
+                        </li>
 
-                    <!-- Boxes -->
-                    <li class="menu-header fw-medium mt-4">
-                        <span class="menu-header-text" data-i18n="Master Products">Master Products</span>
-                    </li>
+                        <!-- Boxes -->
+                        <li class="menu-header fw-medium mt-4">
+                            <span class="menu-header-text" data-i18n="Master Products">Master Products</span>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons mdi mdi-cart-outline"></i>
-                            <div>Inventario</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="{{ route('Categorias') }}" class="menu-link">
-                                    <div data-i18n="Categories">Categorias</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="{{ route('SubCategorias') }}" class="menu-link">
-                                    <div data-i18n="SubCategory List">SubCategorias</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="{{ route('products.index') }}" class="menu-link">
-                                    <div data-i18n="Product List">Lista Productos</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                <i class="menu-icon tf-icons mdi mdi-cart-outline"></i>
+                                <div>Inventario</div>
+                            </a>
+                            <ul class="menu-sub">
+                                <li class="menu-item">
+                                    <a href="{{ route('Categorias') }}" class="menu-link">
+                                        <div data-i18n="Categories">Categorias</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{ route('SubCategorias') }}" class="menu-link">
+                                        <div data-i18n="SubCategory List">SubCategorias</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{ route('products.index') }}" class="menu-link">
+                                        <div data-i18n="Product List">Lista Productos</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="{{ route('coupons.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi mdi-sale"></i>
-                            <div data-i18n="Coupons">Cupones</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('coupons.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi mdi-sale"></i>
+                                <div data-i18n="Coupons">Cupones</div>
+                            </a>
+                        </li>
 
 
-                    <li class="menu-item">
-                        <a href="{{ route('calendar.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-calendar-blank-outline"></i>
-                            <div data-i18n="Calendar">Calendario</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('calendar.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-calendar-blank-outline"></i>
+                                <div data-i18n="Calendar">Calendario</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="{{ route('orders.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-file-sign"></i>
-                            <div data-i18n="Reservations">Reservas</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('orders.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-file-sign"></i>
+                                <div data-i18n="Reservations">Reservas</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="{{ route('holidays.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-calendar-star-outline"></i>
-                            <div data-i18n="Holidays">Feriados</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('holidays.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-calendar-star-outline"></i>
+                                <div data-i18n="Holidays">Feriados</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="{{ route('clients.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-account-supervisor-circle"></i>
-                            <div data-i18n="Clients">Clientes</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('clients.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-account-supervisor-circle"></i>
+                                <div data-i18n="Clients">Clientes</div>
+                            </a>
+                        </li>
 
 
-                    <!-- Reports -->
-                    <li class="menu-header fw-medium mt-4">
-                        <span class="menu-header-text" data-i18n="Reports">Usuarios</span>
-                    </li>
+                        <!-- Reports -->
+                        <li class="menu-header fw-medium mt-4">
+                            <span class="menu-header-text" data-i18n="Reports">Usuarios</span>
+                        </li>
 
-                    <li class="menu-item">
-                        <a href="{{ route('users.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-account-group"></i>
-                            <div data-i18n="Users">Usuarios</div>
-                        </a>
-                    </li>
+                        <li class="menu-item">
+                            <a href="{{ route('users.index') }}" class="menu-link">
+                                <i class="menu-icon tf-icons mdi mdi-account-group"></i>
+                                <div data-i18n="Users">Usuarios</div>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </aside>
             <!-- / Menu -->
