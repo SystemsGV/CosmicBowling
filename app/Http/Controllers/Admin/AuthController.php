@@ -14,10 +14,16 @@ class AuthController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            return redirect()->route('orders.validate');
+            $role = Auth::user()->username;
+    
+            if ($role === 'CONTADOR') {
+                return redirect()->route('orders.index'); 
+            } else {
+                return redirect()->route('orders.validate'); 
+            }
         }
-
-        return view('admin.login');
+    
+        return view('admin.login'); // Vista de login si no está autenticado
     }
 
     protected function credentials(Request $request)
