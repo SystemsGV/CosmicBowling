@@ -124,7 +124,7 @@
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">4. Selecciona los integrantes</h4>
                                 <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }}
-                                    jugadores por pista. Proporcione un recuento
+                                    jugadores por {{ $subcategory->id_subcategory = 4 ? 'mesa' : 'pista' }}. Proporcione un recuento
                                     exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
                                 </span>
                                 <div class="count-input bg-gray rounded-3">
