@@ -65,6 +65,7 @@ class Booking extends Model
                 'id' => $row->id_cart,
                 'code' => $row->reservation_code,
                 'client' => $clientFullName,
+                'dni' => $clientFullName,
                 'coupon' => optional($row->coupon)->code,
                 'description' => $row->description,
                 'guests' => $row->quantity_guests,
