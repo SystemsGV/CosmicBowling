@@ -1006,6 +1006,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 } else {
                     console.log(data);
+                    wToast.show();
+                    document.getElementById("subjectWarning").innerText =
+                        data.message;
                 }
             })
             .catch((error) => {

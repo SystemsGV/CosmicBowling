@@ -788,7 +788,7 @@
                 <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
                     aria-label="Close"></button>
             </div>
-            <div class="toast-body text-warning" id="subjectWarning"></div>
+            <div class="toast-body text-black" id="subjectWarning"></div>
         </div>
     </div>
 @endsection()
