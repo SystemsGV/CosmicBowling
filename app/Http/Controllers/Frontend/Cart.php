@@ -238,9 +238,10 @@ class Cart extends Controller
         }
         $holidayResult = session('holiday_result');
 
-
-        // Agregar el costo de los zapatos después de aplicar el descuento
-        $amount += $totalGuests * $holidayResult;
+        if ($cart['product'] != '4') {
+            // Agregar el costo de los zapatos después de aplicar el descuento
+            $amount += $totalGuests * $holidayResult;
+        }
 
         // Guardar los detalles del pedido en la base de datos
         $order = new Order();
