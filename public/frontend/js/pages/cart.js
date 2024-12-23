@@ -686,10 +686,12 @@ document.addEventListener("DOMContentLoaded", function () {
         observation = document.getElementById("observation");
     const loginModalElement = document.getElementById("modal-login");
     const registerModalElement = document.getElementById("modal-register"),
-        subjectToast = document.getElementById("subjectToast");
+        RecoverModalElement = document.getElementById("modal-recover");
+    subjectToast = document.getElementById("subjectToast");
 
     const loginModal = new bootstrap.Modal(loginModalElement);
     const registerModal = new bootstrap.Modal(registerModalElement);
+    const recoverModal = new bootstrap.Modal(RecoverModalElement);
     const wToast = new bootstrap.Toast(
         document.getElementById("warningToast"),
         {
@@ -1095,6 +1097,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     document
+        .getElementById("btnRecover")
+        .addEventListener("click", function () {
+            loginModal.hide();
+            recoverModal.show();
+        });
+
+    document
         .getElementById("tabReservation")
         .addEventListener("click", function () {
             location.reload();
@@ -1135,7 +1144,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const f = document.getElementById("liveToast");
     const loginForm = document.getElementById("form-login");
+    const recoverForm = document.getElementById("form-recover");
     const loginButton = document.getElementById("login-button");
+    const recoverButton = document.getElementById("recover-button");
 
     function setLoadingState(button, text) {
         button.innerHTML = `
@@ -1252,6 +1263,52 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    async function handleFormRecoverSubmit(event) {
+        event.preventDefault();
+
+        if (!recoverForm.checkValidity()) {
+            recoverForm.classList.add("was-validated");
+            return;
+        }
+
+        setLoadingState(recoverButton, "Validando");
+
+        const formData = new FormData(recoverForm);
+
+        const data = {
+            email: formData.get("email_recover"),
+        };
+
+        try {
+            const response = await fetch(`${fullDomain}api/client/recover`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                subjectToast.innerHTML = result.message;
+                recoverModal.hide();
+                resetButtonState(recoverButton, "Restablecer contraseña");
+                a.show();
+            } else {
+                handleServerResponse(
+                    result,
+                    recoverForm,
+                    recoverButton,
+                    "Restablecer contraseña"
+                );
+            }
+        } catch (error) {
+            displayErrorMessage(recoverForm, error.message);
+            resetButtonState(loginButton, "Restablecer contraseña");
+        }
+    }
+
     function handleServerResponse(result, loginForm, loginButton, buttonText) {
         if (result.error) {
             displayErrorMessage(loginForm, result.error);
@@ -1263,6 +1320,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginForm) {
         loginForm.addEventListener("submit", handleFormSubmit);
+    }
+
+    if (recoverForm) {
+        recoverForm.addEventListener("submit", handleFormRecoverSubmit);
     }
 
     const form = document.getElementById("form-register");

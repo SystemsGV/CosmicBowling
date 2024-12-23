@@ -124,7 +124,8 @@
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">4. Selecciona los integrantes</h4>
                                 <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }}
-                                    jugadores por {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}. Proporcione un recuento
+                                    jugadores por {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}. Proporcione un
+                                    recuento
                                     exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
                                 </span>
                                 <div class="count-input bg-gray rounded-3">
@@ -519,7 +520,8 @@
                                 <input class="form-check-input" type="checkbox" id="keep-signedin">
                                 <label class="form-check-label ms-1" for="keep-signedin">Recuérdame</label>
                             </div>
-                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="#">
+                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="javascript:void(0)"
+                                id="btnRecover">
                                 He olvidado mi contraseña</a>
                         </div>
 
@@ -637,6 +639,50 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modal-recover" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        ¿Olvidaste tu contraseña?</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="pb-2">Cambie su contraseña en tres sencillos pasos. Esto ayuda a mantener segura su nueva
+                        contraseña.</p>
+                    <ul class="list-unstyled pb-2 pb-lg-0 ">
+                        <li class="d-flex mb-2">
+                            <span class="text-primary fw-semibold me-2">1.</span>
+                            Complete su dirección de correo electrónico a continuación.
+                        </li>
+                        <li class="d-flex mb-2">
+                            <span class="text-primary fw-semibold me-2">2.</span>
+                            Le enviaremos un código temporal por correo electrónico.
+                        </li>
+                        <li class="d-flex mb-2">
+                            <span class="text-primary fw-semibold me-2">3.</span>
+                            Utilice el código para cambiar su contraseña en nuestro sitio web seguro.
+                        </li>
+                    </ul>
+                    <div class="card border-0" data-bs-theme="dark">
+                        <form class="card-body needs-validation" id="form-recover">
+                            <div class="mb-4">
+                                <div class="position-relative">
+                                    <i
+                                        class="ai-mail fs-lg position-absolute top-50 start-0 translate-middle-y text-light opacity-80 ms-3"></i>
+                                    <input class="form-control form-control-lg ps-5" type="email" name="email_recover"
+                                        placeholder="Ingresar correo electrónico" required="">
+                                </div>
+                            </div>
+                            <button class="btn btn-light" type="submit" id="recover-button">Restablecer contraseña</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="modalScroll" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">

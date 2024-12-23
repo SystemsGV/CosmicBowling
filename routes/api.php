@@ -26,5 +26,6 @@ Route::get('/client/check-authentication', function () {
 Route::get('coupon/{code}', [Coupon::class, 'show']);
 Route::post('client/register', [Client::class, 'store']);
 Route::post('client/login', [Client::class, 'login']);
+Route::post('client/recover', [Client::class, 'recover']);
+Route::post('client/reset', [Client::class, 'reset']);
 Route::middleware('auth:client')->post('client/logout', [Client::class, 'logout']);
-

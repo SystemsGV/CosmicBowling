@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RecoverClient;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
 use Carbon\Carbon;
@@ -233,5 +234,54 @@ class Client extends Controller
 
         // Retorna la vista con un mensaje de error
         return view('verification-error')->with('error', 'Token inválido o expirado.');
+    }
+
+    public function recover(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $client = FrontendClient::where('email_client', $request->input('email'))->first();
+
+        if (!$client) {
+            return response()->json(['error' => 'Correo electrónico incorrecto'], 401);
+        }
+
+        $token = $client->createToken('ClientToken')->plainTextToken;
+
+        Mail::to($client->email_client)->send(new RecoverClient($token, $client->name_client));
+
+        return response()->json(['message' => 'Correo de recuperación enviado'], 200);
+    }
+
+    public function recoverPassword(Request $request)
+    {
+        $token = $request->input('token');
+
+        $client = PersonalAccessToken::findToken($token)->tokenable;
+
+        //view interface two textbox recover password  
+
+        if ($client) {
+            return view('frontend.login.recover-password', compact('token'));
+        }
+
+        return view('frontend.login.recover');
+    }
+
+    public function reset(Request $request)
+    {
+
+        $client = PersonalAccessToken::findToken($request->input('token'))->tokenable;
+
+        if ($client) {
+            $client->password_client = Hash::make($request->input('password'));
+            $client->save();
+
+            return response()->json(['message' => 'Contraseña restablecida'], 200);
+        }
+
+        return response()->json(['error' => 'Token inválido'], 401);
     }
 }
