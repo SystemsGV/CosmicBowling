@@ -119,4 +119,64 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loginForm) {
         loginForm.addEventListener("submit", handleFormSubmit);
     }
+
+    RecoverModalElement = document.getElementById("modal-recover");
+    const recoverModal = new bootstrap.Modal(RecoverModalElement);
+    const recoverButton = document.getElementById("recover-button");
+    const recoverForm = document.getElementById("form-recover");
+
+    document
+        .getElementById("btnRecover")
+        .addEventListener("click", function () {
+            recoverModal.show();
+        });
+    async function handleFormRecoverSubmit(event) {
+        event.preventDefault();
+
+        if (!recoverForm.checkValidity()) {
+            recoverForm.classList.add("was-validated");
+            return;
+        }
+
+        setLoadingState(recoverButton, "Validando");
+
+        const formData = new FormData(recoverForm);
+
+        const data = {
+            email: formData.get("email_recover"),
+        };
+
+        try {
+            const response = await fetch(`${fullDomain}api/client/recover`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                subjectToast.innerHTML = result.message;
+                recoverModal.hide();
+                resetButtonState(recoverButton, "Restablecer contraseña");
+                a.show();
+            } else {
+                handleServerResponse(
+                    result,
+                    recoverForm,
+                    recoverButton,
+                    "Restablecer contraseña"
+                );
+            }
+        } catch (error) {
+            displayErrorMessage(recoverForm, error.message);
+            resetButtonState(loginButton, "Restablecer contraseña");
+        }
+    }
+
+    if (recoverForm) {
+        recoverForm.addEventListener("submit", handleFormRecoverSubmit);
+    }
 });
