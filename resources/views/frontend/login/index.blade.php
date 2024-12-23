@@ -271,7 +271,7 @@
                                     <i
                                         class="ai-mail fs-lg position-absolute top-50 start-0 translate-middle-y text-light opacity-80 ms-3"></i>
                                     <input class="form-control form-control-lg ps-5" type="email"
-                                        name="email_recover" placeholder="Ingresar correo electrónico"
+                                        name="email_recover" id="email_recover" placeholder="Ingresar correo electrónico"
                                         required="">
                                 </div>
                             </div>

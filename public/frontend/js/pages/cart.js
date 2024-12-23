@@ -1293,6 +1293,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.ok) {
                 subjectToast.innerHTML = result.message;
                 recoverModal.hide();
+                document.getElementById("recover-email").value = "";
                 resetButtonState(recoverButton, "Restablecer contraseña");
                 a.show();
             } else {

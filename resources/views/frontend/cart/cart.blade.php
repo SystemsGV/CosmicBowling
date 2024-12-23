@@ -665,7 +665,7 @@
                             Utilice el código para cambiar su contraseña en nuestro sitio web seguro.
                         </li>
                     </ul>
-                    <div class="card border-0" data-bs-theme="dark">
+                    <div class="card border-0" >
                         <form class="card-body needs-validation" id="form-recover">
                             <div class="mb-4">
                                 <div class="position-relative">

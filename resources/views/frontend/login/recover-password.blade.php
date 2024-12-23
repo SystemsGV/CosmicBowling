@@ -185,7 +185,7 @@
                     <h1>Restablecer contraseña 🔒</h1>
                     <p class="pb-3 mb-3 mb-lg-4">Ahora crea una nueva contraseña.</p>
                     <form id="form-recover" class="needs-validation" novalidate="">
-                      <input type="hidden" id="token" name="token" value="{{ $token }}">
+                        <input type="hidden" id="token" name="token" value="{{ $token }}">
                         <div class="pb-3 mb-3">
                             <div class="position-relative">
                                 <i
@@ -193,7 +193,7 @@
                                 <div class="password-toggle">
                                     <input id="password_login" name="password_login"
                                         class="form-control form-control-lg ps-5" type="password"
-                                        placeholder="Contraseña" required="">
+                                        placeholder="Ingresa una nueva contraseña" required="">
                                     <label class="password-toggle-btn" aria-label="Show/hide password">
                                         <input class="password-toggle-check" type="checkbox"><span
                                             class="password-toggle-indicator"></span>
@@ -208,7 +208,7 @@
                                 <div class="password-toggle">
                                     <input id="password_confirm" name="password_confirm"
                                         class="form-control form-control-lg ps-5" type="password"
-                                        placeholder="Contraseña" required="">
+                                        placeholder="Confirma la contraseña nueva" required="">
                                     <label class="password-toggle-btn" aria-label="Show/hide password">
                                         <input class="password-toggle-check" type="checkbox"><span
                                             class="password-toggle-indicator"></span>

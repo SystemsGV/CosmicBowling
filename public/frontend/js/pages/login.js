@@ -161,6 +161,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 subjectToast.innerHTML = result.message;
                 recoverModal.hide();
                 resetButtonState(recoverButton, "Restablecer contraseña");
+                document.getElementById("recover-email").value = "";
+
                 a.show();
             } else {
                 handleServerResponse(
