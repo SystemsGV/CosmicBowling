@@ -262,8 +262,8 @@ isRtl && (direction = "rtl"),
                         .format("YYYY-MM-DD HH:mm");
 
                     w.value = date
-                        .hour(22) // finshHour VARIABLE
-                        .minute(30) // finshMinute VARIABLE
+                        .hour(23) // finshHour VARIABLE
+                        .minute(0) // finshMinute VARIABLE
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
                 },
