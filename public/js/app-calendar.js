@@ -256,14 +256,14 @@ isRtl && (direction = "rtl"),
                     S.classList.add("d-none");
 
                     k.value = date
-                        .hour(13) // hour VARIABLE
-                        .minute(0) // minute VARIABLE
+                        .hour(12) // hour VARIABLE
+                        .minute(30) // minute VARIABLE
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
 
                     w.value = date
                         .hour(22) // finshHour VARIABLE
-                        .minute(0) // finshMinute VARIABLE
+                        .minute(30) // finshMinute VARIABLE
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
                 },
