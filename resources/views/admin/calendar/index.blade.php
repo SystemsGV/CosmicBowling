@@ -49,10 +49,10 @@
                             </div>
 
                             <!-- <div class="form-check mb-3">
-                                                                                                                                    <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                                                                                                                        data-value="business" checked="">
-                                                                                                                                    <label class="form-check-label" for="select-business">Business</label>
-                                                                                                                                </div>-->
+                                                                                                                                            <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                                                                                                                                data-value="business" checked="">
+                                                                                                                                            <label class="form-check-label" for="select-business">Business</label>
+                                                                                                                                        </div>-->
 
                             <div class="form-check form-check-warning mb-3">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-family"
@@ -95,6 +95,14 @@
                                         placeholder="Event Title">
                                     <label for="eventTitle">Titulo</label>
                                 </div>
+                                @php
+                                    $prefixes = [
+                                        1 => 'PG',
+                                        2 => 'PV',
+                                        3 => 'PEDV',
+                                        4 => 'BILLAR',
+                                    ];
+                                @endphp
                                 <div class="form-floating form-floating-outline mb-4">
                                     <select class="select2 select-event-label form-select" id="eventLabel"
                                         name="eventLabel">
@@ -107,7 +115,8 @@
                                                 data-thursday={{ $row->price_thursday }}
                                                 data-friday={{ $row->price_friday }}
                                                 data-saturday={{ $row->price_saturday }}
-                                                data-sunday={{ $row->price_sunday }} value={{ $row->extend_subcategory }}>
+                                                data-sunday={{ $row->price_sunday }} value={{ $row->extend_subcategory }}
+                                                data-prefix="{{ $prefixes[$row->id_subcategory] ?? 'DEFAULT' }}">
                                                 {{ $row->name_subcategory }}</option>
                                         @endforeach
                                     </select>

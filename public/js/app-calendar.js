@@ -116,6 +116,7 @@ isRtl && (direction = "rtl"),
                         option.data("saturday"), // Sábado (6)
                     ];
 
+                E.value = option.data("prefix");
                 let selectedDate = new Date(k.value);
                 let dayOfWeek = selectedDate.getDay(); // Obtiene el día de la semana (0 es domingo, 6 es sábado)
 
