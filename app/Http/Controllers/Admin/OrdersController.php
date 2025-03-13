@@ -12,73 +12,73 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-  public function index()
-  {
-    $title = "Reservas";
+    public function index()
+    {
+        $title = "Reservas";
 
-    return view('admin.orders.index', compact('title'));
-  }
-
-  public function show(Request $request)
-  {
-    if ($request->filled('start_date') && $request->filled('end_date') && $request->input('isChecked') == '0') {
-
-      $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
-      $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
-      $column = "shop";
-    } else if ($request->filled('start_date') && $request->filled('end_date') && $request->input('isChecked') == '1') {
-
-      $startDateFormatted  = Carbon::parse($request->input('start_date'))->startOfDay();
-      $endDateFormatted  = Carbon::parse($request->input('end_date'))->endOfDay();
-
-      $startDate  = $startDateFormatted->toDateString();
-      $endDate  = $endDateFormatted->toDateString();
-      $column = "entrance";
-    } else {
-      // Fecha de hoy
-      $endDate = new DateTime();
-      $endDate->setTime(23, 59, 59);
-      $endDateString = $endDate->format('Y-m-d H:i:s');
-
-      // Fecha de hace un mes
-      $startDate = new DateTime();
-      $startDate->modify('-1 month');
-      $startDate->setTime(0, 0, 0);
-      $startDateString = $startDate->format('Y-m-d H:i:s');
-
-      $startDate = $startDateString;
-      $endDate = $endDateString;
-      $column = "shop";
+        return view('admin.orders.index', compact('title'));
     }
 
-    $data = Booking::getAllBooking($startDate, $endDate, $column);
-    return response()->json(['data' => $data]);
-  }
+    public function show(Request $request)
+    {
+        if ($request->filled('start_date') && $request->filled('end_date') && $request->input('isChecked') == '0') {
 
-  public function showReservation()
-  {
-    return view('admin.orders.validate');
-  }
+            $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+            $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+            $column = "shop";
+        } else if ($request->filled('start_date') && $request->filled('end_date') && $request->input('isChecked') == '1') {
 
-  public function search($code)
-  {
-    $data = Booking::getBooking($code);
-    return response()->json($data);
-  }
+            $startDateFormatted  = Carbon::parse($request->input('start_date'))->startOfDay();
+            $endDateFormatted  = Carbon::parse($request->input('end_date'))->endOfDay();
 
-  public function validateReservation($code)
-  {
-    $booking = Booking::where('reservation_code', $code)
-      ->orWhere('order_id', $code)
-      ->first();
+            $startDate  = $startDateFormatted->toDateString();
+            $endDate  = $endDateFormatted->toDateString();
+            $column = "entrance";
+        } else {
+            // Fecha de hoy
+            $endDate = new DateTime();
+            $endDate->setTime(23, 59, 59);
+            $endDateString = $endDate->format('Y-m-d H:i:s');
 
-    if ($booking) {
+            // Fecha de hace un mes
+            $startDate = new DateTime();
+            $startDate->modify('-1 month');
+            $startDate->setTime(0, 0, 0);
+            $startDateString = $startDate->format('Y-m-d H:i:s');
+
+            $startDate = $startDateString;
+            $endDate = $endDateString;
+            $column = "shop";
+        }
+
+        $data = Booking::getAllBooking($startDate, $endDate, $column);
+        return response()->json(['data' => $data]);
+    }
+
+    public function showReservation()
+    {
+        return view('admin.orders.validate');
+    }
+
+    public function search($code)
+    {
+        $data = Booking::getBooking($code);
+        return response()->json($data);
+    }
+
+    public function validateReservation($code)
+    {
+        $booking = Booking::where('reservation_code', $code)
+            ->orWhere('order_id', $code)
+            ->first();
+
+        if ($booking) {
 
 
-      $booking->status = "used";
-      $booking->save();
+            $booking->status = "used";
+            $booking->save();
 
-      $html = '<!DOCTYPE html>
+            $html = '<!DOCTYPE html>
       <html lang="en">
       <head>
           <meta charset="UTF-8">
@@ -107,37 +107,49 @@ class OrdersController extends Controller
               </thead>
               <tbody>';
 
-      $html .= '<tr>
-                  <td class="combo-cell">' . $booking->reservation_code . '<br>Nº ' . $booking->order_id . '</td>
-                  <td>' . $booking->description . '</td>
-                  <td>S/. ' . $booking->amount . '</td>
-              </tr>';
+            $html .= '<tr>
+              <td class="combo-cell">' . $booking->reservation_code . '<br>Nº ' . $booking->order_id . '</td>
+              <td>' . $booking->description . '<br>' . $booking->quantity_guests . ' Integrantes</td>
+              <td>S/. ' . $booking->amount . '</td>
+            </tr>';
 
-      $html .= '</tbody></table></body></html>';
+            $html .= '</tbody></table></body></html>';
 
-      $options = new \Dompdf\Options();
-      $options->set('isRemoteEnabled', true);
+            $options = new \Dompdf\Options();
+            $options->set('isRemoteEnabled', true);
 
-      $dompdf = new Dompdf($options);
+            $dompdf = new Dompdf($options);
 
-      $dompdf->loadHtml($html);
-      $dompdf->setPaper([0, 0, 200, 426]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper([0, 0, 200, 426]);
 
-      $dompdf->render();
+            $dompdf->render();
 
-      $pdfContent = $dompdf->output();
+            $pdfContent = $dompdf->output();
 
-      $url = public_path('vouchers/' . $booking->order_id . '.pdf');
-      $path = asset('vouchers/' . $booking->order_id . '.pdf');
+            $url = public_path('vouchers/' . $booking->order_id . '.pdf');
+            $path = asset('vouchers/' . $booking->order_id . '.pdf');
 
-      file_put_contents($url, $pdfContent);
+            file_put_contents($url, $pdfContent);
 
-      return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.', 'pdfUrl' => $path]);
-    } else {
-      return response()->json(['icon' => 'error', 'message' => 'No se encontró la reserva.']);
+            return response()->json(['icon' => 'success', 'message' => 'Reserva validada exitosamente.', 'pdfUrl' => $path]);
+        } else {
+            return response()->json(['icon' => 'error', 'message' => 'No se encontró la reserva.']);
+        }
     }
-  }
 
 
-  public function ticket() {}
+    public function attachInvoice(Request $request)
+    {
+        $booking = Booking::where('id_cart', $request->input('id'))->first();
+
+        if ($booking) {
+            $booking->invoice = $request->input('invoiceText');
+            $booking->save();
+
+            return response()->json(['icon' => 'success', 'message' => 'Factura/Boleta adjuntada correctamente.']);
+        } else {
+            return response()->json(['icon' => 'error', 'message' => 'No se encontró la reserva.']);
+        }
+    }
 }

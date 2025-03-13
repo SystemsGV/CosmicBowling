@@ -103,7 +103,7 @@
                             <th>Cliente</th>
                             <th>descripción</th>
                             <th>Integrantes</th>
-                            <th>Cupon</th>
+                            <th>Fac / Bol</th>
                             <th>Monto</th>
                             <th>Fecha/Hora Reserva</th>
                             <th>Fecha De Compra</th>
@@ -119,6 +119,44 @@
         </div>
     </div>
     <!-- Content -->
+
+    <!-- Enable OTP Modal -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered">
+            <div class="modal-content p-3 p-md-5">
+                <div class="modal-body p-md-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="text-center mb-4">
+                        <h3 class="mb-2 pb-1">Adjunta Nº Factura <code id="invoiceCode"></code></h3>
+                    </div>
+                    <form id="invoiceForm" class="row g-3" onsubmit="return false">
+                        <div class="col-12 mb-4">
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text"><i class="mdi mdi-file-document fs-3"></i>
+                                </span>
+                                <input type="hidden" name="invoiceId" id="invoiceId">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" id="invoiceText" name="invoiceText"
+                                        class="form-control phone-number-otp-mask" placeholder="BW-0000012" />
+                                    <label for="invoiceText">Número Boleta / Factura</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1">
+                                Adjuntar
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ Enable OTP Modal -->
 @endsection()
 
 @section('styles')

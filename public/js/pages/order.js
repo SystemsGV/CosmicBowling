@@ -103,6 +103,13 @@ $(function () {
             }
         },
     });
+
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
     i.length &&
         i.length &&
         i.each(function () {
@@ -123,7 +130,7 @@ $(function () {
                     { data: "client" },
                     { data: "description" },
                     { data: "guests" },
-                    { data: "coupon" },
+                    { data: "invoice" },
                     { data: "price" },
                     { data: "date" },
                     { data: "shop" },
@@ -148,7 +155,7 @@ $(function () {
                     {
                         targets: 1,
                         render: function (e, t, a, n) {
-                            return `<a href="javascript:void(0)"><span>${e}</span></a>`;
+                            return `<a href="javascript:void(0)" class="datatable_invoice"><span>${e}</span></a>`;
                         },
                     },
                     {
@@ -485,6 +492,68 @@ $(function () {
         console.log(rowData.id);
     });
 
+    e.on("click", ".datatable_invoice", function () {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+
+        $("#invoiceCode").text(rowData.code);
+        $("#invoiceId").val(rowData.id);
+        $("#invoiceText").val(rowData.invoice);
+
+        $("#invoiceModal").modal("show");
+    });
+
+    const f = document.getElementById("invoiceForm");
+
+    const fv = FormValidation.formValidation(f, {
+        fields: {
+            invoiceText: {
+                validators: {
+                    notEmpty: {
+                        message: "Por favor ingresar Nº Boleta / Factura",
+                    },
+                },
+            },
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: "is-valid",
+                rowSelector: function (t, e) {
+                    return ".mb-4";
+                },
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+        },
+    });
+
+    fv.on("core.form.valid", function () {
+        blockUI();
+        $.ajax({
+            url: "attachInvoice",
+            type: "POST",
+            data: {
+                id: $("#invoiceId").val(),
+                invoiceText: $("#invoiceText").val(),
+            },
+        })
+            .done((response) => {
+                Toast.fire({
+                    icon: response.icon,
+                    title: response.message,
+                });
+                $("#invoiceModal").modal("hide");
+                e.ajax.reload();
+            })
+            .fail(function (error) {
+                console.error("error:", error.responseText);
+            })
+            .always(function (response) {
+                $.unblockUI();
+            });
+    });
+
     function formatDate(date) {
         var year = date.getFullYear();
         var month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -493,6 +562,36 @@ $(function () {
         var minutes = date.getMinutes().toString().padStart(2, "0");
         var seconds = date.getSeconds().toString().padStart(2, "0");
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    }
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+    });
+
+    function blockUI() {
+        $.blockUI({
+            message: `<div class="banter-loader">
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                  <div class="banter-loader__box"></div>
+                </div>`,
+            css: { backgroundColor: "transparent", border: "0" },
+            overlayCSS: { opacity: 0.5 },
+        });
     }
 }),
     (function () {})();

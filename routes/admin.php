@@ -105,6 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('TableBooking', 'show');
         Route::get('searchReserve/{code}', 'search');
         Route::get('validateR/{code}', 'validateReservation');
+        Route::post('attachInvoice', 'attachInvoice');
     });
 
     Route::controller(UserController::class)->group(function ($route) {

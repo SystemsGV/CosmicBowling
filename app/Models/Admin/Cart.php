@@ -10,7 +10,7 @@ class Cart extends Model
     use HasFactory;
     protected $table = 'cart';
     protected $primaryKey = 'id_cart';
-    protected $fillable = ['subcategory_id', 'coupon_id', 'description', 'date_reserved', 'hour_init', 'quantity_lane', 'quantity_hours', 'quantity_guests', 'payment_type', 'amount_discount', 'amount', 'document_type', 'rsocial', 'ruc', 'dir', 'observation_client', 'status', 'client_id'];
+    protected $fillable = ['subcategory_id', 'coupon_id', 'description', 'date_reserved', 'hour_init', 'quantity_lane', 'quantity_hours', 'quantity_guests', 'payment_type', 'amount_discount', 'amount', 'document_type', 'rsocial', 'ruc', 'dir', 'observation_client', 'status','invoice', 'client_id'];
 
     public function subcategory()
     {

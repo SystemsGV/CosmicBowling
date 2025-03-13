@@ -78,6 +78,7 @@ class Booking extends Model
                 'rsocial' => $rsocial,
                 'dir' =>  $row->dir,
                 'status' => $row->status,
+                'invoice' => $row->invoice,
             ];
         }
 

@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('dir')->nullable(); // Dirección (solo para factura)
             $table->string('observation_client')->nullable(); // Dirección (solo para factura)
             $table->string('status');
+            $table->string('invoice', 25)->nullable(); // Número de factura (solo para factura)
             $table->timestamps();
 
             // Relaciones con otras tablas
