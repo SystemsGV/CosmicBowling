@@ -325,25 +325,22 @@ class Cart extends Controller
             ->where('subcategory_id', $subcategory)
             ->whereDate('date_citem', $date)
             ->whereIn('time_interval', $intervals)
-            ->get(['id_citem', 'time_interval', 'available_quantity']); // Obtener los IDs, intervalos y cantidades
+            ->get(['id_citem', 'time_interval', 'available_quantity'])
+            ->keyBy('time_interval'); // Clave por time_interval para acceso rápido
 
         // Crear un array para guardar los IDs de los intervalos disponibles
         $intervalsAvailability = [];
 
-        // Recorremos los intervalos que hemos recibido
-        foreach ($intervals as $intervalTime) {
-            // Buscar el intervalo específico en la base de datos
-            $interval = $availability->firstWhere('time_interval', $intervalTime);
+        // Recorrer los intervalos de manera indexada
+        for ($i = 0; $i < count($intervals); $i++) {
+            $intervalTime = $intervals[$i];
 
-            if ($interval && $interval->available_quantity >= $requiredHours) {
-                // Verificar si el siguiente intervalo también tiene suficiente disponibilidad
-                $nextIntervalTime = next($intervals);
-                $nextInterval = $availability->firstWhere('time_interval', $nextIntervalTime);
-
-                if ($nextInterval && $nextInterval->available_quantity >= $requiredHours) {
-                    // Si ambos intervalos son válidos, agregarlos a la disponibilidad
-                    $intervalsAvailability[] = $interval->id_citem;
-                }
+            // Verificar si el intervalo actual tiene disponibilidad
+            if (isset($availability[$intervalTime]) && $availability[$intervalTime]->available_quantity >= $requiredHours) {
+                $intervalsAvailability[] = $availability[$intervalTime]->id_citem;
+            } else {
+                // Si un intervalo no tiene disponibilidad, la reserva no es posible
+                return false;
             }
         }
 
@@ -358,6 +355,7 @@ class Cart extends Controller
         // Retornar los IDs de los intervalos disponibles
         return $intervalsAvailability;
     }
+
 
 
 

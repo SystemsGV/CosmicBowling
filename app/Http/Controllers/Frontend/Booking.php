@@ -11,6 +11,7 @@ use App\Models\Admin\Cart;
 use App\Services\VisaNetService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class Booking extends Controller
 {
@@ -134,21 +135,42 @@ class Booking extends Controller
     private function modifiedInterval($hours)
     {
         // Obtener los intervalos guardados en la sesión
-        $intervals = session('intervals_availability');
+        $intervals = session('intervals_availability', []);
 
+        // Verificar si realmente es un array
+        if (!is_array($intervals) || empty($intervals)) {
+            Log::error("No hay intervalos en la sesión o no es un array", ['data' => $intervals]);
+            return;
+        }
 
-        // Recorrer cada intervalo y modificar la cantidad disponible usando el modelo
+        Log::info("Procesando intervalos", ['intervals' => $intervals]);
+
         foreach ($intervals as $id) {
             // Buscar el intervalo usando Eloquent
             $interval = calendarIntervals::find($id);
 
-            // Restar las horas usadas a la cantidad disponible
-            if ($interval && $interval->available_quantity >= $hours) {
+            if (!$interval) {
+                Log::error("Intervalo no encontrado", ['id' => $id]);
+                continue; // Saltar al siguiente
+            }
+
+            Log::info("Modificando intervalo", ['id' => $id, 'antes' => $interval->available_quantity]);
+
+            if ($interval->available_quantity >= $hours) {
                 $interval->available_quantity -= $hours;
                 $interval->save(); // Guardar los cambios
+
+                Log::info("Nuevo valor", ['id' => $id, 'después' => $interval->available_quantity]);
+            } else {
+                Log::warning("No se modificó el intervalo por falta de disponibilidad", [
+                    'id' => $id,
+                    'disponible' => $interval->available_quantity,
+                    'restar' => $hours
+                ]);
             }
         }
     }
+
 
     /**
      * Almacena los datos de la transacción en un archivo JSON.
