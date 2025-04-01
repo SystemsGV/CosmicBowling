@@ -236,34 +236,34 @@ isRtl && (direction = "rtl"),
                         6: "22:30", // Sábado
                     };
 
-                    const defaultHour = defaultHours[dayOfWeek]; // Obtener la hora predeterminada según el día de la semana
-
-                    const defaultFinsh = defaultFinshHours[dayOfWeek]; // Obtener la hora predeterminada según el día de la semana
+                    const defaultHour = defaultHours[dayOfWeek];
+                    const defaultFinsh = defaultFinshHours[dayOfWeek];
 
                     // Descomponer la hora y minutos de defaultHour
                     const [hour, minute] = defaultHour.split(":").map(Number);
-
                     const [finshHour, finshMinute] = defaultFinsh
                         .split(":")
                         .map(Number);
 
-                    u(),
-                        C.show(),
-                        b && (b.innerHTML = "Agregar Horario"), // DOM Init Button
-                        (y.innerHTML = "Agregar");
+                    u();
+                    C.show();
+                    if (b) b.innerHTML = "Agregar Horario";
+                    y.innerHTML = "Agregar";
                     y.classList.remove("btn-update-event");
                     y.classList.add("btn-add-event");
                     S.classList.add("d-none");
 
+                    // Usar la hora predeterminada
                     k.value = date
-                        .hour(12) // hour VARIABLE
-                        .minute(30) // minute VARIABLE
+                        .hour(hour)
+                        .minute(minute)
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
 
+                    // Usar la hora de finalización predeterminada
                     w.value = date
-                        .hour(23) // finshHour VARIABLE
-                        .minute(0) // finshMinute VARIABLE
+                        .hour(finshHour)
+                        .minute(finshMinute)
                         .second(0)
                         .format("YYYY-MM-DD HH:mm");
                 },
