@@ -123,11 +123,14 @@
 
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">4. Selecciona los integrantes</h4>
-                                <span class="text-body-secondary">Añade hasta {{ $subcategory->limit_subcategory }}
-                                    jugadores por {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}. Proporcione un
-                                    recuento
-                                    exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
+                                <span class="text-body-secondary">
+                                    Añade hasta {{ $subcategory->limit_subcategory }} jugadores por {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}.
+                                    Proporcione un recuento exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
+                                    @if ($subcategory->id_subcategory == 4)
+                                        <br><strong>Reservas online de billar son de uso exclusivo para mayores de edad.</strong>
+                                    @endif
                                 </span>
+
                                 <div class="count-input bg-gray rounded-3">
                                     <button class="btn btn-icon btn-lg fs-xl" type="button" data-decrement=""
                                         id="decrement-btn">-</button>

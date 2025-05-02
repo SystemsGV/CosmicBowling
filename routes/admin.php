@@ -40,7 +40,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::controller(CategoriesController::class)->group(function ($route) {
-
         Route::get('/Categorias', 'index')->name('Categorias');
         Route::get('/getAllCategories', 'selectCategory');
         Route::post('/insertCategory', 'new');
@@ -50,7 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(SubCategoriesController::class)->group(function ($route) {
-
         Route::get('/SubCategorias', 'index')->name('SubCategorias');
         Route::get('/getSubCategories', 'show');
         Route::post('/insertSubCategory', 'new');
@@ -60,7 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(ProductsController::class)->group(function ($route) {
-
         Route::get('productos', 'index')->name('products.index');
         Route::get('tableProducts', 'show');
         Route::post('newProduct', 'store');
@@ -69,14 +66,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(CalendarController::class)->group(function ($route) {
-
         Route::get('calendario', 'index')->name('calendar.index');
         Route::get('schemaEvents', 'show');
         Route::post('insertHours', 'store');
     });
 
     Route::controller(CouponsController::class)->group(function ($route) {
-
         Route::get('cupones', 'index')->name('coupons.index');
         Route::get('tableCoupon', 'show');
         Route::post('createCoupon', 'create');
@@ -85,7 +80,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(HolidaysController::class)->group(function ($route) {
-
         Route::get('feriados', 'index')->name('holidays.index');
         Route::get('tableHolidays', 'show');
         Route::post('createHoliday', 'create');
