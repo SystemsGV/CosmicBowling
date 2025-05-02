@@ -127,7 +127,7 @@
                                     Añade hasta {{ $subcategory->limit_subcategory }} jugadores por {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}.
                                     Proporcione un recuento exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
                                     @if ($subcategory->id_subcategory == 4)
-                                        <br><strong>Reservas online de billar son de uso exclusivo para mayores de edad.</strong>
+                                        <br><strong>Solo se aceptan personas mayores de edad para el uso de billar.</strong>
                                     @endif
                                 </span>
 
