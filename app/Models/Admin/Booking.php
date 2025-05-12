@@ -87,9 +87,13 @@ class Booking extends Model
 
     public static function getBooking($code)
     {
-        $data = self::where('reservation_code', $code)
-            ->orWhere('order_id', $code)->first();
-
+        // Si el código tiene exactamente 7 caracteres, buscar solo por reservation_code
+        if (strlen($code) === 7) {
+            $data = self::where('reservation_code', $code)->first();
+        } else {
+            // Buscar por cart o order_id
+            $data = self::where('id_cart', $code);
+        }
         // Verificamos que exista un registro antes de continuar
         if (!$data) {
             return null; // O manejar el error según sea necesario
