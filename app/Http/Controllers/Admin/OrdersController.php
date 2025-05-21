@@ -68,9 +68,13 @@ class OrdersController extends Controller
 
     public function validateReservation($code)
     {
-        $booking = Booking::where('reservation_code', $code)
-            ->orWhere('order_id', $code)
-            ->first();
+        // Si el código tiene exactamente 7 caracteres, buscar solo por reservation_code
+        if (strlen($code) === 7) {
+            $booking = Booking::where('reservation_code', $code)->first();
+        } else {
+            // Buscar por cart o order_id
+            $booking = Booking::where('id_cart', $code);
+        }
 
         if ($booking) {
 
