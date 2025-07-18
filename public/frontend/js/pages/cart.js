@@ -25,7 +25,7 @@ const radioHours = document.querySelectorAll('input[name="c-hour"]'),
     typeLane = xwyz == 4 ? "" : "Alquiler Calzado";
 let selectedButtonId = null,
     selectedPrice,
-    priceShoe = xwyz === "4" ? 0 : holiday,
+    priceShoe = xwyz == "4" ? 0 : holiday,
     line = 1,
     globalDiscount = 0,
     globalDiscountType = "",
@@ -42,9 +42,9 @@ function priceLeft(lane, shoe, cPrice, cShoe, lines) {
 
     let discountAmount = 0;
 
-    if (globalDiscountType === "percentage") {
+    if (globalDiscountType == "percentage") {
         discountAmount = (plane * globalDiscount) / 100;
-    } else if (globalDiscountType === "fixed") {
+    } else if (globalDiscountType == "fixed") {
         discountAmount = globalDiscount;
     }
 
@@ -211,7 +211,7 @@ function checkRadioButtonStatus(value) {
     let status = false;
 
     radioButtons.forEach((radioButton) => {
-        if (radioButton.value === value) {
+        if (radioButton.value == value) {
             status = !radioButton.disabled;
         }
     });
@@ -224,7 +224,7 @@ function generateRadioButtons(calendarItems) {
     const container = document.getElementById("radioContainer");
     container.innerHTML = "";
 
-    if (calendarItems.length === 0) {
+    if (calendarItems.length == 0) {
         showNoScheduleCard(container);
     }
 
@@ -321,7 +321,7 @@ const updateUI = async () => {
 
         const hours = await getProductCalendar(xwyz, selectedDate);
 
-        priceShoe = xwyz === "4" ? 0 : hours["isHoliday"];
+        priceShoe = xwyz == "4" ? 0 : hours["isHoliday"];
 
         generateRadioButtons(hours["hours"]);
     } catch (error) {
@@ -385,7 +385,7 @@ const getCoupon = async (code) => {
         const response = await fetch(`/api/coupon/${code}`);
 
         if (!response.ok) {
-            if (response.status === 404) {
+            if (response.status == 404) {
                 console.error("Cupón no encontrado.");
                 alert("Cupón no encontrado.");
                 return { error: "Cupón no encontrado." };
@@ -576,7 +576,7 @@ inputCoupon.addEventListener("input", function () {
 function formatTime(timeString) {
     const [hour, minutes] = timeString.split(":").map(Number);
     const period = hour >= 12 ? "PM" : "AM";
-    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const formattedHour = hour % 12 == 0 ? 12 : hour % 12;
     return `${formattedHour}:${minutes.toString().padStart(2, "0")} ${period}`;
 }
 
@@ -614,7 +614,7 @@ function formatTime24Hours(timeString) {
  */
 function formatTime12Hours(hours, minutes = 0) {
     const period = hours >= 12 ? "PM" : "AM";
-    const formattedHour = hours % 12 === 0 ? 12 : hours % 12;
+    const formattedHour = hours % 12 == 0 ? 12 : hours % 12;
     return `${formattedHour}:${minutes.toString().padStart(2, "0")} ${period}`;
 }
 
@@ -816,7 +816,7 @@ document.addEventListener("DOMContentLoaded", function () {
             (checkbox) => checkbox.checked
         );
 
-        if (doc === "F") {
+        if (doc == "F") {
             // Lista de IDs de los campos a validar
             const fields = ["rsocial", "ruc", "dir"];
 
@@ -827,7 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Verificar si el campo está vacío o no es válido según su HTML
                 if (
                     !field ||
-                    field.value.trim() === "" ||
+                    field.value.trim() == "" ||
                     !field.checkValidity()
                 ) {
                     // Mostrar mensaje de advertencia
