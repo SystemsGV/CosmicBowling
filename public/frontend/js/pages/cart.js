@@ -244,13 +244,13 @@ function generateRadioButtons(calendarItems) {
         radioInput.value = item.hour;
         radioInput.setAttribute("data-price", item.price);
         radioInput.setAttribute("data-subcategory", item.subcategory);
-        if (item.available === 0) radioInput.disabled = true;
+        if (item.available == 0) radioInput.disabled = true;
 
         const radioLabel = document.createElement("label");
         radioLabel.htmlFor = `time${item.hour}`;
         radioLabel.className = "btn btn-outline-secondary btn-lg btn-custom";
         radioLabel.innerHTML =
-            item.available === 0
+            item.available == 0
                 ? `<del>${formattedTime}</del>`
                 : `<span>${formattedTime}</span>`;
 
