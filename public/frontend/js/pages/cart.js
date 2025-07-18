@@ -1210,7 +1210,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="dropdown-divider"></div>
                     <button type="button" class="dropdown-item" onclick=" window.location.reload();">
                         <i class="ai-logout fs-lg opacity-70 me-2"></i>Cerrar Sesión
-                    </button> 
+                    </button>
             </div>
         `;
     }
