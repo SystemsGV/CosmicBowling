@@ -236,11 +236,10 @@ class Cart extends Controller
                 $amount -= $discount;
             }
         }
-        $holidayResult = session('holiday_result');
 
         if ($cart['product'] != '4') {
-            // Agregar el costo de los zapatos después de aplicar el descuento
-            $amount += $totalGuests * $holidayResult;
+            $shoesPrice = $this->verifyHoliday($cart['date']); // Recalcula con la fecha real
+            $amount += $totalGuests * $shoesPrice;
         }
 
         // Guardar los detalles del pedido en la base de datos
@@ -356,10 +355,6 @@ class Cart extends Controller
         return $intervalsAvailability;
     }
 
-
-
-
-
     public function showFormPayment($amount, $purchaseNumber)
     {
 
@@ -399,11 +394,5 @@ class Cart extends Controller
         session(['holiday_result' => $result]);
 
         return $result;
-    }
-
-
-    public function destroy($id)
-    {
-        //
     }
 }
