@@ -382,7 +382,7 @@
                                 </li>
                                 <li class="nav flex-nowrap mb-3">
                                     <i class="ai-mail lead text-primary me-2"></i>
-                                    <a class="nav-link fw-normal p-0 mt-n1" href="mailto:chicago@example.com">Mándanos
+                                    <a class="nav-link fw-normal p-0 mt-n1" href="mailto:cosmicbowling@gmail.com">Mándanos
                                         un correo</a>
                                 </li>
                             </ul>
