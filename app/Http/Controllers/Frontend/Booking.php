@@ -122,6 +122,7 @@ class Booking extends Controller
         $newCart->quantity_guests = $cart['guests'];
         $newCart->payment_type = '2'; // Ajusta según el tipo de pago
         $newCart->amount_discount = $summary['discount'];
+        $newCart->insurance = isset($cart['insurance']) && floatval($cart['insurance']) > 0 ? 1 : 0;
         $newCart->amount = $summary['amount'];
         $newCart->document_type = $billing['type'] == 'Boleta' ? 'B' : 'F';
         $newCart->rsocial = $billing['type'] == 'Factura' ? $billing['rsocial'] : null;

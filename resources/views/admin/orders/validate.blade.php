@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="input-group input-group-merge">
                                             <span class="input-group-text"><i class="mdi mdi-apps fs-3"></i></span>
                                             <div class="form-floating form-floating-outline">
@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="input-group input-group-merge">
                                             <span class="input-group-text"><i
                                                     class="mdi mdi-clock-plus-outline fs-3"></i></span>
@@ -76,13 +76,24 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="input-group input-group-merge">
                                             <span class="input-group-text"><i class="mdi mdi-crowd fs-3"></i></span>
                                             <div class="form-floating form-floating-outline">
                                                 <input type="text" class="form-control" id="guests"
                                                     placeholder="Cantidad Integrantes">
                                                 <label for="guests">Cantidad Integrantes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="input-group input-group-merge">
+                                            <span class="input-group-text"><i class="mdi mdi-security fs-3"></i></span>
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" class="form-control" id="sure"
+                                                    placeholder="Cantidad Integrantes">
+                                                <label for="sure">SEGURO</label>
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +154,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <!-- /Sticky Actions -->
     </div>
 

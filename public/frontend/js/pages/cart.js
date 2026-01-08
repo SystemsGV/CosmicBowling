@@ -30,6 +30,7 @@ let selectedButtonId = null,
     globalDiscount = 0,
     globalDiscountType = "",
     plane = "";
+insurancePrice = 0;
 
 generateRadioButtons(calendarItems);
 
@@ -49,12 +50,38 @@ function priceLeft(lane, shoe, cPrice, cShoe, lines) {
     }
 
     discountAmount = discountAmount.toFixed(2);
-    const pTotal = (plane - discountAmount + pShoe).toFixed(2);
+    const pTotal = (plane - discountAmount + pShoe + insurancePrice).toFixed(2);
 
     ldiscount.innerHTML = `- S/. ${discountAmount}`;
     lpLane.innerHTML = `S/. ${plane.toFixed(2)}`;
     lpGuests.innerHTML = `S/. ${pShoe.toFixed(2)}`;
     lTotal.innerHTML = `S/. ${pTotal}`;
+
+    // ACTUALIZAR SEGURO EN TODOS LOS RESUMENES
+    updateInsuranceDisplay(pTotal);
+}
+
+function updateInsuranceDisplay(pTotal) {
+    const allLsure = document.querySelectorAll("#l-sure");
+    const allLpsure = document.querySelectorAll("#lp-sure");
+    const allLiSure = document.querySelectorAll("#li-sure");
+    const allLtotal = document.querySelectorAll("#l-total");
+
+    // Actualizar TODOS los totales
+    allLtotal.forEach((total) => {
+        total.innerHTML = `S/. ${pTotal}`;
+    });
+
+    // Actualizar TODOS los seguros
+    if (insurancePrice > 0) {
+        allLsure.forEach((el) => (el.innerHTML = "Seguro de Cambio"));
+        allLpsure.forEach((el) => (el.innerHTML = "S/. 10.00"));
+        allLiSure.forEach((el) => (el.style.display = "flex"));
+    } else {
+        allLsure.forEach((el) => (el.innerHTML = ""));
+        allLpsure.forEach((el) => (el.innerHTML = ""));
+        allLiSure.forEach((el) => (el.style.display = "none"));
+    }
 }
 
 function getNextHalfHours(timeString) {
@@ -671,6 +698,18 @@ function formatHourRange(timeString, duration) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("sure-btn").addEventListener("change", function () {
+        if (this.checked) {
+            insurancePrice = 10;
+            sessionStorage.setItem("insurance", "10.00");
+        } else {
+            insurancePrice = 0;
+            sessionStorage.removeItem("insurance");
+        }
+
+        LabelGuests(); // Esto recalcula TODO correctamente
+    });
+
     sessionStorage.setItem("product", xwyz);
     sessionStorage.setItem("date", document.getElementById("c-date").value);
     const preloader = document.getElementById("preloader");
@@ -959,13 +998,28 @@ document.addEventListener("DOMContentLoaded", function () {
     function getPayment() {
         preloader.classList.remove("hidden");
 
-        fetch(`${fullDomain}getBtnPayment`, {
+        // ACTUALIZAR SESIÓN CON SEGURO
+        const insurance = sessionStorage.getItem("insurance") || "0";
+
+        fetch(`${fullDomain}updateInsurance`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": csrfToken,
             },
+            body: JSON.stringify({ insurance: insurance }),
         })
+            .then((response) => response.json()) // Procesar la respuesta del updateInsurance
+            .then(() => {
+                // LUEGO GENERAR BOTÓN DE PAGO
+                return fetch(`${fullDomain}getBtnPayment`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                });
+            })
             .then((response) => response.json())
             .then((data) => {
                 if (data.status) {
@@ -977,7 +1031,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Agregar campo CSRF al formulario
                     var csrfInput = document.createElement("input");
                     csrfInput.type = "hidden";
-                    csrfInput.name = "_token"; // Laravel usa _token para el CSRF
+                    csrfInput.name = "_token";
                     csrfInput.value = csrfToken;
                     form.appendChild(csrfInput);
 
@@ -1001,7 +1055,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     var container = document.getElementById("visaNetContainer");
                     if (container) {
-                        container.innerHTML = ""; // Limpiar contenido previo si es necesario
+                        container.innerHTML = "";
                         container.appendChild(form);
                     } else {
                         console.error("Contenedor no encontrado");

@@ -79,6 +79,7 @@ class Booking extends Model
                 'dir' =>  $row->dir,
                 'status' => $row->status,
                 'invoice' => $row->invoice,
+                'sure' => $row->insurance,
             ];
         }
 
@@ -121,6 +122,7 @@ class Booking extends Model
             'price' => $data->amount,
             'shop' =>  $formattedDate,
             'observation' =>  $data->observation_client,
+            'sure' => $data->insurance,
             'status' => $data->status,
         ];
 

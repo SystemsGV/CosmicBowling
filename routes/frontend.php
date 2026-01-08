@@ -38,6 +38,7 @@ Route::controller(Cart::class)->group(function () {
   Route::post('updateGuests', 'guests');
   Route::post('/cartsession', 'cartData');
   Route::post('/billingsession', 'billingData');
+  Route::post('/updateInsurance', 'updateInsurance');
   Route::get('/sesiones', 'showSession');
   Route::get('/holiday/{date}', 'verifyHoliday');
   Route::post('/getBtnPayment', 'paymentData');

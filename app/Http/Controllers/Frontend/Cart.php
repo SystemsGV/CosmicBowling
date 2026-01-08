@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\VisaNetService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Cart extends Controller
@@ -118,6 +119,8 @@ class Cart extends Controller
         }
         session(['cart' => $formattedData]);
 
+        Log::alert('Datos del carrito guardados en la sesión', ['cart' => $formattedData]);
+
         return response()->json(['success' => true, 'message' => 'Datos guardados en la sesión']);
     }
 
@@ -189,11 +192,25 @@ class Cart extends Controller
         ]);
     }
 
+    public function updateInsurance(Request $request)
+    {
+        $insurance = $request->input('insurance', 0);
+        $cart = session('cart', []);
+        $cart['insurance'] = $insurance;
+        session(['cart' => $cart]);
+
+        Log::alert('Seguro actualizado', ['insurance' => $insurance, 'cart' => $cart]);
+
+        return response()->json(['success' => true]);
+    }
+
     public function paymentData($couponCode = null)
     {
         $cart = session('cart');
         $totalGuests = $cart['guests'];
         $couponCode = isset($cart['coupon']) ? $cart['coupon'] : null;
+        $hasInsurance = isset($cart['insurance']) && floatval($cart['insurance']) > 0; // Verificar si tiene seguro
+        $insuranceAmount = $hasInsurance ? 10.00 : 0;
         $discount = 0;
         $coupon = null;
 
@@ -232,15 +249,17 @@ class Cart extends Controller
                     $discount = $coupon->discount_amount;
                 }
 
-
                 $amount -= $discount;
             }
         }
 
         if ($cart['product'] != '4') {
-            $shoesPrice = $this->verifyHoliday($cart['date']); // Recalcula con la fecha real
+            $shoesPrice = $this->verifyHoliday($cart['date']);
             $amount += $totalGuests * $shoesPrice;
         }
+
+        // SUMAR EL SEGURO AL MONTO TOTAL
+        $amount += $insuranceAmount;
 
         // Guardar los detalles del pedido en la base de datos
         $order = new Order();
@@ -264,8 +283,8 @@ class Cart extends Controller
         $order->amount_discount = $discount;
         $order->amount = $amount;
         $order->status = 'pending';
-        $order->payment_type = '2'; // Siempre será 2
-
+        $order->payment_type = '2';
+        $order->insurance = $hasInsurance ? 1 : 0;
         $order->save();
 
         $arrSummary = [
@@ -274,19 +293,20 @@ class Cart extends Controller
             'quantity' => $numberOfTracksNeeded,
             'purchaseNumber' => $order->id_order,
             'discount' => $discount,
+            'insurance' => $insuranceAmount, // AGREGAR AL RESUMEN
             'code' => $reservationCode
         ];
 
         session(['summary' => $arrSummary]);
 
-        $data = $this->showFormPayment($amount, $order->id_order,);
+        $data = $this->showFormPayment($amount, $order->id_order);
 
         $sessionKey = $data['sessionKey'];
 
         return response()->json([
             'sessionKey' => $sessionKey,
             'amount' => $amount,
-            'purchaseNumber' => $order->id_order, // Retorna el código de reserva como número de compra
+            'purchaseNumber' => $order->id_order,
             'merchantId' => config('visanet.merchant_id'),
             'logoUrl' => 'https://cosmicbowling.com.pe/new/images/logo.png',
             'timeoutUrl' => url('/'),

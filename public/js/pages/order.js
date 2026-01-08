@@ -138,6 +138,7 @@ $(function () {
                     { data: "ruc" },
                     { data: "rsocial" },
                     { data: "dir" },
+                    { data: "sure" },
                     { data: "status" },
                 ],
                 columnDefs: [
@@ -181,6 +182,15 @@ $(function () {
                     {
                         targets: [10, 11, 12, 13],
                         visible: false,
+                    },
+                    {
+                        targets: 14,
+                        render: function (e, t, a, n) {
+                            //badge sure
+                            return e == 1
+                                ? '<span class="badge bg-success">Activo</span>'
+                                : '<span class="badge bg-secondary">Inactivo</span>';
+                        },
                     },
                     {
                         targets: -1,

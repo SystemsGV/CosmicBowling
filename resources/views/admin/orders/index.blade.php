@@ -111,6 +111,7 @@
                             <th>Número Documento</th>
                             <th>Razón Social</th>
                             <th>Dirección</th>
+                            <th>Seguro</th>
                             <th>Estado</th>
                         </tr>
                     </thead>

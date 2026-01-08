@@ -124,8 +124,10 @@
                             <h3 class="fs-base fw-normal text-body text-uppercase pb-2 pb-sm-3">
                                 <h4 class=" ms-1">4. Selecciona los integrantes</h4>
                                 <span class="text-body-secondary">
-                                    Añade hasta {{ $subcategory->limit_subcategory }} jugadores por {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}.
-                                    Proporcione un recuento exacto de invitados. No podemos garantizar espacios para cambios en el tamaño del grupo.
+                                    Añade hasta {{ $subcategory->limit_subcategory }} jugadores por
+                                    {{ $subcategory->id_subcategory == 4 ? 'mesa' : 'pista' }}.
+                                    Proporcione un recuento exacto de invitados. No podemos garantizar espacios para cambios
+                                    en el tamaño del grupo.
                                     @if ($subcategory->id_subcategory == 4)
                                         <br><strong>Solo se aceptan personas mayores de edad para el uso de billar.</strong>
                                     @endif
@@ -197,6 +199,9 @@
                                     <li class="d-flex justify-content-between mb-2">
                                         <span id="l-guests"></span> <span class="fw-semibold ms-2" id="lp-guests">S/.
                                             0.00</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between mb-2">
+                                        <span id="l-sure"></span> <span class="fw-semibold ms-2" id="lp-sure"></span>
                                     </li>
                                 </ul>
                                 <div class="d-flex align-items-center justify-content-between border-top fs-xl pt-4">
@@ -443,6 +448,29 @@
                                 </div>
                             </div>
 
+                            <!-- Colocar opcion de seguro-->
+
+                            <div class="pb-2 mt-2 mt-lg-0 pt-4 pt-lg-5">
+                                <div class="form-check mb-4 cursor-pointer">
+                                    <input class="form-check-input" type="checkbox" id="sure-btn">
+                                    <label class="form-check-label fs-5" for="check-payment-desktop">
+                                        <span class=" font-weight-bold">Seguro de Cambio de Fecha y/o Horario (+ S/
+                                            10.00)</span>
+                                    </label>
+                                    <label for="form-check-label fs-6">
+                                        <span>Al adquirir este seguro, el cliente podrá reprogramar su reserva una (1) sola
+                                            vez.
+                                            La reprogramación deberá solicitarse con un mínimo de 24 horas de anticipación,
+                                            comunicándose al número <a href="https://wa.me/51995953955"
+                                                target="_blank">+51 995 953 955</a>.</span>
+                                    </label>
+                                    <label for="form-check-label fs-6">
+                                        El cambio será válido únicamente para el mismo día de la semana en el que fue
+                                        adquirida originalmente la reserva y estará sujeto a disponibilidad de horarios.
+                                    </label>
+                                </div>
+                            </div>
+
 
                             <div class="d-none d-lg-block pt-5 mt-n3">
                                 <div class="form-check mb-4 open-modal cursor-pointer">
@@ -668,7 +696,7 @@
                             Utilice el código para cambiar su contraseña en nuestro sitio web seguro.
                         </li>
                     </ul>
-                    <div class="card border-0" >
+                    <div class="card border-0">
                         <form class="card-body needs-validation" id="form-recover">
                             <div class="mb-4">
                                 <div class="position-relative">
@@ -678,7 +706,8 @@
                                         placeholder="Ingresar correo electrónico" required="">
                                 </div>
                             </div>
-                            <button class="btn btn-light" type="submit" id="recover-button">Restablecer contraseña</button>
+                            <button class="btn btn-light" type="submit" id="recover-button">Restablecer
+                                contraseña</button>
                         </form>
                     </div>
                 </div>

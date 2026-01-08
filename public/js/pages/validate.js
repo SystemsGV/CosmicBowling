@@ -74,6 +74,7 @@
                     document.getElementById("typeDoc").value = data.typeDoc;
                     document.getElementById("numberDoc").value = data.numberDoc;
                     document.getElementById("names").value = data.client;
+                    document.getElementById("sure").value = data.sure == 1 ? "Si" : "No";
                 })
                 .catch((error) => {
                     console.error(
