@@ -6,7 +6,7 @@
         <!-- Clients List Table -->
         <div class="card">
             <div class="card-header border-bottom">
-                <h5 class="card-title">Filtrar Busqueda</h5>
+                <h5 class="card-title">Filtrar Busqueda PRUEBA</h5>
                 <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
                     <div class="col-md-4"></div>
                     <div class="col-md-4 user_plan"></div>

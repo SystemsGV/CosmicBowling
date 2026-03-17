@@ -261,7 +261,7 @@ class Client extends Controller
 
         $client = PersonalAccessToken::findToken($token)->tokenable;
 
-        //view interface two textbox recover password  
+        //view interface two textbox recover password
 
         if ($client) {
             return view('frontend.login.recover-password', compact('token'));
