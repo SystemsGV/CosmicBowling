@@ -1,15 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Frontend; // <--- ESTO ES LO QUE IMPORTA
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use app\Http\Controllers\Frontend\Client;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-
 
 class ClientSocio extends Model
 {
@@ -30,6 +25,11 @@ class ClientSocio extends Model
         'status_magic',
         'user_new',
         'user_renew',
+
+        'apod_nombre ',   // nombre completo del apoderado
+        'apod_doc ',      // DNI del apoderado
+        'phone_number ',
+        'confirmation_email',
     ];
 
     // Relación con Client

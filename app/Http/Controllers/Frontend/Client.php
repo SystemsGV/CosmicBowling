@@ -6,21 +6,130 @@ use App\Http\Controllers\Controller;
 use App\Mail\RecoverClient;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
+use App\Models\Frontend\ClientSocio;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
 
 //Mailing
 use App\Mail\VerifyClient;
 use App\Models\Admin\Cart;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class Client extends Controller
 {
+
+
+/*
+    1. Si el cliente ya existe y quiere ser socio , se ignoran los datos del from y se usa los datos de client mediante la FK que es id cliente (excepto : email al que llega verificacion , telefono )
+    2. Si no existe lo crea todo desde 0 y luego asocia mediante la FK , el correo de confirmacion de cuenta y de socio son lo mismo y se manda al mismo lugar
+*/
+  public function insertSocio(Request $request)
+{
+    $dEmisDate = Carbon::createFromFormat('d-m-Y', $request->initdate)->format('Y-m-d');
+    $dCaduDate = Carbon::createFromFormat('d-m-Y', $request->enddate)->format('Y-m-d');
+
+    $client = FrontendClient::where('number_doc', $request->doc)->first();
+
+    if ($client) {
+        // CASO 1 — Ya existe en clients
+        // ¿Ya es socio?
+        $yaEsSocio = ClientSocio::where('client_id', $client->id_client)->first();
+        if ($yaEsSocio) {
+            return response()->json([
+                'icon'    => 'warning',
+                'message' => 'Este cliente ya está registrado como socio.'
+            ], 422);
+        }
+        // NO se toca clients, solo se marca como socio
+        $client->socio = 1;
+        $client->save();
+
+        // El email de confirmación viene del form (puede ser diferente al de clients)
+        $confirmationEmail = $request->mail ?? $client->email_client;
+
+        // VERIFICACIÓN DE FECHA DE NACIMIENTO
+    $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
+    $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
+
+        if ($birthdateForm !== $birthdateDB) {
+        return response()->json([
+            'icon'    => 'error',
+            'message' => 'La fecha de nacimiento no coincide con la registrada.'
+        ], 422);
+    }
+
+    } else {
+        // CASO 2 — No existe, crea todo desde 0
+        $client = FrontendClient::create([
+            'document_id'     => '01',                          // DNI por defecto
+            'lastname_pat'    => $request->pattername,
+            'lastname_mat'    => $request->mattername,
+            'names_client'    => $request->names,
+            'number_doc'      => $request->doc,                // Esto va a ser su usuario y contraseña en caso se este creando ambos por pimera ves
+            'email_client'    => $request->mail,
+            'phone_client'    => $request->phone,
+            'address_client'  => $request->address,                 // DNI como dirección
+            'birthday_client' => Carbon::parse($request->birthdate)->format('Y-m-d'),
+
+            'password_client' => Hash::make($request->doc),     // DNI como password -> la contraseña si ess la misma al DNI
+            'socio'           => 1,
+            'validacion'      => 0,
+        ]);
+
+        // El email de confirmación es el mismo que se registró
+        $confirmationEmail = $request->mail;
+    }
+
+    // PASO 2 — Apoderado (ambos casos)
+    $apodNombre = null;
+    $apodDoc    = null;
+
+    if (!empty($request->proxyPatter) || !empty($request->proxyNames)) {
+        $apodNombre = trim(
+            $request->proxyPatter . ' ' .
+            $request->proxyMatter . ' ' .
+            $request->proxyNames
+        );
+        $apodDoc = $request->proxyDoc;
+    }
+
+    $phone_number = $request->phone;
+    // mismo cumpleaños
+
+    // PASO 3 — Crea client_socio (ambos casos) $request->phone,
+    try {
+        ClientSocio::create([
+            'client_id'          => $client->id_client,
+            'nTarjNumb'          => str_pad($client->id_client, 8, '0', STR_PAD_LEFT),
+            'cTarjActi'          => 1,
+            'dEmisDate'          => $dEmisDate,
+            'dCaduDate'          => $dCaduDate,
+            'affiliation'        => $request->affiliation,
+            'validado'           => 0,
+            'status_magic'       => 0,
+            'confirmation_email' => $confirmationEmail,
+            'apod_nombre'        => $apodNombre,
+            'apod_doc'           => $apodDoc,
+            'user_new'           => auth()->user()->name ?? 'ATC',
+
+            'phone_number'       => $phone_number,
+        ]);
+
+        return response()->json([
+            'icon'    => 'success',
+            'message' => 'Socio registrado correctamente.'
+        ]);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'icon'    => 'error',
+            'message' => $th->getMessage()
+        ], 500);
+    }
+}
 
     public function __construct()
     {
@@ -97,7 +206,7 @@ class Client extends Controller
         $birthday = Carbon::createFromFormat('d/m/Y', $request->input('birthday_user'))->format('Y-m-d');
 
         $client = FrontendClient::create([
-            'document_id' => $request->input('type_doc'),
+             'document_id'     => $request->type_doc ?? '00',
             'number_doc' => $request->input('number_doc'),
             'lastname_pat' => $request->input('paternal'),
             'lastname_mat' => $request->input('maternal'),
@@ -284,4 +393,6 @@ class Client extends Controller
 
         return response()->json(['error' => 'Token inválido'], 401);
     }
+
+
 }

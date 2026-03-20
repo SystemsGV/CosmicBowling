@@ -23,7 +23,13 @@ class Client extends Authenticatable
         'phone_client',
         'birthday_client',
         'address_client',
-        'password_client'
+        'password_client',
+
+        //nuevos campos : borrar validacion
+        'validacion ',
+        'socio ',
+
+
     ];
 
     protected $hidden = [

@@ -15,7 +15,7 @@
             </div>
             <div class="card-datatable table-responsive">
                 <table class="datatables-users table">
-                         <thead class="table-light">
+                    <thead class="table-light">
                         <tr>
                             <th></th>
                             <th>Nombres / Apellidos</th>
@@ -34,6 +34,160 @@
 
 
     </div>
+
+    <!-- Modal Agregar Socio -->
+
+    <div class="modal fade" id="addNewCoupon" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-simple modal-dialog-centered">
+            <div class="modal-content p-3 p-md-5">
+                <div class="modal-body p-md-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="text-center mb-4">
+                        <h3 class="address-title mb-2 pb-1">Ficha Inscripción</h3>
+                    </div>
+                    <form id="partnerForm" class="row g-4" onsubmit="return false">
+                        <h4>Datos del Socio</h4>
+
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="code" name="code" class="form-control"
+                                    placeholder="Código" disabled>
+                                <label for="code">Código</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="pattername" name="pattername" class="form-control"
+                                    placeholder="Apellido Paterno">
+                                <label for="pattername">Apellido Paterno</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="mattername" name="mattername" class="form-control"
+                                    placeholder="Apellido Materno">
+                                <label for="matternamea">Apellido Materno</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="names" name="names" class="form-control"
+                                    placeholder="Nombres">
+                                <label for="names">Nombres</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="doc" name="doc" class="form-control"
+                                    placeholder="Número de Documento">
+                                <label for="doc">Número Documento</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                    name="birthdate">
+                                <label for="birthdate">Fecha de Nacimiento</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="affiliation" name="affiliation" class="form-control"
+                                    placeholder="Ficha Afilicación">
+                                <label for="affiliation">Ficha Afilicación</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                    name="initdate" id="initdate">
+                                <label for="initdate">Inicio Socio</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input readonly type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                    name="enddate" id="enddate" style="pointer-events: none; background-color: #e9ecef;">
+                                <label for="enddate">Vencimiento</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="address" name="address" class="form-control"
+                                    placeholder="Dirección">
+                                <label for="address">Dirección</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="phone" name="phone" class="form-control"
+                                    placeholder="Número Celular">
+                                <label for="phone">Número Celular</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="mail" name="mail" class="form-control"
+                                    placeholder="E-mail">
+                                <label for="mail">E-mail</label>
+                            </div>
+                        </div>
+                        <div class="accordion mt-3" id="accordionExample">
+                            <div class="accordion-item">
+                                <h4 class="accordion-header" id="headingOne">
+                                    <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
+                                        data-bs-target="#accordionOne" aria-expanded="false"
+                                        aria-controls="accordionOne">
+                                        Datos del Apoderado o Representante
+                                    </button>
+                                </h4>
+                                <div id="accordionOne" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="proxyPatter" name="proxyPatter"
+                                                        class="form-control" placeholder="Apellido Paterno">
+                                                    <label for="proxyPatter">Apellido Paterno</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="proxyMatter" name="proxyMatter"
+                                                        class="form-control" placeholder="Apellido Materno">
+                                                    <label for="proxyMatter">Apellido Materno</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="proxyNames" name="proxyNames"
+                                                        class="form-control" placeholder="Nombres">
+                                                    <label for="proxyNames">Nombres</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="proxyDoc" name="proxyDoc"
+                                                        class="form-control" placeholder="Nombres">
+                                                    <label for="proxyDoc">Nº Doc</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1">Agregar</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection()
 
 @section('styles')
@@ -42,8 +196,14 @@
 @endsection()
 
 @section('scripts')
-    <!-- Page JS -->
+    <script src="{{ asset('vendor/libs/block-ui/block-ui.js') }}"></script>
+    <script src="{{ asset('vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+
+    <script src="{{ asset('vendor/libs/@form-validation/umd/bundle/popular.min.js') }}"></script>
+    <script src="{{ asset('vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
+    <script src="{{ asset('vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
+
     <script src="{{ asset('js/pages/clients.js') }}"></script>
 @endsection
