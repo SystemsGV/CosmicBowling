@@ -26,8 +26,8 @@ class Client extends Authenticatable
         'password_client',
 
         //nuevos campos : borrar validacion
-        'validacion ',
-        'socio ',
+        'validacion',
+        'socio',
 
 
     ];

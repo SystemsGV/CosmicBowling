@@ -26,9 +26,9 @@ class ClientSocio extends Model
         'user_new',
         'user_renew',
 
-        'apod_nombre ',   // nombre completo del apoderado
-        'apod_doc ',      // DNI del apoderado
-        'phone_number ',
+        'apod_nombre',   // nombre completo del apoderado
+        'apod_doc',      // DNI del apoderado
+        'phone_number',
         'confirmation_email',
     ];
 

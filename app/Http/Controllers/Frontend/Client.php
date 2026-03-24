@@ -10,7 +10,7 @@ use App\Models\Frontend\ClientSocio;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Log;
 //Mailing
 use App\Mail\VerifyClient;
 use App\Models\Admin\Cart;
@@ -27,7 +27,7 @@ class Client extends Controller
     2. Si no existe lo crea todo desde 0 y luego asocia mediante la FK , el correo de confirmacion de cuenta y de socio son lo mismo y se manda al mismo lugar
 */
   public function insertSocio(Request $request)
-{
+  {
     $dEmisDate = Carbon::createFromFormat('d-m-Y', $request->initdate)->format('Y-m-d');
     $dCaduDate = Carbon::createFromFormat('d-m-Y', $request->enddate)->format('Y-m-d');
 
@@ -47,19 +47,21 @@ class Client extends Controller
         $client->socio = 1;
         $client->save();
 
+        // VERIFICACIÓN DE FECHA DE NACIMIENTO
+        $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
+        $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
+
+            if ($birthdateForm !== $birthdateDB) {
+            return response()->json([
+                'icon'    => 'error',
+                'message' => 'La fecha de nacimiento no coincide con la registrada.'
+            ], 422);
+        }
+
         // El email de confirmación viene del form (puede ser diferente al de clients)
         $confirmationEmail = $request->mail ?? $client->email_client;
+        $tipoCaso          = 'socio'; // CASO B
 
-        // VERIFICACIÓN DE FECHA DE NACIMIENTO
-    $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
-    $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
-
-        if ($birthdateForm !== $birthdateDB) {
-        return response()->json([
-            'icon'    => 'error',
-            'message' => 'La fecha de nacimiento no coincide con la registrada.'
-        ], 422);
-    }
 
     } else {
         // CASO 2 — No existe, crea todo desde 0
@@ -81,6 +83,7 @@ class Client extends Controller
 
         // El email de confirmación es el mismo que se registró
         $confirmationEmail = $request->mail;
+        $tipoCaso          = 'nuevo_socio'; // CASO C
     }
 
     // PASO 2 — Apoderado (ambos casos)
@@ -118,18 +121,34 @@ class Client extends Controller
             'phone_number'       => $phone_number,
         ]);
 
+        // Genera token con nombre según el caso
+        $token = $client->createToken($tipoCaso)->plainTextToken;
+
+        Log::info("Enviando correo de confirmación...", [
+            'destino' => $confirmationEmail,
+            'caso'    => $tipoCaso,
+            'token'   => $token
+        ]);
+
+        // Manda el email
+        Mail::to($confirmationEmail)->send(
+            new VerifyClient($token, $client->names_client, $tipoCaso)
+        );
+
+        Log::info("Correo enviado exitosamente a: " . $confirmationEmail);
+
         return response()->json([
             'icon'    => 'success',
             'message' => 'Socio registrado correctamente.'
         ]);
 
-    } catch (\Throwable $th) {
-        return response()->json([
-            'icon'    => 'error',
-            'message' => $th->getMessage()
-        ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'icon'    => 'error',
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
-}
 
     public function __construct()
     {
@@ -322,27 +341,54 @@ class Client extends Controller
      */
     public function destroy($id)
     {
-        //
     }
+
+
 
     public function verifyEmail(Request $request)
     {
-        $token = $request->input('token');
+    $tokenString = $request->input('token');
 
-        // Encuentra el cliente asociado con el token
-        $client = PersonalAccessToken::findToken($token)->tokenable;
+    // 1. Buscamos el MODELO del token primero
+    $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($tokenString);
 
-        if ($client) {
-            // Marca al cliente como verificado
+    if (!$accessToken) {
+        return view('verification-error')->with('error', 'El link es inválido o ya fue usado.');
+    }
+
+    // 2. Ahora sí, sacamos el cliente y el nombre del caso
+    $client = $accessToken->tokenable;
+    $tipoCaso = $accessToken->name;
+
+    if ($client) {
+        // --- LOGICA DE CLIENTE ---
+        if ($tipoCaso === 'nuevo_socio') {
             $client->email_verified_at = now();
-            $client->save();
-
-            // Retorna la vista con un mensaje de éxito
-            return view('frontend.login.verify')->with('status', 'Cuenta verificada exitosamente. Ahora puedes iniciar sesión.');
+            $client->socio = 1;
+            $client->validacion = 1;
+        } else {
+            $client->socio = 1;
+            $client->validacion = 1;
         }
 
-        // Retorna la vista con un mensaje de error
-        return view('verification-error')->with('error', 'Token inválido o expirado.');
+        $client->save(); // ¡IMPORTANTE! Si no, no se guarda nada.
+
+        // --- LOGICA DE LA TABLA SOCIO ---
+        // Buscamos su registro en la otra tabla para validarlo ahí también
+        $socioData = ClientSocio::where('client_id', $client->id_client)
+                                            ->where('validado', 0)
+                                            ->first();
+        if ($socioData) {
+            $socioData->validado = 1;
+            $socioData->save();
+        }
+
+        $accessToken->delete();
+
+        return view('frontend.login.verify')->with('status', '¡Verificación exitosa! Ya eres socio.');
+    }
+
+    return view('verification-error')->with('error', 'No se pudo encontrar al usuario.');
     }
 
     public function recover(Request $request)

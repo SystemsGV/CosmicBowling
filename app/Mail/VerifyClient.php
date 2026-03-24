@@ -15,6 +15,7 @@ class VerifyClient extends Mailable
 
     public $token;
     public $name;
+    public $tipo; // 'nuevo' o 'socio'
 
     /**
      * Create a new message instance.
@@ -23,10 +24,12 @@ class VerifyClient extends Mailable
      * @param string $name
      * @return void
      */
-    public function __construct($token, $name)
+
+    public function __construct($token, $name, $tipo = 'socio')
     {
         $this->token = $token;
-        $this->name = $name;
+        $this->name  = $name;
+        $this->tipo  = $tipo;
     }
 
     /**
@@ -36,9 +39,11 @@ class VerifyClient extends Mailable
      */
     public function envelope()
     {
-        return new Envelope(
-            subject: 'Verificación de Cuenta',
-        );
+        $subject = $this->tipo === 'nuevo'
+            ? 'Verificación de Cuenta y Membresía'
+            : 'Verificación de Membresía';
+
+        return new Envelope(subject: $subject);
     }
 
     /**
