@@ -30,6 +30,7 @@ Route::controller(Client::class)->group(function () {
   Route::get('/Registro', 'create')->name('registro');
   Route::get('/verify', 'verifyEmail');
   Route::get('/recover-password', 'recoverPassword');
+  Route::post('/searchPartner', 'search');
 });
 
 Route::controller(Cart::class)->group(function () {

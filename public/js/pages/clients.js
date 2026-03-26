@@ -266,6 +266,14 @@ $(function () {
                         'data-bs-toggle': 'modal',
                         'data-bs-target': '#addNewCoupon'
                     }
+                },
+                {
+                    text: '<i class="mdi mdi-plus me-1"></i> Renovar Socio',
+                    className: 'btn btn-primary waves-effect waves-light',
+                    attr: {
+                        'data-bs-toggle': 'modal',
+                        'data-bs-target': '#renew-modal'
+                    }
                 }
             ],
             responsive: {
@@ -385,7 +393,7 @@ $(function () {
 
 
 
-    // nueva logica
+    // ---------------- nueva logica
     function blockUI() {
         $.blockUI({
             message: '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
@@ -406,6 +414,7 @@ $(function () {
         },
     });
 
+    //  ------------ variables genericas
     let today = new Date();
     let day = String(today.getDate()).padStart(2, "0");
     let month = String(today.getMonth() + 1).padStart(2, "0");
@@ -505,6 +514,15 @@ $(function () {
         },
     });
 
+    let formattedToday =
+        today.getDate().toString().padStart(2, "0") +
+        "-" +
+        (today.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        today.getFullYear(),
+        csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+    // ------------ logica para insertar socio
     fv.on("core.form.valid", function () {
         blockUI();
 
@@ -530,7 +548,6 @@ $(function () {
             })
             .finally(() => { $.unblockUI(); });
     });
-
 
     //setear fecha automatica
     $("#initdate").flatpickr({
@@ -653,6 +670,259 @@ $(function () {
                 ],
             },
         },
+    });
+
+
+    // ------------ logica para renovar un socio
+
+    function formatDateToDMY(dateString) {
+        if (!dateString) return '';
+        // Si la fecha viene como "2026-03-26"
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString; // Si falla, devuelve lo que sea que llegó
+
+        const day = String(date.getDate() + 1).padStart(2, '0'); // +1 por el desfase de zona horaria de JS
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+
+    let renewInitDatePicker = $("#renewInitdate").flatpickr({
+        dateFormat: "d-m-Y",
+        defaultDate: today,
+        locale: {
+            firstDayOfWeek: 1,
+            rangeSeparator: " Hasta ",
+            weekdays: {
+                shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                longhand: [
+                    "Domingo",
+                    "Lunes",
+                    "Martes",
+                    "Miércoles",
+                    "Jueves",
+                    "Viernes",
+                    "Sábado",
+                ],
+            },
+            months: {
+                shorthand: [
+                    "Ene",
+                    "Feb",
+                    "Mar",
+                    "Abr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Ago",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dic",
+                ],
+                longhand: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre",
+                ],
+            },
+        },
+        onChange: function (selectedDates) {
+            if (selectedDates.length > 0) {
+                let renewalDate = selectedDates[0];
+
+                // Calcular fecha de vencimiento (1 año - 1 día)
+                let expirationDate = new Date(renewalDate);
+                expirationDate.setFullYear(expirationDate.getFullYear() + 1); // +1 año
+                expirationDate.setDate(expirationDate.getDate() - 1); // -1 día
+
+                // Extraer día, mes y año
+                let day = expirationDate.getDate().toString().padStart(2, "0");
+                let month = (expirationDate.getMonth() + 1)
+                    .toString()
+                    .padStart(2, "0"); // Meses van de 0 a 11
+                let year = expirationDate.getFullYear();
+
+                let formattedEndDate = `${day}-${month}-${year}`; // Formato d-m-Y
+
+                // Asignar la fecha de vencimiento
+                $("#renewEnddate").val(formattedEndDate);
+            }
+        },
+    });
+
+    $("#renewEnddate").flatpickr({
+        dateFormat: "d-m-Y",
+        defaultDate: formattedDate,
+        locale: {
+            firstDayOfWeek: 1,
+            rangeSeparator: " Hasta ",
+            weekdays: {
+                shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                longhand: [
+                    "Domingo",
+                    "Lunes",
+                    "Martes",
+                    "Miércoles",
+                    "Jueves",
+                    "Viernes",
+                    "Sábado",
+                ],
+            },
+            months: {
+                shorthand: [
+                    "Ene",
+                    "Feb",
+                    "Mar",
+                    "Abr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Ago",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dic",
+                ],
+                longhand: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre",
+                ],
+            },
+        },
+    });
+
+    $("#btnSearch").on("click", function () {
+        blockUI();
+        $.ajax({
+            url: "searchPartner",
+            type: "post",
+            data: {
+                search: $("#searchInput").val(),
+                select: $("#selectSearch").val(),
+                _token: csrfToken,
+            },
+        })
+            .done((data) => {
+                if (data.icon) {
+                    // Si hay un mensaje de advertencia, mostrarlo y salir
+                    Toast.fire({
+                        icon: data.icon,
+                        title: data.message,
+                    });
+
+                    $("#renew-modal").modal("hide");
+                    $("#addNewCoupon").modal("show");
+
+                    $.unblockUI();
+                    return;
+                }
+
+                let client = data;
+
+                $("#hiddenCode").val(client.id_client);
+
+                // 2. Mapeo del Socio (QUITAMOS EL [0] y usamos la relación partner)
+                if (client.partner) {
+                    $("#codeRenew").val(client.partner.nTarjNumb);
+                } else {
+                    $("#codeRenew").val("SIN TARJETA");
+                }
+
+                // 3. Mapeo de Nombres (Nombres nuevos de tu tabla)
+                $("#namesRenew").val(`${client.lastname_pat} ${client.names_client}`);
+                $("#docRenew").val(client.number_doc);
+
+                // 4. Mapeo de Fecha
+                // Ojo: Si ya viene en formato Y-m-d, asegúrate que formatDateToDMY lo entienda
+                $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+
+                $(".btnRenew").prop("disabled", false);
+            })
+            .fail(() => {
+                Toast.fire({
+                    icon: "error",
+                    title: "Ocurrió un error en la búsqueda.",
+                });
+            })
+            .always(() => {
+                $.unblockUI();
+            });
+    });
+
+    $("#renewForm").on("submit", function (h) {
+        h.preventDefault();
+        blockUI();
+
+        if ($("#renewAffiliation").val() == "") {
+            Toast.fire({
+                icon: "error",
+                title: "Debe ingresar la ficha de afiliación",
+            });
+            $.unblockUI();
+
+            return;
+        }
+
+        let formData = new FormData(this);
+        formData.append("_token", csrfToken);
+
+        fetch("renewPartner", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                e.ajax.reload();
+                Toast.fire({
+                    icon: data.icon,
+                    title: data.message,
+                });
+
+                $("#renew-modal").modal("hide");
+            })
+            .catch((error) => {
+                Toast.fire({
+                    icon: error.icon,
+                    title: error.message,
+                });
+            })
+            .finally(() => {
+                $.unblockUI();
+            });
+    });
+
+    $("#renew-modal").on("hidden.bs.modal", function () {
+        $("#renewForm")[0].reset();
+        fv.resetForm(true);
+        $("#selectSearch").val("charClienteDni").trigger("change");
+        $(".btnRenew").prop("disabled", true);
+        renewInitDatePicker.setDate(formattedToday, true);
     });
 
 });

@@ -37,6 +37,13 @@ class Client extends Authenticatable
         'remember_token'
     ];
 
+
+    public function partner()
+    {
+        // Un cliente tiene un registro de socio
+        return $this->hasOne(ClientSocio::class, 'client_id', 'id_client');
+    }
+
     public function sunatTypedoc()
     {
         return $this->belongsTo(SunatTypeDoc::class, 'document_id');
@@ -56,6 +63,8 @@ class Client extends Authenticatable
     {
         return Hash::check($password, $this->password_client);
     }
+
+
 
 
     static public function getClients()

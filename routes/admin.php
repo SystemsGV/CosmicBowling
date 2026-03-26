@@ -91,6 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ClientController::class)->group(function ($route) {
         Route::get('Clientes', 'index')->name('clients.index');
         Route::get('tableClients', 'show');
+        Route::post('searchPartner', 'search');
     });
 
     Route::controller(OrdersController::class)->group(function ($route) {

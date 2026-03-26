@@ -188,6 +188,101 @@
             </div>
         </div>
     </div>
+
+        <!-- Renovar Modal -->
+    <div class="modal fade" id="renew-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-simple modal-dialog-centered">
+            <div class="modal-content p-3 p-md-5">
+                <div class="modal-body p-md-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="text-center mb-4">
+                        <h3 class="address-title mb-2 pb-1">Renovar Socio</h3>
+                    </div>
+
+                    <form id="renewForm" class="row g-4" onsubmit="return false">
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-sm-4 col-xxl-4 col-xl-12">
+                                <input type="text" class="form-control" placeholder="Buscar por DNI"
+                                    id="searchInput">
+                            </div>
+                            <div class="col-sm-4 col-xxl-4 col-xl-12">
+                                <select class="form-select" name="" id="selectSearch">
+                                    <option value="number_doc" selected>DNI</option>
+                                    <option value="cClieCode">Código</option>
+                                </select>
+                            </div>
+                            <div class="col-4 col-xxl-4 col-xl-12">
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-outline-primary waves-effect"
+                                        id="btnSearch">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Datos del Socio</h4>
+                        <input type="hidden" id="hiddenCode" name="hiddenCode" class="form-control">
+
+                        <div class="col-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="codeRenew" name="codeRenew" class="form-control"
+                                    placeholder="Código" disabled>
+                                <label for="codeRenew">Código</label>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="namesRenew" name="namesRenew" class="form-control"
+                                    placeholder="Nombres" disabled>
+                                <label for="namesRenew">Socio</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="docRenew" name="docRenew" class="form-control"
+                                    placeholder="Número de Documento" disabled>
+                                <label for="docRenew">Número Documento</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                    name="birthdateRenew" id="birthdateRenew" disabled>
+                                <label for="birthdate">Fecha de Nacimiento</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="renewAffiliation" name="renewAffiliation" class="form-control"
+                                    placeholder="Ficha Renovación">
+                                <label for="affiliation">Ficha Renovación</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                    name="renewInitdate" id="renewInitdate">
+                                <label for="renewInitdate">Renovación Socio</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                    name="renewEnddate" id="renewEnddate">
+                                <label for="renewEnddate">Vencimiento</label>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1 btnRenew" disabled>Renovar</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection()
 
 @section('styles')

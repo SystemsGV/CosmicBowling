@@ -20,146 +20,11 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class Client extends Controller
 {
-
-
-/*
-    1. Si el cliente ya existe y quiere ser socio , se ignoran los datos del from y se usa los datos de client mediante la FK que es id cliente (excepto : email al que llega verificacion , telefono )
-    2. Si no existe lo crea todo desde 0 y luego asocia mediante la FK , el correo de confirmacion de cuenta y de socio son lo mismo y se manda al mismo lugar
-*/
-  public function insertSocio(Request $request)
-  {
-    $dEmisDate = Carbon::createFromFormat('d-m-Y', $request->initdate)->format('Y-m-d');
-    $dCaduDate = Carbon::createFromFormat('d-m-Y', $request->enddate)->format('Y-m-d');
-
-    $client = FrontendClient::where('number_doc', $request->doc)->first();
-
-    if ($client) {
-        // CASO 1 — Ya existe en clients
-        // ¿Ya es socio?
-        $yaEsSocio = ClientSocio::where('client_id', $client->id_client)->first();
-        if ($yaEsSocio) {
-            return response()->json([
-                'icon'    => 'warning',
-                'message' => 'Este cliente ya está registrado como socio.'
-            ], 422);
-        }
-        // NO se toca clients, solo se marca como socio
-        $client->socio = 1;
-        $client->save();
-
-        // VERIFICACIÓN DE FECHA DE NACIMIENTO
-        $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
-        $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
-
-            if ($birthdateForm !== $birthdateDB) {
-            return response()->json([
-                'icon'    => 'error',
-                'message' => 'La fecha de nacimiento no coincide con la registrada.'
-            ], 422);
-        }
-
-        // El email de confirmación viene del form (puede ser diferente al de clients)
-        $confirmationEmail = $request->mail ?? $client->email_client;
-        $tipoCaso          = 'socio'; // CASO B
-
-
-    } else {
-        // CASO 2 — No existe, crea todo desde 0
-        $client = FrontendClient::create([
-            'document_id'     => '01',                          // DNI por defecto
-            'lastname_pat'    => $request->pattername,
-            'lastname_mat'    => $request->mattername,
-            'names_client'    => $request->names,
-            'number_doc'      => $request->doc,                // Esto va a ser su usuario y contraseña en caso se este creando ambos por pimera ves
-            'email_client'    => $request->mail,
-            'phone_client'    => $request->phone,
-            'address_client'  => $request->address,                 // DNI como dirección
-            'birthday_client' => Carbon::parse($request->birthdate)->format('Y-m-d'),
-
-            'password_client' => Hash::make($request->doc),     // DNI como password -> la contraseña si ess la misma al DNI
-            'socio'           => 1,
-            'validacion'      => 0,
-        ]);
-
-        // El email de confirmación es el mismo que se registró
-        $confirmationEmail = $request->mail;
-        $tipoCaso          = 'nuevo_socio'; // CASO C
-    }
-
-    // PASO 2 — Apoderado (ambos casos)
-    $apodNombre = null;
-    $apodDoc    = null;
-
-    if (!empty($request->proxyPatter) || !empty($request->proxyNames)) {
-        $apodNombre = trim(
-            $request->proxyPatter . ' ' .
-            $request->proxyMatter . ' ' .
-            $request->proxyNames
-        );
-        $apodDoc = $request->proxyDoc;
-    }
-
-    $phone_number = $request->phone;
-    // mismo cumpleaños
-
-    // PASO 3 — Crea client_socio (ambos casos) $request->phone,
-    try {
-        ClientSocio::create([
-            'client_id'          => $client->id_client,
-            'nTarjNumb'          => str_pad($client->id_client, 8, '0', STR_PAD_LEFT),
-            'cTarjActi'          => 1,
-            'dEmisDate'          => $dEmisDate,
-            'dCaduDate'          => $dCaduDate,
-            'affiliation'        => $request->affiliation,
-            'validado'           => 0,
-            'status_magic'       => 0,
-            'confirmation_email' => $confirmationEmail,
-            'apod_nombre'        => $apodNombre,
-            'apod_doc'           => $apodDoc,
-            'user_new'           => auth()->user()->name ?? 'ATC',
-
-            'phone_number'       => $phone_number,
-        ]);
-
-        // Genera token con nombre según el caso
-        $token = $client->createToken($tipoCaso)->plainTextToken;
-
-        Log::info("Enviando correo de confirmación...", [
-            'destino' => $confirmationEmail,
-            'caso'    => $tipoCaso,
-            'token'   => $token
-        ]);
-
-        // Manda el email
-        Mail::to($confirmationEmail)->send(
-            new VerifyClient($token, $client->names_client, $tipoCaso)
-        );
-
-        Log::info("Correo enviado exitosamente a: " . $confirmationEmail);
-
-        return response()->json([
-            'icon'    => 'success',
-            'message' => 'Socio registrado correctamente.'
-        ]);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'icon'    => 'error',
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
-    public function __construct()
+        public function __construct()
     {
         $this->middleware('client.auth')->only(['show']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (auth()->guard('client')->check()) {
@@ -179,11 +44,6 @@ class Client extends Controller
         return view('frontend.client.profile', compact('client', 'reservations', 'title'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (auth()->guard('client')->check()) {
@@ -192,12 +52,6 @@ class Client extends Controller
         return view('frontend.login.register');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -303,7 +157,6 @@ class Client extends Controller
         ], 200);
     }
 
-
     public function logout(Request $request)
     {
         // Elimina los tokens si estás usando tokens para autenticación
@@ -321,74 +174,52 @@ class Client extends Controller
         return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-    }
-
-
-
     public function verifyEmail(Request $request)
     {
-    $tokenString = $request->input('token');
 
-    // 1. Buscamos el MODELO del token primero
-    $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($tokenString);
+        $tokenString = $request->input('token');
 
-    if (!$accessToken) {
-        return view('verification-error')->with('error', 'El link es inválido o ya fue usado.');
-    }
+        // 1. Buscamos el MODELO del token primero
+        $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($tokenString);
 
-    // 2. Ahora sí, sacamos el cliente y el nombre del caso
-    $client = $accessToken->tokenable;
-    $tipoCaso = $accessToken->name;
-
-    if ($client) {
-        // --- LOGICA DE CLIENTE ---
-        if ($tipoCaso === 'nuevo_socio') {
-            $client->email_verified_at = now();
-            $client->socio = 1;
-            $client->validacion = 1;
-        } else {
-            $client->socio = 1;
-            $client->validacion = 1;
+        if (!$accessToken) {
+            return view('verification-error')->with('error', 'El link es inválido o ya fue usado.');
         }
 
-        $client->save(); // ¡IMPORTANTE! Si no, no se guarda nada.
+        // 2. Ahora sí, sacamos el cliente y el nombre del caso
+        $client = $accessToken->tokenable;
+        $tipoCaso = $accessToken->name;
 
-        // --- LOGICA DE LA TABLA SOCIO ---
-        // Buscamos su registro en la otra tabla para validarlo ahí también
-        $socioData = ClientSocio::where('client_id', $client->id_client)
-                                            ->where('validado', 0)
-                                            ->first();
-        if ($socioData) {
-            $socioData->validado = 1;
-            $socioData->save();
+        if ($client) {
+            // --- LOGICA DE CLIENTE ---
+            if ($tipoCaso === 'nuevo_socio') {
+                $client->email_verified_at = now();
+                $client->socio = 1;
+                $client->validacion = 1;
+            } else {
+                $client->socio = 1;
+                $client->validacion = 1;
+            }
+
+            $client->save(); // ¡IMPORTANTE! Si no, no se guarda nada.
+
+            // --- LOGICA DE LA TABLA SOCIO ---
+            // Buscamos su registro en la otra tabla para validarlo ahí también
+            $socioData = ClientSocio::where('client_id', $client->id_client)
+                                                ->where('validado', 0)
+                                                ->first();
+            if ($socioData) {
+                $socioData->validado = 1;
+                $socioData->save();
+            }
+
+            $accessToken->delete();
+
+            return view('frontend.login.verify')->with('status', '¡Verificación exitosa! Ya eres socio.');
         }
 
-        $accessToken->delete();
+        return view('verification-error')->with('error', 'No se pudo encontrar al usuario.');
 
-        return view('frontend.login.verify')->with('status', '¡Verificación exitosa! Ya eres socio.');
-    }
-
-    return view('verification-error')->with('error', 'No se pudo encontrar al usuario.');
     }
 
     public function recover(Request $request)
@@ -425,7 +256,7 @@ class Client extends Controller
         return view('frontend.login.recover');
     }
 
-    public function reset(Request $request)
+     public function reset(Request $request)
     {
 
         $client = PersonalAccessToken::findToken($request->input('token'))->tokenable;
@@ -440,5 +271,185 @@ class Client extends Controller
         return response()->json(['error' => 'Token inválido'], 401);
     }
 
+    public function search(Request $request)
+    {
+
+        dd("ESTOY EN EL CONTROLADOR CORRECTO", $request->all());
+
+        $search = $request->search;
+        $select = $request->select; // Asegúrate que esto sea 'number_doc' o el nombre de la columna en BD
+
+        // Usamos el modelo Client y cargamos la relación 'partner' que acabamos de crear
+        $client = FrontendClient::with('partner')->where($select, $search)->first();
+
+        if (!$client) {
+            return response()->json([
+                'icon' => 'warning',
+                'message' => 'No se encontró ningún usuario con esos datos.',
+            ]);
+        }
+
+        // Si el cliente existe, pero no tiene un registro en la tabla client_socio
+        if (!$client->partner) {
+            return response()->json([
+                'icon' => 'info',
+                'message' => 'Se encontró al usuario ' . $client->names_client . ', pero no está registrado como socio.',
+            ]);
+        }
+
+        // Si todo está bien, mandamos el objeto completo (incluyendo partner)
+        return response()->json($client);
+    }
+
+    /*
+        1. Si el cliente ya existe y quiere ser socio , se ignoran los datos del from y se usa los datos de client mediante la FK que es id cliente (excepto : email al que llega verificacion , telefono )
+        2. Si no existe lo crea todo desde 0 y luego asocia mediante la FK , el correo de confirmacion de cuenta y de socio son lo mismo y se manda al mismo lugar
+    */
+    public function insertSocio(Request $request)
+    {
+            $dEmisDate = Carbon::createFromFormat('d-m-Y', $request->initdate)->format('Y-m-d');
+        $dCaduDate = Carbon::createFromFormat('d-m-Y', $request->enddate)->format('Y-m-d');
+
+        $client = FrontendClient::where('number_doc', $request->doc)->first();
+
+        if ($client) {
+            // CASO 1 — Ya existe en clients
+            // ¿Ya es socio?
+            $yaEsSocio = ClientSocio::where('client_id', $client->id_client)->first();
+            if ($yaEsSocio) {
+                return response()->json([
+                    'icon'    => 'warning',
+                    'message' => 'Este cliente ya está registrado como socio.'
+                ], 422);
+            }
+            // NO se toca clients, solo se marca como socio
+            $client->socio = 1;
+            $client->save();
+
+            // VERIFICACIÓN DE FECHA DE NACIMIENTO
+            $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
+            $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
+
+                if ($birthdateForm !== $birthdateDB) {
+                return response()->json([
+                    'icon'    => 'error',
+                    'message' => 'La fecha de nacimiento no coincide con la registrada.'
+                ], 422);
+            }
+
+            // El email de confirmación viene del form (puede ser diferente al de clients)
+            $confirmationEmail = $request->mail ?? $client->email_client;
+            $tipoCaso          = 'socio'; // CASO B
+
+
+        } else {
+            // CASO 2 — No existe, crea todo desde 0
+            $client = FrontendClient::create([
+                'document_id'     => '01',                          // DNI por defecto
+                'lastname_pat'    => $request->pattername,
+                'lastname_mat'    => $request->mattername,
+                'names_client'    => $request->names,
+                'number_doc'      => $request->doc,                // Esto va a ser su usuario y contraseña en caso se este creando ambos por pimera ves
+                'email_client'    => $request->mail,
+                'phone_client'    => $request->phone,
+                'address_client'  => $request->address,                 // DNI como dirección
+                'birthday_client' => Carbon::parse($request->birthdate)->format('Y-m-d'),
+
+                'password_client' => Hash::make($request->doc),     // DNI como password -> la contraseña si ess la misma al DNI
+                'socio'           => 1,
+                'validacion'      => 0,
+            ]);
+
+            // El email de confirmación es el mismo que se registró
+            $confirmationEmail = $request->mail;
+            $tipoCaso          = 'nuevo_socio'; // CASO C
+        }
+
+        // PASO 2 — Apoderado (ambos casos)
+        $apodNombre = null;
+        $apodDoc    = null;
+
+        if (!empty($request->proxyPatter) || !empty($request->proxyNames)) {
+            $apodNombre = trim(
+                $request->proxyPatter . ' ' .
+                $request->proxyMatter . ' ' .
+                $request->proxyNames
+            );
+            $apodDoc = $request->proxyDoc;
+        }
+
+        $phone_number = $request->phone;
+        // mismo cumpleaños
+
+        // PASO 3 — Crea client_socio (ambos casos) $request->phone,
+        try {
+            ClientSocio::create([
+                'client_id'          => $client->id_client,
+                'nTarjNumb'          => str_pad($client->id_client, 8, '0', STR_PAD_LEFT),
+                'cTarjActi'          => 1,
+                'dEmisDate'          => $dEmisDate,
+                'dCaduDate'          => $dCaduDate,
+                'affiliation'        => $request->affiliation,
+                'validado'           => 0,
+                'status_magic'       => 0,
+                'confirmation_email' => $confirmationEmail,
+                'apod_nombre'        => $apodNombre,
+                'apod_doc'           => $apodDoc,
+                'user_new'           => auth()->user()->name ?? 'ATC',
+
+                'phone_number'       => $phone_number,
+            ]);
+
+            // Genera token con nombre según el caso
+            $token = $client->createToken($tipoCaso)->plainTextToken;
+
+            Log::info("Enviando correo de confirmación...", [
+                'destino' => $confirmationEmail,
+                'caso'    => $tipoCaso,
+                'token'   => $token
+            ]);
+
+            // Manda el email
+            Mail::to($confirmationEmail)->send(
+                new VerifyClient($token, $client->names_client, $tipoCaso)
+            );
+
+            Log::info("Correo enviado exitosamente a: " . $confirmationEmail);
+
+            return response()->json([
+                'icon'    => 'success',
+                'message' => 'Socio registrado correctamente.'
+            ]);
+
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'icon'    => 'error',
+                    'message' => $th->getMessage()
+                ], 500);
+            }
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
