@@ -25,6 +25,7 @@ Route::get('/client/check-authentication', function () {
 
 Route::get('coupon/{code}', [Coupon::class, 'show']);
 Route::post('/insertSocio', [Client::class, 'insertSocio'])->name('insertSocio');
+Route::post('/renewPartner', [Client::class, 'renew'])->name('renew');
 Route::post('client/register', [Client::class, 'store']);
 Route::post('client/login', [Client::class, 'login']);
 Route::post('client/recover', [Client::class, 'recover']);

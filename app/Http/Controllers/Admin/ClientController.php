@@ -49,4 +49,6 @@ class ClientController extends Controller
         // Si todo está bien, mandamos el objeto completo (incluyendo partner)
         return response()->json($client);
     }
+
+    
 }

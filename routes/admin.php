@@ -92,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('Clientes', 'index')->name('clients.index');
         Route::get('tableClients', 'show');
         Route::post('searchPartner', 'search');
+        Route::post('renewPartner', 'renew');
     });
 
     Route::controller(OrdersController::class)->group(function ($route) {

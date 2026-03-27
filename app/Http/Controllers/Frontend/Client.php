@@ -7,6 +7,7 @@ use App\Mail\RecoverClient;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
 use App\Models\Frontend\ClientSocio;
+use App\Models\Frontend\LogPartnet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -256,7 +257,7 @@ class Client extends Controller
         return view('frontend.login.recover');
     }
 
-     public function reset(Request $request)
+    public function reset(Request $request)
     {
 
         $client = PersonalAccessToken::findToken($request->input('token'))->tokenable;
@@ -271,10 +272,57 @@ class Client extends Controller
         return response()->json(['error' => 'Token inválido'], 401);
     }
 
+    public function renew(Request $request)
+    {
+        try {
+            // 1. Validar que llegue el ID del cliente (lo que guardaste en hiddenCode)
+            if (!$request->hiddenCode) {
+                return response()->json(['icon' => 'error', 'message' => 'ID de cliente no recibido.'], 400);
+            }
+
+            // 2. Buscar al socio en la tabla correcta: ClientSocio
+            $socio = ClientSocio::where('client_id', $request->hiddenCode)->first();
+
+            if (!$socio) {
+                return response()->json(['icon' => 'error', 'message' => 'El registro de socio no existe.'], 404);
+            }
+
+            // 3. Formatear fechas (asumiendo que vienen dd-mm-yyyy del front)
+            $dEmisDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->renewInitdate)->format('Y-m-d');
+            $dCaduDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->renewEnddate)->format('Y-m-d');
+
+            // 4. Actualizar ClientSocio
+            $socio->update([
+                'dEmisDate'   => $dEmisDate,
+                'dCaduDate'   => $dCaduDate,
+                'affiliation' => $request->renewAffiliation,
+                'status_magic'=> 0, // Reiniciamos status
+                'user_new'    => auth()->user()->name ?? 'ATC', // Usamos tu columna user_new
+            ]);
+
+            // 5. Registrar el Log usando tu modelo LogPartnet
+            // Pasamos: (ID Cliente, Tipo 1 = Renovación, Afiliación)
+            LogPartnet::registerLog(
+                $socio->nTarjNumb,
+                'RENOVACION',
+                $request->renewAffiliation
+            );
+
+            return response()->json([
+                'icon' => 'success',
+                'message' => 'Socio renovado correctamente y log registrado.',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'icon' => 'error',
+                'message' => 'Error al renovar: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function search(Request $request)
     {
-
-        dd("ESTOY EN EL CONTROLADOR CORRECTO", $request->all());
 
         $search = $request->search;
         $select = $request->select; // Asegúrate que esto sea 'number_doc' o el nombre de la columna en BD
@@ -428,6 +476,8 @@ class Client extends Controller
                 ], 500);
             }
     }
+
+
 
 }
 

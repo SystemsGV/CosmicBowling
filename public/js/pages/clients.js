@@ -275,6 +275,14 @@ $(function () {
                         'data-bs-target': '#renew-modal'
                     }
                 }
+                , {
+                    text: '<i class="mdi mdi-plus me-1"></i> Editar Socio',
+                    className: 'btn btn-primary waves-effect waves-light',
+                    attr: {
+                        'data-bs-toggle': 'modal',
+                        'data-bs-target': '#edit-modal'
+                    }
+                }
             ],
             responsive: {
                 details: {
@@ -824,6 +832,9 @@ $(function () {
             },
         })
             .done((data) => {
+
+
+
                 if (data.icon) {
                     // Si hay un mensaje de advertencia, mostrarlo y salir
                     Toast.fire({
@@ -887,7 +898,7 @@ $(function () {
         let formData = new FormData(this);
         formData.append("_token", csrfToken);
 
-        fetch("renewPartner", {
+        fetch("/api/renewPartner", {
             method: "POST",
             body: formData,
         })
@@ -923,6 +934,114 @@ $(function () {
         $("#selectSearch").val("charClienteDni").trigger("change");
         $(".btnRenew").prop("disabled", true);
         renewInitDatePicker.setDate(formattedToday, true);
+    });
+
+    // ------------ logica para editar un socio
+
+    $("#editPartner").on("click", function (h) {
+        $("#edit-modal").modal("show");
+    });
+
+    $("#editBtn").on("click", function () {
+        blockUI();
+        $.ajax({
+            url: "searchPartner",
+            type: "post",
+            data: {
+                search: $("#inputSelect").val(),
+                select: $("#editSelect").val(),
+                _token: csrfToken,
+            },
+        })
+            .done((data) => {
+
+                console.log("Lo que llega del server:", data); // <--- MIRA ESTO EN LA CONSOLA (F12)
+
+                if (!data || data.icon === 'warning') {
+                    Toast.fire({ icon: 'warning', title: data.message || 'No se encontró nada' });
+                    return;
+                }
+
+                // Si data es un array, cámbialo a objeto
+                let client = Array.isArray(data) ? data[0] : data;
+
+                if (!client) {
+                    console.error("El objeto client sigue siendo undefined");
+                    return;
+                }
+
+                if (data.icon) {
+                    // Si hay un mensaje de advertencia, mostrarlo y salir
+                    Toast.fire({
+                        icon: data.icon,
+                        title: data.message,
+                    });
+
+                    $("#edit-modal").modal("hide");
+
+                    $("#addNewCoupon").modal("show");
+
+                    $.unblockUI();
+                    return;
+                }
+
+                if (!data || data.icon) {
+                    Toast.fire({
+                        icon: data.icon || 'error',
+                        title: data.message || 'Error desconocido'
+                    });
+                    return;
+                }
+
+                $("#editCodeHidden").val(data.id_client);
+                $("#editdoc").val(data.number_doc);
+                $("#editnames").val(data.names_client);
+                $("#editpattername").val(data.lastname_pat);
+                $("#editmattername").val(data.lastname_mat);
+                $("#editmail").val(data.email_client);
+                $("#editphone").val(data.phone_client);
+                $("#editaddress").val(data.address_client);
+
+                // Formatear la fecha de nacimiento
+                if (data.birthday_client) {
+                    $("#editbirthdate").val(formatDateToDMY(data.birthday_client));
+                }
+
+                // 2. Datos de Socio (Tabla 'client_socio' - Relación 'partner')
+                if (data.partner) {
+                    $("#editcode").val(data.partner.nTarjNumb);
+                    $("#editaffiliation").val(data.partner.affiliation);
+
+                    // Fechas de la tarjeta
+                    $("#editinitdate").val(formatDateToDMY(data.partner.dEmisDate));
+                    $("#editenddate").val(formatDateToDMY(data.partner.dCaduDate));
+
+                    // Datos del Apoderado (si existen en la tabla client_socio)
+                    if (data.partner.apod_nombre) {
+                        $("#EditaccordionOne").collapse("show");
+                        $("#editproxyNames").val(data.partner.apod_nombre);
+                        $("#editproxyDoc").val(data.partner.apod_doc);
+                    } else {
+                        $("#EditaccordionOne").collapse("hide");
+                    }
+                } else {
+                    // Si no tiene registro en client_socio, limpiamos esos campos
+                    $("#editcode, #editaffiliation, #editinitdate, #editenddate").val("SIN REGISTRO");
+                }
+
+                // Mostrar el modal si estaba oculto
+                $("#edit-modal").modal("show");
+            })
+            .always(() => {
+                // ESTO ES SAGRADO: Pase lo que pase, quita el loading
+                $.unblockUI();
+            });
+
+    });
+
+    $("#edit-modal").on("hidden.bs.modal", function () {
+        $("#editForm")[0].reset();
+        fv.resetForm(true);
     });
 
 });
