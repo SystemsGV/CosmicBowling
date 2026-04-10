@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Frontend\Client;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
+use Illuminate\Support\Facades\Log;
+
 
 class ClientController extends Controller
 {
@@ -21,7 +23,7 @@ class ClientController extends Controller
         return response()->json(['data' => $clients]);
     }
 
-      public function search(Request $request)
+    public function search(Request $request)
     {
 
 
@@ -50,5 +52,55 @@ class ClientController extends Controller
         return response()->json($client);
     }
 
-    
+    public function update(Request $request)
+    {
+        // 1. Formatear fecha (ojo al formato, si usas "/" en el front debe ser "d/m/Y")
+        $birthday = null;
+        if ($request->editbirthdate) {
+            try {
+                $birthday = \Carbon\Carbon::createFromFormat('d/m/Y', $request->editbirthdate)->format('Y-m-d');
+            } catch (\Exception $e) {
+                $birthday = null;
+            }
+        }
+
+        // 2. Buscar al Cliente (Tabla Principal)
+        $client = FrontendClient::find($request->editCodeHidden);
+
+        if (!$client) {
+            return response()->json(['icon' => 'error', 'message' => 'Cliente no encontrado']);
+        }
+
+        // 3. Actualizar datos del Cliente
+        $client->lastname_pat   = $request->editpattername;
+        $client->lastname_mat   = $request->editmattername;
+        $client->names_client   = $request->editnames;
+        $client->number_doc     = $request->editdoc;
+        $client->birthday_client = $birthday;
+        $client->address_client = $request->editaddress;
+        $client->phone_client   = $request->editphone;
+        $client->email_client   = $request->editmail;
+        $client->save();
+
+        // 4. Actualizar datos de Socio (donde vive el Apoderado)
+        // Usamos la relación 'partner' que definiste en tu modelo Client
+        if ($client->partner) {
+            $socio = $client->partner;
+            $socio->apod_nombre = $request->editproxyNames; // Viene de tu modal
+            $socio->apod_doc    = $request->editproxyDoc;   // Viene de tu modal
+
+            // También podrías actualizar la ficha de afiliación si es necesario
+            $socio->affiliation = $request->editaffiliation;
+
+            $socio->save();
+        }
+
+        return response()->json([
+            'icon' => 'success',
+            'message' => 'Se editaron los datos correctamente'
+        ]);
+    }
+
+
+
 }

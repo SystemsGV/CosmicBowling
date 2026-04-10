@@ -4,8 +4,7 @@ use App\Http\Controllers\Api\Coupon;
 use App\Http\Controllers\Frontend\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
+ /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------

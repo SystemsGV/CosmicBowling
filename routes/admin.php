@@ -12,9 +12,7 @@ use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SubCategoriesController;
 use App\Http\Controllers\Admin\UserController;
-use App\Models\Admin\Coupons;
-use App\Models\Admin\Order;
-use Spatie\Permission\Contracts\Role;
+use App\Http\Controllers\Frontend\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +91,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('tableClients', 'show');
         Route::post('searchPartner', 'search');
         Route::post('renewPartner', 'renew');
+        Route::post('updatePartner', 'update');
+        Route::post('insertSocio', 'insert');
     });
 
     Route::controller(OrdersController::class)->group(function ($route) {
@@ -109,4 +109,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('Users/show', 'show');
         Route::post('Users/add', 'store');
     });
+
+    Route::post('/insertSocio', [Client::class, 'insertSocio'])->name('insertSocio');
 });

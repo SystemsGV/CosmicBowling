@@ -44,6 +44,10 @@ class Client extends Authenticatable
         return $this->hasOne(ClientSocio::class, 'client_id', 'id_client');
     }
 
+    public function proxy() {
+        return $this->belongsTo(Proxy::class, 'proxy_id', 'proxy_id');
+    }
+
     public function sunatTypedoc()
     {
         return $this->belongsTo(SunatTypeDoc::class, 'document_id');

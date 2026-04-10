@@ -26,16 +26,21 @@ class ClientSocio extends Model
         'user_new',
         'user_renew',
 
-        'apod_nombre',   // nombre completo del apoderado
-        'apod_doc',      // DNI del apoderado
+        // 'apod_nombre',   // nombre completo del apoderado
+        // 'apod_doc',      // DNI del apoderado
         'phone_number',
         'confirmation_email',
     ];
 
     // Relación con Client
-    public function client()
+   public function client()
     {
         return $this->belongsTo(Client::class, 'client_id', 'id_client');
+    }
+
+    public function proxy()
+    {
+        return $this->belongsTo(Proxy::class, 'proxy_id', 'proxy_id');
     }
 
     // Acceso directo al tipo de doc a través de client

@@ -431,6 +431,8 @@ $(function () {
 
     const f = document.getElementById("partnerForm");
 
+    // ------------ logica para insertar socio
+    // insertar validacion
     const fv = FormValidation.formValidation(f, {
         fields: {
             pattername: {
@@ -488,11 +490,11 @@ $(function () {
                     notEmpty: { message: "Ingresa la fecha de inicio" },
                 },
             },
-            enddate: {
-                validators: {
-                    notEmpty: { message: "Ingresa la fecha de vencimiento" },
-                },
-            },
+            // enddate: {
+            //     validators: {
+            //         notEmpty: { message: "Ingresa la fecha de vencimiento" },
+            //     },
+            // },
             address: {
                 validators: {
                     notEmpty: { message: "Ingresa la dirección" }
@@ -500,7 +502,13 @@ $(function () {
             },
             phone: {
                 validators: {
-                    notEmpty: { message: "Ingresa el número de celular" },
+                    notEmpty: {
+                        message: "Ingresa el número de celular"
+                    },
+                    regexp: {
+                        regexp: /^[0-9]+$/, // Solo números
+                        message: "El celular no puede contener letras ni espacios"
+                    }
                 }
             },
             mail: {
@@ -522,6 +530,48 @@ $(function () {
         },
     });
 
+    //insertar
+    fv.on('core.form.valid', function () {
+        // ESTO SOLO SE EJECUTA SI PASÓ TODAS LAS REGLAS (SIN LETRAS, TODO LLENO)
+        console.log("¡Formulario validado por el core! Iniciando Fetch...");
+
+        blockUI(); // Tu función de carga
+
+        const f = document.getElementById("partnerForm");
+        let formData = new FormData(f);
+
+        fetch("/be/insertSocio", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                "Accept": "application/json"
+            },
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) throw response; // Si el back explota, vamos al catch
+                return response.json();
+            })
+            .then(data => {
+                $.unblockUI();
+                Toast.fire({ icon: data.icon, title: data.message });
+
+                if (data.icon === "success") {
+                    $(".modal").modal("hide");
+                    f.reset(); // Limpia los inputs
+                    fv.resetForm(true); // Limpia los checks verdes/rojos
+                }
+            })
+            .catch(error => {
+                $.unblockUI();
+                console.error("Error en la petición:", error);
+                Toast.fire({
+                    icon: "error",
+                    title: "Error al comunicar con el servidor"
+                });
+            });
+    });
+
     let formattedToday =
         today.getDate().toString().padStart(2, "0") +
         "-" +
@@ -530,34 +580,80 @@ $(function () {
         today.getFullYear(),
         csrfToken = $('meta[name="csrf-token"]').attr("content");
 
-    // ------------ logica para insertar socio
-    fv.on("core.form.valid", function () {
-        blockUI();
 
-        const csrfToken = $('meta[name="csrf-token"]').attr("content");
-        let formData = new FormData(f);
+    console.log("El script cargó correctamente");
 
-        fetch("/api/insertSocio", {
-            method: "POST",
-            headers: { "X-CSRF-TOKEN": csrfToken },
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                Toast.fire({ icon: data.icon, title: data.message });
-                if (data.icon === "success") {
-                    $("#addNewCoupon").modal("hide");
-                    fv.resetForm(true);
-                }
-            })
-            .catch((error) => {
-                Toast.fire({ icon: "error", title: "Error al registrar socio" });
-                console.error(error);
-            })
-            .finally(() => { $.unblockUI(); });
-    });
+    // $(document).on("submit", "#partnerForm", function (e) {
+    //     e.preventDefault();
+
+    //     console.log("1. Click en submit detectado");
+
+    //     fv.validate().then(function (status) {
+
+    //         console.log("2. El estado de la validación es:", status); // ESTO ES CLAVE
+
+    //         if (status === 'Valid') {
+    //             console.log("3. Enviando al servidor porque es VÁLIDO");
+    //             let formData = new FormData(f);
+    //             fetch("/be/insertSocio", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    //                     "Accept": "application/json"
+    //                 },
+    //                 body: formData,
+    //             })
+    //                 .then(response => response.json())
+    //                 .then(data => {
+    //                     Toast.fire({ icon: data.icon, title: data.message });
+    //                     if (data.icon === "success") {
+    //                         $(".modal").modal("hide");
+    //                         fv.resetForm(true);
+    //                     }
+    //                 })
+    //                 .catch(error => console.error("Error:", error));
+    //         } else {
+    //             // Si llega aquí, los mensajes rojos aparecerán bajo los inputs
+    //             console.log("Validación fallida");
+    //             console.log("3. NO DEBERÍA ENVIARSE. Revisa los errores en rojo.");
+    //         }
+    //     });
+    // });
+
+    // fv.on("core.form.valid", function () {
+
+    //     console.log("¡Formulario validado! Iniciando Fetch...");
+
+    //     // blockUI();
+    //     const csrfToken = $('meta[name="csrf-token"]').attr("content");
+    //     let formData = new FormData(f);
+
+    //     fetch("/insertSocio", {
+    //         method: "POST",
+    //         headers: { "X-CSRF-TOKEN": csrfToken },
+    //         body: formData,
+    //     })
+    //         // fetch("http://127.0.0.1:8000//api/insertSocio", { // Usa tu URL real
+    //         //     method: "POST",
+    //         //     body: formData, // El FormData ya sabe que es multipart
+    //         // })
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             Toast.fire({ icon: data.icon, title: data.message });
+    //             if (data.icon === "success") {
+    //                 $("#addNewCoupon").modal("hide");
+    //                 fv.resetForm(true);
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             Toast.fire({ icon: "error", title: "Error al registrar socio" });
+    //             console.error(error);
+    //         })
+    //         .finally(() => { $.unblockUI(); });
+    // });
 
     //setear fecha automatica
+
     $("#initdate").flatpickr({
         dateFormat: "d-m-Y",
         defaultDate: today,
@@ -612,19 +708,24 @@ $(function () {
                 let startDate = new Date(selectedDates[0]);
                 let endDate = new Date(startDate);
 
-                // Sumar 1 año y restar 1 día
                 endDate.setFullYear(endDate.getFullYear() + 1);
                 endDate.setDate(endDate.getDate() - 1);
 
-                // Obtener día, mes y año correctamente formateados
-                let day = String(endDate.getDate()).padStart(2, "0"); // 01-31
-                let month = String(endDate.getMonth() + 1).padStart(2, "0"); // 01-12
-                let year = endDate.getFullYear(); // YYYY
+                let day = String(endDate.getDate()).padStart(2, "0");
+                let month = String(endDate.getMonth() + 1).padStart(2, "0");
+                let year = endDate.getFullYear();
 
-                let formattedEndDate = `${day}-${month}-${year}`; // Formato d-m-Y
+                let formattedEndDate = `${day}-${month}-${year}`;
 
-                // Establecer valor en el input de vencimiento
+                // 1. Actualiza el valor del input
                 $("#enddate").val(formattedEndDate);
+
+                // 2. IMPORTANTE: Dile a Flatpickr del enddate que cambie su fecha interna
+                // o FormValidation pensará que sigue vacío o con la fecha de hoy
+                document.querySelector("#enddate")._flatpickr.setDate(formattedEndDate);
+
+                // 3. Revalidar para que FormValidation no se quede con el error de "vacío"
+                fv.revalidateField('enddate');
             }
         },
     });
@@ -938,6 +1039,233 @@ $(function () {
 
     // ------------ logica para editar un socio
 
+    const ef = document.getElementById("editForm");
+
+    const fvEdit = FormValidation.formValidation(ef, {
+        fields: {
+            pattername: {
+                validators: {
+                    notEmpty: { message: "Ingresa el apellido paterno" },
+                    regexp: {
+                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
+                        message: "Solo se permiten letras"
+                    }
+                }
+            },
+            mattername: {
+                validators: {
+                    notEmpty: { message: "Ingresa el apellido materno" },
+                    regexp: {
+                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
+                        message: "Solo se permiten letras"
+                    }
+                }
+            },
+            names: {
+                validators: {
+                    notEmpty: { message: "Ingresa los nombres" },
+                    regexp: {
+                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
+                        message: "Solo se permiten letras"
+                    }
+                }
+            },
+            doc: {
+                validators: {
+                    notEmpty: {
+                        message: "Ingresa el Nº documento del socio",
+                    },
+                },
+            },
+            birthdate: {
+                validators: {
+                    notEmpty: {
+                        message: "Ingresa la fecha de nacimiento"
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD',
+                        message: 'El formato debe ser Año-Mes-Día (Ej: 1998-03-25)'
+                    }
+                }
+            },
+            affiliation: {
+                validators: {
+                    notEmpty: { message: "Ingresa la ficha de afiliación" }
+                }
+            },
+            initdate: {
+                validators: {
+                    notEmpty: { message: "Ingresa la fecha de inicio" },
+                },
+            },
+            enddate: {
+                validators: {
+                    notEmpty: { message: "Ingresa la fecha de vencimiento" },
+                },
+            },
+            address: {
+                validators: {
+                    notEmpty: { message: "Ingresa la dirección" }
+                }
+            },
+            phone: {
+                validators: {
+                    notEmpty: {
+                        message: "Ingresa el número de celular"
+                    },
+                    regexp: {
+                        regexp: /^[0-9]+$/, // Solo números
+                        message: "El celular no puede contener letras ni espacios"
+                    }
+                }
+            },
+            mail: {
+                validators: {
+                    notEmpty: { message: "Ingresa el e-mail" },
+                    emailAddress: { message: "Ingresa un e-mail válido" },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
+                        message: "El formato del e-mail no es válido (Ej: usuario@gmail.com)"
+                    }
+                }
+            },
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({ eleValidClass: "is-valid" }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+        },
+    });
+
+    fvEdit.on('core.form.valid', function () {
+        console.log("Editando socio...");
+        blockUI();
+
+        let formData = new FormData(ef);
+
+        fetch("/be/updatePartner", { // Ajusta tu ruta de edición
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                "Accept": "application/json"
+            },
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                $.unblockUI();
+                Toast.fire({ icon: data.icon, title: data.message });
+                if (data.icon === "success") {
+                    $(".modal").modal("hide");
+                    // Aquí puedes recargar tu tabla o actualizar la fila
+                }
+            })
+            .catch(error => {
+                $.unblockUI();
+                console.error("Error:", error);
+            });
+    });
+
+    // if (ef) {
+    //     const fvEdit = FormValidation.formValidation(ef, {
+    //         fields: {
+    //             pattername: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa el apellido paterno" },
+    //                     regexp: {
+    //                         regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
+    //                         message: "Solo se permiten letras"
+    //                     }
+    //                 }
+    //             },
+    //             mattername: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa el apellido materno" },
+    //                     regexp: {
+    //                         regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
+    //                         message: "Solo se permiten letras"
+    //                     }
+    //                 }
+    //             },
+    //             names: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa los nombres" },
+    //                     regexp: {
+    //                         regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
+    //                         message: "Solo se permiten letras"
+    //                     }
+    //                 }
+    //             },
+    //             doc: {
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: "Ingresa el Nº documento del socio",
+    //                     },
+    //                 },
+    //             },
+    //             birthdate: {
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: "Ingresa la fecha de nacimiento"
+    //                     },
+    //                     date: {
+    //                         format: 'YYYY-MM-DD',
+    //                         message: 'El formato debe ser Año-Mes-Día (Ej: 1998-03-25)'
+    //                     }
+    //                 }
+    //             },
+    //             affiliation: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa la ficha de afiliación" }
+    //                 }
+    //             },
+    //             initdate: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa la fecha de inicio" },
+    //                 },
+    //             },
+    //             enddate: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa la fecha de vencimiento" },
+    //                 },
+    //             },
+    //             address: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa la dirección" }
+    //                 }
+    //             },
+    //             phone: {
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: "Ingresa el número de celular"
+    //                     },
+    //                     regexp: {
+    //                         regexp: /^[0-9]+$/, // Solo números
+    //                         message: "El celular no puede contener letras ni espacios"
+    //                     }
+    //                 }
+    //             },
+    //             mail: {
+    //                 validators: {
+    //                     notEmpty: { message: "Ingresa el e-mail" },
+    //                     emailAddress: { message: "Ingresa un e-mail válido" },
+    //                     regexp: {
+    //                         regexp: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
+    //                         message: "El formato del e-mail no es válido (Ej: usuario@gmail.com)"
+    //                     }
+    //                 }
+    //             },
+    //         },
+    //         plugins: {
+    //             trigger: new FormValidation.plugins.Trigger(),
+    //             bootstrap5: new FormValidation.plugins.Bootstrap5({ eleValidClass: "is-valid" }),
+    //             submitButton: new FormValidation.plugins.SubmitButton(),
+    //             autoFocus: new FormValidation.plugins.AutoFocus(),
+    //         },
+    //     });
+    // }
+
     $("#editPartner").on("click", function (h) {
         $("#edit-modal").modal("show");
     });
@@ -1039,9 +1367,48 @@ $(function () {
 
     });
 
+    $("#editForm").on("submit", function (e) {
+        e.preventDefault(); // Evita que la página se recargue
+        blockUI();
+
+        // Recogemos los datos del formulario
+        let formData = new FormData(this);
+        formData.append("_token", csrfToken);
+
+        $.ajax({
+            url: "updatePartner", // <--- Asegúrate de tener esta ruta en Laravel
+            type: "post",
+            data: formData,
+            processData: false,
+            contentType: false,
+        })
+            .done((data) => {
+                Toast.fire({
+                    icon: data.icon,
+                    title: data.message,
+                });
+
+                if (data.icon === "success") {
+                    $("#edit-modal").modal("hide");
+                    // Si usas datatables, recárgala aquí:
+                    // table.ajax.reload();
+                }
+            })
+            .fail((xhr) => {
+                Toast.fire({
+                    icon: "error",
+                    title: "Error al actualizar los datos.",
+                });
+            })
+            .always(() => {
+                $.unblockUI();
+            });
+    });
+
     $("#edit-modal").on("hidden.bs.modal", function () {
         $("#editForm")[0].reset();
         fv.resetForm(true);
     });
+
 
 });

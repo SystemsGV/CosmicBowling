@@ -7,6 +7,7 @@ use App\Mail\RecoverClient;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
 use App\Models\Frontend\ClientSocio;
+use App\Models\Frontend\Proxy;
 use App\Models\Frontend\LogPartnet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -18,13 +19,238 @@ use App\Models\Admin\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\PersonalAccessToken;
-
+use Illuminate\Support\Facades\DB;
 class Client extends Controller
 {
         public function __construct()
     {
         $this->middleware('client.auth')->only(['show']);
     }
+
+       /*
+        1. Si el cliente ya existe y quiere ser socio , se ignoran los datos del from y se usa los datos de client mediante la FK que es id cliente (excepto : email al que llega verificacion , telefono )
+        2. Si no existe lo crea todo desde 0 y luego asocia mediante la FK , el correo de confirmacion de cuenta y de socio son lo mismo y se manda al mismo lugar
+    */
+    public function insertSocio(Request $request)
+    {
+            // dd($request->all());
+            Log::info("Ingreso al metodo insentar socio");
+
+            $validator = Validator::make($request->all(), [
+                'doc'       => 'required',
+                'phone'     => 'required|numeric|digits:9', // Solo números, exactamente 9
+                'mail'      => 'required|email',
+                'initdate'  => 'required',
+                'enddate'   => 'required',
+                'birthdate' => 'required',
+            ], [
+                'phone.numeric' => 'El número celular solo debe contener números.',
+                'phone.digits'  => 'El celular debe tener exactamente 9 dígitos.',
+                'mail.email'    => 'El formato del correo es inválido.'
+            ]);
+
+            // Si falla, mandamos un 422 con el primer error que encuentre
+            if ($validator->fails()) {
+                return response()->json([
+                    'icon'    => 'error',
+                    'message' => $validator->errors()->first()
+                ], 200);
+            }
+
+        Log::info("Ingreso al metodo insentar socio");
+
+        $dEmisDate = Carbon::parse($request->initdate)->format('Y-m-d');
+        // $dCaduDate = Carbon::parse($request->enddate)->format('Y-m-d');
+
+        $dCaduDate = Carbon::parse($request->initdate)->addYear()->format('Y-m-d');
+
+        if ($dEmisDate === $dCaduDate) {
+            Log::warning("Ojo: La fecha de emisión y caducidad son iguales.");
+        }
+
+            $client = FrontendClient::where('number_doc', $request->doc)->first();
+
+            if ($client) {
+                // CASO 1 — Ya existe en clients
+                // ¿Ya es socio?
+                $yaEsSocio = ClientSocio::where('client_id', $client->id_client)->first();
+                if ($yaEsSocio) {
+                    return response()->json([
+                        'icon'    => 'warning',
+                        'message' => 'Este cliente ya está registrado como socio.'
+                    ], 200);
+                }
+                // NO se toca clients, solo se marca como socio
+                $client->socio = 1;
+                $client->save();
+
+                // VERIFICACIÓN DE FECHA DE NACIMIENTO
+                $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
+                $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
+
+                if ($birthdateForm !== $birthdateDB) {
+                    return response()->json([
+                        'icon'    => 'error',
+                        'message' => 'La fecha de nacimiento no coincide con la registrada.'
+                    ], 200);
+                }
+
+
+
+                // El email de confirmación viene del form (puede ser diferente al de clients)
+                $confirmationEmail = $request->mail ?? $client->email_client;
+                $tipoCaso          = 'socio'; // CASO B
+
+
+            } else {
+                // CASO 2 — No existe, crea todo desde 0
+                $client = FrontendClient::create([
+                    'document_id'     => '01',                          // DNI por defecto
+                    'lastname_pat'    => $request->pattername,
+                    'lastname_mat'    => $request->mattername,
+                    'names_client'    => $request->names,
+                    'number_doc'      => $request->doc,                // Esto va a ser su usuario y contraseña en caso se este creando ambos por pimera ves
+                    'email_client'    => $request->mail,
+                    'phone_client'    => $request->phone,
+                    'address_client'  => $request->address,                 // DNI como dirección
+                    'birthday_client' => Carbon::parse($request->birthdate)->format('Y-m-d'),
+
+                    'password_client' => Hash::make($request->doc),     // DNI como password -> la contraseña si ess la misma al DNI
+                    'socio'           => 1,
+                    'validacion'      => 0,
+                ]);
+
+                // El email de confirmación es el mismo que se registró
+                $confirmationEmail = $request->mail;
+                $tipoCaso          = 'nuevo_socio'; // CASO C
+            }
+
+            // PASO 2 — Apoderado (ambos casos)
+            $apodNombre = null;
+            $apodDoc    = null;
+
+            $phone_number = $request->phone;
+            // mismo cumpleaños
+
+            // PASO 3 — Crea client_socio (ambos casos) $request->phone,
+            try {
+                ClientSocio::create([
+                    'client_id'          => $client->id_client,
+                    'nTarjNumb'          => str_pad($client->id_client, 8, '0', STR_PAD_LEFT),
+                    'cTarjActi'          => 1,
+                    'dEmisDate'          => $dEmisDate,
+                    'dCaduDate'          => $dCaduDate,
+                    'affiliation'        => $request->affiliation,
+                    'validado'           => 0,
+                    'status_magic'       => 0,
+                    // 'confirmation_email' => $confirmationEmail,
+                    // 'apod_nombre'        => $apodNombre,
+                    // 'apod_doc'           => $apodDoc,
+                    'user_new'           => auth()->user()->name ?? 'ATC',
+                    'phone_number'       => $phone_number,
+                ]);
+
+                    if ($request->filled('proxyNames') || $request->filled('proxyDoc')) {
+                        Proxy::updateOrCreate(
+                            ['proxy_client' => $client->id_client],
+                            [
+                                'proxy_pattername' => $request->proxyPatter, // Quité el "edit"
+                                'proxy_mattername' => $request->proxyMatter,
+                                'proxy_names'      => $request->proxyNames,
+                                'proxy_doc'        => $request->proxyDoc,
+                            ]
+                        );
+                    }
+
+                // Genera token con nombre según el caso
+                $token = $client->createToken($tipoCaso)->plainTextToken;
+
+                Log::info("Enviando correo de confirmación...", [
+                    'destino' => $confirmationEmail,
+                    'caso'    => $tipoCaso,
+                    'token'   => $token
+                ]);
+
+                // Manda el email
+                Mail::to($confirmationEmail)->send(
+                    new VerifyClient($token, $client->names_client, $tipoCaso)
+                );
+
+                Log::info("Correo enviado exitosamente a: " . $confirmationEmail);
+
+                return response()->json([
+                    'icon'    => 'success',
+                    'message' => 'Socio registrado correctamente.'
+                ]);
+
+                } catch (\Throwable $th) {
+                    return response()->json([
+                        'icon'    => 'error',
+                        'message' => $th->getMessage()
+                    ], 500);
+                }
+    }
+
+   public function update(Request $request)
+{
+    DB::beginTransaction();
+    try {
+        // 1. Formatear fecha
+        $birthday = null;
+        if ($request->editbirthdate) {
+            $birthday = \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d');
+        }
+
+        // 2. Buscar al Cliente (Tabla Principal)
+        $client = FrontendClient::findOrFail($request->editCodeHidden);
+
+        // 3. Actualizar datos básicos del Cliente
+        $client->update([
+            'lastname_pat'    => $request->editpattername,
+            'lastname_mat'    => $request->editmattername,
+            'names_client'    => $request->editnames,
+            'number_doc'      => $request->editdoc,
+            'birthday_client' => $birthday,
+            'address_client'  => $request->editaddress,
+            'phone_client'    => $request->editphone,
+            'email_client'    => $request->editmail,
+        ]);
+
+        // 4. Lógica del Apoderado (Proxy) - Relación N a 1
+        $proxyId = null;
+        if ($request->filled('editproxyDoc')) {
+            $proxy = Proxy::updateOrCreate(
+                ['proxy_doc' => $request->editproxyDoc], // Buscamos por DNI para no duplicar padres
+                [
+                    'proxy_pattername' => $request->editproxyPatter, // Ajusta nombres según tu form
+                    'proxy_mattername' => $request->editproxyMatter,
+                    'proxy_names'      => $request->editproxyNames,
+                ]
+            );
+            $proxyId = $proxy->proxy_id;
+        }
+
+        // 5. Actualizar la tabla ClientSocio (Donde vive la FK proxy_id ahora)
+        // Usamos la relación 'partner' que definimos en el modelo Client
+        if ($client->partner) {
+            $client->partner->update([
+                'proxy_id'     => $proxyId,
+                'affiliation'  => $request->editaffiliation,
+                'phone_number' => $request->editphone, // Mantener sincronizado el cel
+            ]);
+        }
+
+        DB::commit();
+        return response()->json(['icon' => 'success', 'message' => 'Datos actualizados correctamente']);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'icon' => 'error',
+            'message' => 'Error al actualizar: ' . $e->getMessage()
+        ], 500);
+    }
+}
 
     public function index()
     {
@@ -349,133 +575,9 @@ class Client extends Controller
         return response()->json($client);
     }
 
-    /*
-        1. Si el cliente ya existe y quiere ser socio , se ignoran los datos del from y se usa los datos de client mediante la FK que es id cliente (excepto : email al que llega verificacion , telefono )
-        2. Si no existe lo crea todo desde 0 y luego asocia mediante la FK , el correo de confirmacion de cuenta y de socio son lo mismo y se manda al mismo lugar
-    */
-    public function insertSocio(Request $request)
-    {
-            $dEmisDate = Carbon::createFromFormat('d-m-Y', $request->initdate)->format('Y-m-d');
-        $dCaduDate = Carbon::createFromFormat('d-m-Y', $request->enddate)->format('Y-m-d');
-
-        $client = FrontendClient::where('number_doc', $request->doc)->first();
-
-        if ($client) {
-            // CASO 1 — Ya existe en clients
-            // ¿Ya es socio?
-            $yaEsSocio = ClientSocio::where('client_id', $client->id_client)->first();
-            if ($yaEsSocio) {
-                return response()->json([
-                    'icon'    => 'warning',
-                    'message' => 'Este cliente ya está registrado como socio.'
-                ], 422);
-            }
-            // NO se toca clients, solo se marca como socio
-            $client->socio = 1;
-            $client->save();
-
-            // VERIFICACIÓN DE FECHA DE NACIMIENTO
-            $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
-            $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
-
-                if ($birthdateForm !== $birthdateDB) {
-                return response()->json([
-                    'icon'    => 'error',
-                    'message' => 'La fecha de nacimiento no coincide con la registrada.'
-                ], 422);
-            }
-
-            // El email de confirmación viene del form (puede ser diferente al de clients)
-            $confirmationEmail = $request->mail ?? $client->email_client;
-            $tipoCaso          = 'socio'; // CASO B
 
 
-        } else {
-            // CASO 2 — No existe, crea todo desde 0
-            $client = FrontendClient::create([
-                'document_id'     => '01',                          // DNI por defecto
-                'lastname_pat'    => $request->pattername,
-                'lastname_mat'    => $request->mattername,
-                'names_client'    => $request->names,
-                'number_doc'      => $request->doc,                // Esto va a ser su usuario y contraseña en caso se este creando ambos por pimera ves
-                'email_client'    => $request->mail,
-                'phone_client'    => $request->phone,
-                'address_client'  => $request->address,                 // DNI como dirección
-                'birthday_client' => Carbon::parse($request->birthdate)->format('Y-m-d'),
 
-                'password_client' => Hash::make($request->doc),     // DNI como password -> la contraseña si ess la misma al DNI
-                'socio'           => 1,
-                'validacion'      => 0,
-            ]);
-
-            // El email de confirmación es el mismo que se registró
-            $confirmationEmail = $request->mail;
-            $tipoCaso          = 'nuevo_socio'; // CASO C
-        }
-
-        // PASO 2 — Apoderado (ambos casos)
-        $apodNombre = null;
-        $apodDoc    = null;
-
-        if (!empty($request->proxyPatter) || !empty($request->proxyNames)) {
-            $apodNombre = trim(
-                $request->proxyPatter . ' ' .
-                $request->proxyMatter . ' ' .
-                $request->proxyNames
-            );
-            $apodDoc = $request->proxyDoc;
-        }
-
-        $phone_number = $request->phone;
-        // mismo cumpleaños
-
-        // PASO 3 — Crea client_socio (ambos casos) $request->phone,
-        try {
-            ClientSocio::create([
-                'client_id'          => $client->id_client,
-                'nTarjNumb'          => str_pad($client->id_client, 8, '0', STR_PAD_LEFT),
-                'cTarjActi'          => 1,
-                'dEmisDate'          => $dEmisDate,
-                'dCaduDate'          => $dCaduDate,
-                'affiliation'        => $request->affiliation,
-                'validado'           => 0,
-                'status_magic'       => 0,
-                'confirmation_email' => $confirmationEmail,
-                'apod_nombre'        => $apodNombre,
-                'apod_doc'           => $apodDoc,
-                'user_new'           => auth()->user()->name ?? 'ATC',
-
-                'phone_number'       => $phone_number,
-            ]);
-
-            // Genera token con nombre según el caso
-            $token = $client->createToken($tipoCaso)->plainTextToken;
-
-            Log::info("Enviando correo de confirmación...", [
-                'destino' => $confirmationEmail,
-                'caso'    => $tipoCaso,
-                'token'   => $token
-            ]);
-
-            // Manda el email
-            Mail::to($confirmationEmail)->send(
-                new VerifyClient($token, $client->names_client, $tipoCaso)
-            );
-
-            Log::info("Correo enviado exitosamente a: " . $confirmationEmail);
-
-            return response()->json([
-                'icon'    => 'success',
-                'message' => 'Socio registrado correctamente.'
-            ]);
-
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'icon'    => 'error',
-                    'message' => $th->getMessage()
-                ], 500);
-            }
-    }
 
 
 
