@@ -935,6 +935,36 @@ $(function () {
             .done((data) => {
 
 
+                console.log("Llegar hasta el apoderado");
+
+                if (data.partner && data.partner.proxy) {
+                    console.log("¡Apoderado detectado!");
+
+                    // Asignación directa usando los nombres exactos de tu log
+                    $("#editproxyPatter").val(data.partner.proxy.proxy_pattername);
+                    $("#editproxyMatter").val(data.partner.proxy.proxy_mattername);
+                    $("#editproxyNames").val(data.partner.proxy.proxy_names);
+                    $("#editproxyDoc").val(data.partner.proxy.proxy_doc);
+
+                    // Abrir el acordeón a la fuerza
+                    $("#EditaccordionOne").addClass("show");
+                    // Si usas Bootstrap 5, a veces necesita esto:
+                    // var bootstrapCollapse = new bootstrap.Collapse(document.getElementById('EditaccordionOne'), { show: true });
+                } else {
+                    console.log("No hay datos de proxy en la respuesta");
+                    $("#EditaccordionOne").removeClass("show");
+                }
+
+                try {
+                    if (client.birthday_client) {
+                        $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+                    }
+                } catch (e) {
+                    console.error("Error en la fecha, pero seguimos...", e);
+                }
+
+                console.log("Lo que llega del server SEARCH:", data); // <--- MIRA ESTO EN LA CONSOLA (F12)
+
 
                 if (data.icon) {
                     // Si hay un mensaje de advertencia, mostrarlo y salir
@@ -955,11 +985,11 @@ $(function () {
                 $("#hiddenCode").val(client.id_client);
 
                 // 2. Mapeo del Socio (QUITAMOS EL [0] y usamos la relación partner)
-                if (client.partner) {
-                    $("#codeRenew").val(client.partner.nTarjNumb);
-                } else {
-                    $("#codeRenew").val("SIN TARJETA");
-                }
+                // if (client.partner) {
+                //     $("#codeRenew").val(client.partner.nTarjNumb);
+                // } else {
+                //     $("#codeRenew").val("SIN TARJETA");
+                // }
 
                 // 3. Mapeo de Nombres (Nombres nuevos de tu tabla)
                 $("#namesRenew").val(`${client.lastname_pat} ${client.names_client}`);
@@ -967,7 +997,12 @@ $(function () {
 
                 // 4. Mapeo de Fecha
                 // Ojo: Si ya viene en formato Y-m-d, asegúrate que formatDateToDMY lo entienda
-                $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+                // $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+
+                // 2. Datos de Socio (Tabla 'client_socio' - Relación 'partner')
+
+                // Mostrar el modal si estaba oculto
+                // $("#edit-modal").modal("show");
 
                 $(".btnRenew").prop("disabled", false);
             })
@@ -1270,6 +1305,8 @@ $(function () {
         $("#edit-modal").modal("show");
     });
 
+
+    // Esto es para buscar al momento de editar
     $("#editBtn").on("click", function () {
         blockUI();
         $.ajax({
@@ -1290,8 +1327,15 @@ $(function () {
                     return;
                 }
 
-                // Si data es un array, cámbialo a objeto
                 let client = Array.isArray(data) ? data[0] : data;
+
+                try {
+                    if (client.birthday_client) {
+                        $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+                    }
+                } catch (e) {
+                    console.error("Error en la fecha, pero seguimos...", e);
+                }
 
                 if (!client) {
                     console.error("El objeto client sigue siendo undefined");
@@ -1321,6 +1365,9 @@ $(function () {
                     return;
                 }
 
+                $("#editaffiliation").val(client.partner.affiliation);
+                $("#editenddate").val(formatDateToDMY(client.partner.dEmisDate));
+                $("#editinitdate").val(formatDateToDMY(client.partner.dEmisDate));
                 $("#editCodeHidden").val(data.id_client);
                 $("#editdoc").val(data.number_doc);
                 $("#editnames").val(data.names_client);
@@ -1336,29 +1383,27 @@ $(function () {
                 }
 
                 // 2. Datos de Socio (Tabla 'client_socio' - Relación 'partner')
-                if (data.partner) {
-                    $("#editcode").val(data.partner.nTarjNumb);
-                    $("#editaffiliation").val(data.partner.affiliation);
+                console.log("Logica del apoderado si existe")
+                if (data.partner && data.partner.proxy) {
+                    console.log("¡Apoderado detectado!");
 
-                    // Fechas de la tarjeta
-                    $("#editinitdate").val(formatDateToDMY(data.partner.dEmisDate));
-                    $("#editenddate").val(formatDateToDMY(data.partner.dCaduDate));
+                    // Asignación directa usando los nombres exactos de tu log
+                    $("#editproxyPatter").val(data.partner.proxy.proxy_pattername);
+                    $("#editproxyMatter").val(data.partner.proxy.proxy_mattername);
+                    $("#editproxyNames").val(data.partner.proxy.proxy_names);
+                    $("#editproxyDoc").val(data.partner.proxy.proxy_doc);
 
-                    // Datos del Apoderado (si existen en la tabla client_socio)
-                    if (data.partner.apod_nombre) {
-                        $("#EditaccordionOne").collapse("show");
-                        $("#editproxyNames").val(data.partner.apod_nombre);
-                        $("#editproxyDoc").val(data.partner.apod_doc);
-                    } else {
-                        $("#EditaccordionOne").collapse("hide");
-                    }
+                    // Abrir el acordeón a la fuerza
+                    $("#EditaccordionOne").addClass("show");
+                    // Si usas Bootstrap 5, a veces necesita esto:
+                    // var bootstrapCollapse = new bootstrap.Collapse(document.getElementById('EditaccordionOne'), { show: true });
                 } else {
-                    // Si no tiene registro en client_socio, limpiamos esos campos
-                    $("#editcode, #editaffiliation, #editinitdate, #editenddate").val("SIN REGISTRO");
+                    console.log("No hay datos de proxy en la respuesta");
+                    $("#EditaccordionOne").removeClass("show");
                 }
 
                 // Mostrar el modal si estaba oculto
-                $("#edit-modal").modal("show");
+                // $("#edit-modal").modal("show");
             })
             .always(() => {
                 // ESTO ES SAGRADO: Pase lo que pase, quita el loading

@@ -33,19 +33,19 @@ class ClientSocio extends Model
     ];
 
     // Relación con Client
-   public function client()
+    public function client()
     {
         return $this->belongsTo(Client::class, 'client_id', 'id_client');
-    }
-
-    public function proxy()
-    {
-        return $this->belongsTo(Proxy::class, 'proxy_id', 'proxy_id');
     }
 
     // Acceso directo al tipo de doc a través de client
     public function getTipoDocAttribute()
     {
         return optional($this->client)->sunatTypedoc;
+    }
+
+    public function proxy()
+    {
+        return $this->belongsTo(Proxy::class, 'proxy_id', 'proxy_id');
     }
 }
