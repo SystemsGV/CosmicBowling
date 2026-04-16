@@ -36,7 +36,6 @@
     </div>
 
     <!-- Modal Agregar Socio -->
-
     <div class="modal fade" id="addNewCoupon" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-simple modal-dialog-centered">
             <div class="modal-content p-3 p-md-5">
@@ -209,7 +208,7 @@
                             <div class="col-sm-4 col-xxl-4 col-xl-12">
                                 <select class="form-select" name="" id="selectSearch">
                                     <option value="number_doc" selected>DNI</option>
-                                    <option value="cClieCode">Código</option>
+                                    <option value="number_doc">Código</option>
                                 </select>
                             </div>
                             <div class="col-4 col-xxl-4 col-xl-12">
@@ -267,7 +266,7 @@
                         </div>
                         <div class="col-4">
                             <div class="form-floating form-floating-outline">
-                                <input type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
+                                <input disabled type="text" class="form-control flatpickr-date" placeholder="YYYY-MM-DD"
                                     name="renewEnddate" id="renewEnddate">
                                 <label for="renewEnddate">Vencimiento</label>
                             </div>
@@ -302,7 +301,7 @@
                             <div class="col-sm-4 col-xxl-4 col-xl-12">
                                 <select class="form-select" name="" id="editSelect">
                                     <option value="number_doc">DNI</option>
-                                    <option value="client_id">Código</option>
+                                    <option value="number_doc">Código</option>
                                 </select>
                             </div>
                             <div class="col-4 col-xxl-4 col-xl-12">

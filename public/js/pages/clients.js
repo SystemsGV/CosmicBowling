@@ -921,6 +921,7 @@ $(function () {
         },
     });
 
+    /*Esto es lo que busca al momendo de renovar creo  */
     $("#btnSearch").on("click", function () {
         blockUI();
         $.ajax({
@@ -935,25 +936,7 @@ $(function () {
             .done((data) => {
 
 
-                console.log("Llegar hasta el apoderado");
-
-                if (data.partner && data.partner.proxy) {
-                    console.log("¡Apoderado detectado!");
-
-                    // Asignación directa usando los nombres exactos de tu log
-                    $("#editproxyPatter").val(data.partner.proxy.proxy_pattername);
-                    $("#editproxyMatter").val(data.partner.proxy.proxy_mattername);
-                    $("#editproxyNames").val(data.partner.proxy.proxy_names);
-                    $("#editproxyDoc").val(data.partner.proxy.proxy_doc);
-
-                    // Abrir el acordeón a la fuerza
-                    $("#EditaccordionOne").addClass("show");
-                    // Si usas Bootstrap 5, a veces necesita esto:
-                    // var bootstrapCollapse = new bootstrap.Collapse(document.getElementById('EditaccordionOne'), { show: true });
-                } else {
-                    console.log("No hay datos de proxy en la respuesta");
-                    $("#EditaccordionOne").removeClass("show");
-                }
+                console.log("Entrando en el search de apoderado");
 
                 try {
                     if (client.birthday_client) {
@@ -997,7 +980,7 @@ $(function () {
 
                 // 4. Mapeo de Fecha
                 // Ojo: Si ya viene en formato Y-m-d, asegúrate que formatDateToDMY lo entienda
-                // $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+                $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
 
                 // 2. Datos de Socio (Tabla 'client_socio' - Relación 'partner')
 
@@ -1073,12 +1056,11 @@ $(function () {
     });
 
     // ------------ logica para editar un socio
-
     const ef = document.getElementById("editForm");
 
     const fvEdit = FormValidation.formValidation(ef, {
         fields: {
-            pattername: {
+            editpattername: {
                 validators: {
                     notEmpty: { message: "Ingresa el apellido paterno" },
                     regexp: {
@@ -1087,7 +1069,7 @@ $(function () {
                     }
                 }
             },
-            mattername: {
+            editmattername: {
                 validators: {
                     notEmpty: { message: "Ingresa el apellido materno" },
                     regexp: {
@@ -1096,7 +1078,7 @@ $(function () {
                     }
                 }
             },
-            names: {
+            editnames: {
                 validators: {
                     notEmpty: { message: "Ingresa los nombres" },
                     regexp: {
@@ -1105,14 +1087,14 @@ $(function () {
                     }
                 }
             },
-            doc: {
+            editdoc: {
                 validators: {
                     notEmpty: {
                         message: "Ingresa el Nº documento del socio",
                     },
                 },
             },
-            birthdate: {
+            editbirthdate: {
                 validators: {
                     notEmpty: {
                         message: "Ingresa la fecha de nacimiento"
@@ -1123,12 +1105,12 @@ $(function () {
                     }
                 }
             },
-            affiliation: {
+            editaffiliation: {
                 validators: {
                     notEmpty: { message: "Ingresa la ficha de afiliación" }
                 }
             },
-            initdate: {
+            editinitdate: {
                 validators: {
                     notEmpty: { message: "Ingresa la fecha de inicio" },
                 },
@@ -1143,7 +1125,7 @@ $(function () {
                     notEmpty: { message: "Ingresa la dirección" }
                 }
             },
-            phone: {
+            editphone: {
                 validators: {
                     notEmpty: {
                         message: "Ingresa el número de celular"
@@ -1154,7 +1136,7 @@ $(function () {
                     }
                 }
             },
-            mail: {
+            editmail: {
                 validators: {
                     notEmpty: { message: "Ingresa el e-mail" },
                     emailAddress: { message: "Ingresa un e-mail válido" },
@@ -1202,105 +1184,6 @@ $(function () {
             });
     });
 
-    // if (ef) {
-    //     const fvEdit = FormValidation.formValidation(ef, {
-    //         fields: {
-    //             pattername: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa el apellido paterno" },
-    //                     regexp: {
-    //                         regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-    //                         message: "Solo se permiten letras"
-    //                     }
-    //                 }
-    //             },
-    //             mattername: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa el apellido materno" },
-    //                     regexp: {
-    //                         regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-    //                         message: "Solo se permiten letras"
-    //                     }
-    //                 }
-    //             },
-    //             names: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa los nombres" },
-    //                     regexp: {
-    //                         regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-    //                         message: "Solo se permiten letras"
-    //                     }
-    //                 }
-    //             },
-    //             doc: {
-    //                 validators: {
-    //                     notEmpty: {
-    //                         message: "Ingresa el Nº documento del socio",
-    //                     },
-    //                 },
-    //             },
-    //             birthdate: {
-    //                 validators: {
-    //                     notEmpty: {
-    //                         message: "Ingresa la fecha de nacimiento"
-    //                     },
-    //                     date: {
-    //                         format: 'YYYY-MM-DD',
-    //                         message: 'El formato debe ser Año-Mes-Día (Ej: 1998-03-25)'
-    //                     }
-    //                 }
-    //             },
-    //             affiliation: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa la ficha de afiliación" }
-    //                 }
-    //             },
-    //             initdate: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa la fecha de inicio" },
-    //                 },
-    //             },
-    //             enddate: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa la fecha de vencimiento" },
-    //                 },
-    //             },
-    //             address: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa la dirección" }
-    //                 }
-    //             },
-    //             phone: {
-    //                 validators: {
-    //                     notEmpty: {
-    //                         message: "Ingresa el número de celular"
-    //                     },
-    //                     regexp: {
-    //                         regexp: /^[0-9]+$/, // Solo números
-    //                         message: "El celular no puede contener letras ni espacios"
-    //                     }
-    //                 }
-    //             },
-    //             mail: {
-    //                 validators: {
-    //                     notEmpty: { message: "Ingresa el e-mail" },
-    //                     emailAddress: { message: "Ingresa un e-mail válido" },
-    //                     regexp: {
-    //                         regexp: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
-    //                         message: "El formato del e-mail no es válido (Ej: usuario@gmail.com)"
-    //                     }
-    //                 }
-    //             },
-    //         },
-    //         plugins: {
-    //             trigger: new FormValidation.plugins.Trigger(),
-    //             bootstrap5: new FormValidation.plugins.Bootstrap5({ eleValidClass: "is-valid" }),
-    //             submitButton: new FormValidation.plugins.SubmitButton(),
-    //             autoFocus: new FormValidation.plugins.AutoFocus(),
-    //         },
-    //     });
-    // }
-
     $("#editPartner").on("click", function (h) {
         $("#edit-modal").modal("show");
     });
@@ -1320,6 +1203,7 @@ $(function () {
         })
             .done((data) => {
 
+                console.log("Entrando en el search de editar cliente");
                 console.log("Lo que llega del server:", data); // <--- MIRA ESTO EN LA CONSOLA (F12)
 
                 if (!data || data.icon === 'warning') {
@@ -1366,7 +1250,7 @@ $(function () {
                 }
 
                 $("#editaffiliation").val(client.partner.affiliation);
-                $("#editenddate").val(formatDateToDMY(client.partner.dEmisDate));
+                $("#editenddate").val(formatDateToDMY(client.partner.dCaduDate));
                 $("#editinitdate").val(formatDateToDMY(client.partner.dEmisDate));
                 $("#editCodeHidden").val(data.id_client);
                 $("#editdoc").val(data.number_doc);
@@ -1379,7 +1263,16 @@ $(function () {
 
                 // Formatear la fecha de nacimiento
                 if (data.birthday_client) {
-                    $("#editbirthdate").val(formatDateToDMY(data.birthday_client));
+                    // Convertimos el string de la fecha a un objeto Date de JS
+                    let date = new Date(data.birthday_client);
+
+                    // Sacamos año, mes y día (añadiendo el 0 al inicio si es necesario)
+                    let year = date.getFullYear();
+                    let month = String(date.getMonth() + 1).padStart(2, '0');
+                    let day = String(date.getDate()).padStart(2, '0');
+
+                    // Lo mandamos al input
+                    $("#editbirthdate").val(`${year}-${month}-${day}`);
                 }
 
                 // 2. Datos de Socio (Tabla 'client_socio' - Relación 'partner')
@@ -1412,6 +1305,7 @@ $(function () {
 
     });
 
+    // boton para realmente editar
     $("#editForm").on("submit", function (e) {
         e.preventDefault(); // Evita que la página se recargue
         blockUI();
