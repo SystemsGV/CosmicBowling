@@ -543,10 +543,16 @@ $(function () {
         fetch("/be/insertSocio", {
             method: "POST",
             headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 "Accept": "application/json"
             },
             body: formData,
+            // method: 'POST',
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            // },
+            // body: formData
         })
             .then(response => {
                 if (!response.ok) throw response; // Si el back explota, vamos al catch
@@ -783,7 +789,6 @@ $(function () {
 
 
     // ------------ logica para renovar un socio
-
     function formatDateToDMY(dateString) {
         if (!dateString) return '';
         // Si la fecha viene como "2026-03-26"

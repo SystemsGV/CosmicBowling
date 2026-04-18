@@ -25,27 +25,27 @@ class ClientController extends Controller
         return response()->json(['data' => $clients]);
     }
 
-public function search(Request $request)
-{
-    // Quitamos el .proxy de aquí para que no explote
-    $client = FrontendClient::with(['partner'])->where($request->select, $request->search)->first();
+    public function search(Request $request)
+    {
+        // Quitamos el .proxy de aquí para que no explote
+        $client = FrontendClient::with(['partner'])->where($request->select, $request->search)->first();
 
-    if (!$client) {
-        return response()->json(['icon' => 'warning', 'message' => 'No se encontró nada.']);
-    }
-
-    $data = $client->toArray();
-
-    if ($client->partner && $client->partner->proxy_id) {
-        // Buscamos el proxy de forma manual y directa
-        $proxy = \App\Models\Frontend\Proxy::find($client->partner->proxy_id);
-        if ($proxy) {
-            $data['partner']['proxy'] = $proxy->toArray();
+        if (!$client) {
+            return response()->json(['icon' => 'warning', 'message' => 'No se encontró nada.']);
         }
-    }
 
-    return response()->json($data);
-}
+        $data = $client->toArray();
+
+        if ($client->partner && $client->partner->proxy_id) {
+            // Buscamos el proxy de forma manual y directa
+            $proxy = \App\Models\Frontend\Proxy::find($client->partner->proxy_id);
+            if ($proxy) {
+                $data['partner']['proxy'] = $proxy->toArray();
+            }
+        }
+
+        return response()->json($data);
+    }
 
     public function update(Request $request)
     {

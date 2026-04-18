@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class VerifyClient extends Mailable
 {
@@ -16,6 +17,9 @@ class VerifyClient extends Mailable
     public $token;
     public $name;
     public $tipo; // 'nuevo' o 'socio'
+    public $codigoSocio;   // <--- NUEVO
+    public $fechaNacimiento;
+    public $nTarjNumb;
 
     /**
      * Create a new message instance.
@@ -25,12 +29,26 @@ class VerifyClient extends Mailable
      * @return void
      */
 
-    public function __construct($token, $name, $tipo = 'socio')
+    public function __construct($token, $name, $tipo, $codigoSocio, $fechaNacimiento , $nTarjNumb)
     {
         $this->token = $token;
         $this->name  = $name;
         $this->tipo  = $tipo;
+        $this->codigoSocio = $codigoSocio;
+        $this->fechaNacimiento = $fechaNacimiento;
+        $this->nTarjNumb = $nTarjNumb;
+
+
+        \Log::info("MAIL DEBUG: Datos recibidos en el constructor", [
+        'name' => $this->name,
+        'tipo_recibido' => $this->tipo,
+        'codigo' => $this->nTarjNumb,
+        'fecha' => $this->fechaNacimiento
+        ]);
+
     }
+
+
 
     /**
      * Get the message envelope.
@@ -51,12 +69,27 @@ class VerifyClient extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
-    {
-        return new Content(
-            view: 'frontend.emails.verify',
-        );
-    }
+public function content()
+{
+
+    $esSocioOVerificacion = in_array($this->tipo, ['socio', 'nuevo']);
+
+    $vista = $esSocioOVerificacion
+        ? 'frontend.emails.verify_socio'
+        : 'frontend.emails.verify';
+
+    \Log::info("MAIL DEBUG: Decisión de vista", [
+        'tipo_final' => $this->tipo,
+        'blade_seleccionado' => $vista
+    ]);
+
+    return new Content(
+        view: $vista,
+    );
+}
+
+    // LOG DE SALIDA: Ver qué archivo decidió usar
+
 
     /**
      * Get the attachments for the message.

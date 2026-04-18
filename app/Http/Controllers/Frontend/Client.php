@@ -63,7 +63,7 @@ class Client extends Controller
         // $dCaduDate = Carbon::parse($request->enddate)->format('Y-m-d');
 
         $dCaduDate = Carbon::parse($request->initdate)->addYear()->format('Y-m-d');
-
+        $cumpleaños = Carbon::parse($request->birthdate)->format('Y-m-d');
         if ($dEmisDate === $dCaduDate) {
             Log::warning("Ojo: La fecha de emisión y caducidad son iguales.");
         }
@@ -104,6 +104,7 @@ class Client extends Controller
 
             } else {
                 // CASO 2 — No existe, crea todo desde 0
+
                 $client = FrontendClient::create([
                     'document_id'     => '01',                          // DNI por defecto
                     'lastname_pat'    => $request->pattername,
@@ -113,7 +114,7 @@ class Client extends Controller
                     'email_client'    => $request->mail,
                     'phone_client'    => $request->phone,
                     'address_client'  => $request->address,                 // DNI como dirección
-                    'birthday_client' => Carbon::parse($request->birthdate)->format('Y-m-d'),
+                    'birthday_client' => $cumpleaños,
 
                     'password_client' => Hash::make($request->doc),     // DNI como password -> la contraseña si ess la misma al DNI
                     'socio'           => 1,
@@ -122,7 +123,7 @@ class Client extends Controller
 
                 // El email de confirmación es el mismo que se registró
                 $confirmationEmail = $request->mail;
-                $tipoCaso          = 'nuevo_socio'; // CASO C
+                $tipoCaso          = 'nuevo'; // CASO C
             }
 
             // PASO 2 — Apoderado (ambos casos)
@@ -131,12 +132,12 @@ class Client extends Controller
 
             $phone_number = $request->phone;
             // mismo cumpleaños
+            $nTarjNumb = str_pad($client->id_client, 8, '0', STR_PAD_LEFT);
 
-            // PASO 3 — Crea client_socio (ambos casos) $request->phone,
             try {
                 ClientSocio::create([
                     'client_id'          => $client->id_client,
-                    'nTarjNumb'          => str_pad($client->id_client, 8, '0', STR_PAD_LEFT),
+                    'nTarjNumb'          => $nTarjNumb,
                     'cTarjActi'          => 1,
                     'dEmisDate'          => $dEmisDate,
                     'dCaduDate'          => $dCaduDate,
@@ -173,7 +174,14 @@ class Client extends Controller
 
                 // Manda el email
                 Mail::to($confirmationEmail)->send(
-                    new VerifyClient($token, $client->names_client, $tipoCaso)
+                    new VerifyClient(
+                        $token,
+                        $client->names_client,
+                        $tipoCaso,
+                        $client->number_doc,   // <-- Asegúrate que se llame así en tu objeto $client
+                        $cumpleaños,
+                        $nTarjNumb,
+                    )
                 );
 
                 Log::info("Correo enviado exitosamente a: " . $confirmationEmail);
@@ -191,88 +199,89 @@ class Client extends Controller
                 }
     }
 
-   public function update(Request $request)
-{
-    DB::beginTransaction();
-    try {
-        // 1. Formatear fecha
-        $birthday = null;
-        if ($request->editbirthdate) {
-            $birthday = \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d');
-        }
+    public function update(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            // 1. Formatear fecha
+            $birthday = null;
+            if ($request->editbirthdate) {
+                $birthday = \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d');
+            }
 
-        // 2. Buscar al Cliente (Tabla Principal)
-        $client = FrontendClient::findOrFail($request->editCodeHidden);
+            // 2. Buscar al Cliente (Tabla Principal)
+            $client = FrontendClient::findOrFail($request->editCodeHidden);
 
-        // 3. Actualizar datos básicos del Cliente
-        $client->update([
-            'lastname_pat'    => $request->editpattername,
-            'lastname_mat'    => $request->editmattername,
-            'names_client'    => $request->editnames,
-            'number_doc'      => $request->editdoc,
-            'birthday_client' => $birthday,
-            'address_client'  => $request->editaddress,
-            'phone_client'    => $request->editphone,
-            'email_client'    => $request->editmail,
-        ]);
-
-        // 4. Lógica del Apoderado (Proxy) - Relación N a 1
-        $proxyId = null;
-        if ($request->filled('editproxyDoc')) {
-            $proxy = Proxy::updateOrCreate(
-                ['proxy_doc' => $request->editproxyDoc], // Buscamos por DNI para no duplicar padres
-                [
-                    'proxy_pattername' => $request->editproxyPatter, // Ajusta nombres según tu form
-                    'proxy_mattername' => $request->editproxyMatter,
-                    'proxy_names'      => $request->editproxyNames,
-                ]
-            );
-            $proxyId = $proxy->proxy_id;
-        }
-
-        // 5. Actualizar la tabla ClientSocio (Donde vive la FK proxy_id ahora)
-        // Usamos la relación 'partner' que definimos en el modelo Client
-        if ($client->partner) {
-            $client->partner->update([
-                'proxy_id'     => $proxyId,
-                'affiliation'  => $request->editaffiliation,
-                'phone_number' => $request->editphone, // Mantener sincronizado el cel
+            // 3. Actualizar datos básicos del Cliente
+            $client->update([
+                'lastname_pat'    => $request->editpattername,
+                'lastname_mat'    => $request->editmattername,
+                'names_client'    => $request->editnames,
+                'number_doc'      => $request->editdoc,
+                'birthday_client' => $birthday,
+                'address_client'  => $request->editaddress,
+                'phone_client'    => $request->editphone,
+                'email_client'    => $request->editmail,
             ]);
+
+            // 4. Lógica del Apoderado (Proxy) - Relación N a 1
+            $proxyId = null;
+            if ($request->filled('editproxyDoc')) {
+                $proxy = Proxy::updateOrCreate(
+                    ['proxy_doc' => $request->editproxyDoc], // Buscamos por DNI para no duplicar padres
+                    [
+                        'proxy_pattername' => $request->editproxyPatter, // Ajusta nombres según tu form
+                        'proxy_mattername' => $request->editproxyMatter,
+                        'proxy_names'      => $request->editproxyNames,
+                    ]
+                );
+                $proxyId = $proxy->proxy_id;
+            }
+
+            // 5. Actualizar la tabla ClientSocio (Donde vive la FK proxy_id ahora)
+            // Usamos la relación 'partner' que definimos en el modelo Client
+            if ($client->partner) {
+                $client->partner->update([
+                    'proxy_id'     => $proxyId,
+                    'affiliation'  => $request->editaffiliation,
+                    'phone_number' => $request->editphone, // Mantener sincronizado el cel
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['icon' => 'success', 'message' => 'Datos actualizados correctamente']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'icon' => 'error',
+                'message' => 'Error al actualizar: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        // Quitamos el .proxy de aquí para que no explote
+        $client = FrontendClient::with(['partner'])->where($request->select, $request->search)->first();
+
+        if (!$client) {
+            return response()->json(['icon' => 'warning', 'message' => 'No se encontró nada.']);
         }
 
-        DB::commit();
-        return response()->json(['icon' => 'success', 'message' => 'Datos actualizados correctamente']);
+        $data = $client->toArray();
 
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json([
-            'icon' => 'error',
-            'message' => 'Error al actualizar: ' . $e->getMessage()
-        ], 500);
-    }
-}
-
-public function search(Request $request)
-{
-    // Quitamos el .proxy de aquí para que no explote
-    $client = FrontendClient::with(['partner'])->where($request->select, $request->search)->first();
-
-    if (!$client) {
-        return response()->json(['icon' => 'warning', 'message' => 'No se encontró nada.']);
-    }
-
-    $data = $client->toArray();
-
-    if ($client->partner && $client->partner->proxy_id) {
-        // Buscamos el proxy de forma manual y directa
-        $proxy = \App\Models\Frontend\Proxy::find($client->partner->proxy_id);
-        if ($proxy) {
-            $data['partner']['proxy'] = $proxy->toArray();
+        if ($client->partner && $client->partner->proxy_id) {
+            // Buscamos el proxy de forma manual y directa
+            $proxy = \App\Models\Frontend\Proxy::find($client->partner->proxy_id);
+            if ($proxy) {
+                $data['partner']['proxy'] = $proxy->toArray();
+            }
         }
+
+        return response()->json($data);
     }
 
-    return response()->json($data);
-}
     public function index()
     {
         if (auth()->guard('client')->check()) {
@@ -341,7 +350,14 @@ public function search(Request $request)
 
         $token = $client->createToken('ClientToken')->plainTextToken;
 
-        Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
+        Mail::to($client->email_client)->send(new VerifyClient(
+            $token,                    // 1. Token
+            $client->names_client,     // 2. Nombre (Ojo con la 's')
+            'registro',                // 3. Tipo (Le ponemos 'registro' para identificar que es nuevo)
+            $client->number_doc,       // 4. Documento
+            $client->birthday_client,  // 5. Fecha
+            'NO ASIGNADO'              // 6. Tarjeta (Como es nuevo, aún no tiene)
+        ));
 
         return response()->json(['token' => $token], 201);
     }
@@ -351,6 +367,11 @@ public function search(Request $request)
         $request->validate([
             'number' => 'required|string',
             'password' => 'required|string',
+        ]);
+
+        Log::info("DEBUG LOGIN:", [
+            'input_number' => $request->input('number'),
+            'type' => gettype($request->input('number'))
         ]);
 
         // Cargar la relación con SunatTypeDoc
@@ -368,7 +389,14 @@ public function search(Request $request)
         if (!$client->email_verified_at) {
             // Enviar correo de verificación
             $token = $client->createToken('ClientToken')->plainTextToken;
-            Mail::to($client->email_client)->send(new VerifyClient($token, $client->name_client));
+            Mail::to($client->email_client)->send(new VerifyClient(
+                $token,
+                $client->names_client,      // <-- Corregido: names_client (con s)
+                'verificacion',             // Tipo: para que el email sepa qué plantilla usar
+                $client->number_doc,
+                $client->birthday_client,
+                'NO ASIGNADO'               // Como es verificación de cuenta, aún no hay tarjeta
+            ));
 
             return response()->json([
                 'error' => 'Cuenta no verificada',
@@ -432,6 +460,7 @@ public function search(Request $request)
 
         if (!$accessToken) {
             return view('verification-error')->with('error', 'El link es inválido o ya fue usado.');
+            // return redirect('/')->with('error', 'El enlace de verificación es inválido o ha expirado.');
         }
 
         // 2. Ahora sí, sacamos el cliente y el nombre del caso
@@ -445,8 +474,9 @@ public function search(Request $request)
                 $client->socio = 1;
                 $client->validacion = 1;
             } else {
-                $client->socio = 1;
+                // $client->socio = 1;
                 $client->validacion = 1;
+                $client->email_verified_at = now();
             }
 
             $client->save(); // ¡IMPORTANTE! Si no, no se guarda nada.
@@ -467,7 +497,7 @@ public function search(Request $request)
         }
 
         return view('verification-error')->with('error', 'No se pudo encontrar al usuario.');
-
+        // return redirect('/')->with('error', 'El enlace de verificación es inválido o ha expirado.');
     }
 
     public function recover(Request $request)
@@ -535,8 +565,12 @@ public function search(Request $request)
             }
 
             // 3. Formatear fechas (asumiendo que vienen dd-mm-yyyy del front)
-            $dEmisDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->renewInitdate)->format('Y-m-d');
-            $dCaduDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->renewEnddate)->format('Y-m-d');
+           try {
+                $dEmisDate = \Carbon\Carbon::parse($request->renewInitdate)->format('Y-m-d');
+                $dCaduDate = \Carbon\Carbon::parse($request->renewEnddate)->format('Y-m-d');
+            } catch (\Exception $e) {
+                return response()->json(['icon' => 'error', 'message' => 'Formato de fecha inválido. Envía dd-mm-yyyy.'], 400);
+            }
 
             // 4. Actualizar ClientSocio
             $socio->update([
