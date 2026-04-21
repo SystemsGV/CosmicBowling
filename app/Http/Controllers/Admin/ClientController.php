@@ -19,9 +19,46 @@ class ClientController extends Controller
         return view('admin.client.index', $data);
     }
 
+    public function indexSocio()
+    {
+
+        Log::info("Entrando en el metodo correcto");
+
+        $data['title'] = "Cliente";
+        return view('admin.client.indexSocio', $data);
+    }
+
     public function show()
     {
         $clients = Client::getClients();
+        return response()->json(['data' => $clients]);
+    }
+
+    public function showSocio()
+    {
+        $clients = Client::with(['partner', 'sunatTypedoc'])
+            ->whereHas('partner')
+            ->get()
+            ->map(fn($c) => [
+                'id'          => $c->id_client,
+                'names'       => $c->names_client . ' ' . $c->lastname_pat,
+                'type_doc'    => $c->sunatTypedoc->name_doc ?? $c->document_id,
+                'number_doc'  => $c->number_doc,
+                'email'       => $c->email_client,
+                'phone'       => $c->phone_client,
+                'address'     => $c->address_client,
+                'birthday'    => $c->birthday_client,
+                'nTarjNumb'   => $c->partner->nTarjNumb   ?? '-',
+                'dEmisDate'   => $c->partner->dEmisDate   ?? null,
+                'dCaduDate'   => $c->partner->dCaduDate   ?? null,
+                'affiliation' => $c->partner->affiliation ?? '-',
+                'cTarjActi'   => $c->partner->cTarjActi   ?? '-',
+                'validado'    => $c->partner->validado     ? 'Validado' : 'No validado',
+
+                'phone_number'       => $c->partner->phone_number       ?? '-', // ← de ClientSocio
+                'confirmation_email' => $c->partner->confirmation_email ?? '-',
+            ]);
+
         return response()->json(['data' => $clients]);
     }
 

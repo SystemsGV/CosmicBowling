@@ -30,6 +30,7 @@ class ClientSocio extends Model
         // 'apod_doc',      // DNI del apoderado
         'phone_number',
         'confirmation_email',
+        'validado'
     ];
 
     // Relación con Client

@@ -85,10 +85,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('statusHoliday', 'store');
         Route::post('validateHoliday', 'validateHoliday');
     });
-
+    /* */
     Route::controller(ClientController::class)->group(function ($route) {
         Route::get('Clientes', 'index')->name('clients.index');
+        Route::get('ClientesSocio', 'indexSocio')->name('clients.indexSocio');
         Route::get('tableClients', 'show');
+        Route::get('tableClientsSocio', 'showSocio');
         Route::post('searchPartner', 'search');
         Route::post('renewPartner', 'renew');
         Route::post('updatePartner', 'update');

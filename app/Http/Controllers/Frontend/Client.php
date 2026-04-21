@@ -569,8 +569,14 @@ class Client extends Controller
             // 3. Formatear fechas (asumiendo que vienen dd-mm-yyyy del front)
            try {
             // $dCaduDate = Carbon::parse($request->initdate)->addYear()->format('Y-m-d');
-                $dEmisDate = \Carbon\Carbon::parse($request->renewInitdate)->format('Y-m-d');
-                $dCaduDate = \Carbon\Carbon::parse($request->renewEnddate)->addYear()->format('Y-m-d');
+
+                \Log::info('Fechas recibidas:', [
+                    'renewInitdate' => $request->renewInitdate,
+                    'renewEnddate'  => $request->renewEnddate,
+                ]);
+
+                $dEmisDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->renewInitdate)->format('Y-m-d');
+                $dCaduDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->renewEnddate)->format('Y-m-d');
             } catch (\Exception $e) {
                 return response()->json(['icon' => 'error', 'message' => 'Formato de fecha inválido. Envía dd-mm-yyyy.'], 400);
             }
