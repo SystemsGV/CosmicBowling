@@ -144,7 +144,7 @@ class Client extends Controller
                     'affiliation'        => $request->affiliation,
                     'validado'           => 0,
                     'status_magic'       => 0,
-                    // 'confirmation_email' => $confirmationEmail,
+                    'confirmation_email' => $confirmationEmail,
                     // 'apod_nombre'        => $apodNombre,
                     // 'apod_doc'           => $apodDoc,
                     'user_new'           => auth()->user()->name ?? 'ATC',
@@ -244,7 +244,9 @@ class Client extends Controller
                 $client->partner->update([
                     'proxy_id'     => $proxyId,
                     'affiliation'  => $request->editaffiliation,
-                    'phone_number' => $request->editphone, // Mantener sincronizado el cel
+                    'phone_number' => $request->editphone,
+                    'confirmation_email' => $request->editmail,
+                    // Mantener sincronizado el cel
                 ]);
             }
 
@@ -566,8 +568,9 @@ class Client extends Controller
 
             // 3. Formatear fechas (asumiendo que vienen dd-mm-yyyy del front)
            try {
+            // $dCaduDate = Carbon::parse($request->initdate)->addYear()->format('Y-m-d');
                 $dEmisDate = \Carbon\Carbon::parse($request->renewInitdate)->format('Y-m-d');
-                $dCaduDate = \Carbon\Carbon::parse($request->renewEnddate)->format('Y-m-d');
+                $dCaduDate = \Carbon\Carbon::parse($request->renewEnddate)->addYear()->format('Y-m-d');
             } catch (\Exception $e) {
                 return response()->json(['icon' => 'error', 'message' => 'Formato de fecha inválido. Envía dd-mm-yyyy.'], 400);
             }
@@ -578,7 +581,7 @@ class Client extends Controller
                 'dCaduDate'   => $dCaduDate,
                 'affiliation' => $request->renewAffiliation,
                 'status_magic'=> 0, // Reiniciamos status
-                'user_new'    => auth()->user()->name ?? 'ATC', // Usamos tu columna user_new
+                'user_renew'    => auth()->user()->name ?? 'ATC', // Usamos tu columna user_new
             ]);
 
             // 5. Registrar el Log usando tu modelo LogPartnet

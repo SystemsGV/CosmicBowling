@@ -359,7 +359,7 @@
                         <div class="col-3">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" id="editaffiliation" name="editaffiliation" class="form-control"
-                                    placeholder="Ficha Afilicación">
+                                    placeholder="Ficha Afilicación" readonly>
                                 <label for="editaffiliation">Ficha Afilicación</label>
                             </div>
                         </div>

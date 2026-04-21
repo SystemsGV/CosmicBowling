@@ -93,6 +93,7 @@ class ClientController extends Controller
                     'proxy_id'     => $proxyId,
                     'affiliation'  => $request->editaffiliation,
                     'phone_number' => $request->editphone, // Mantener sincronizado el cel
+                    'confirmation_email' => $request->editmail,
                 ]);
             }
 
