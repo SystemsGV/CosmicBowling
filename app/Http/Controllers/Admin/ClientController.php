@@ -41,7 +41,7 @@ class ClientController extends Controller
             ->get()
             ->map(fn($c) => [
                 'id'          => $c->id_client,
-                'names'       => $c->names_client . ' ' . $c->lastname_pat,
+                'names'       => $c->lastname_pat . ' '. $c->lastname_mat . ' '.$c->names_client  ,
                 'type_doc'    => $c->sunatTypedoc->name_doc ?? $c->document_id,
                 'number_doc'  => $c->number_doc,
                 'email'       => $c->email_client,

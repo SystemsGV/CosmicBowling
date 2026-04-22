@@ -21,6 +21,10 @@ use App\Http\Controllers\Frontend\TestView;
 
 Route::get('/', [Home::class, 'index'])->name('home.index');
 
+Route::get('/socios', function () {
+    return view('frontend.socios');
+})->name('socios');
+
 Route::view('/mail', 'frontend.emails.verify');
 
 Route::controller(Client::class)->group(function () {
