@@ -6,7 +6,7 @@
         <!-- Clients List Table -->
         <div class="card">
             <div class="card-header border-bottom">
-                <h5 class="card-title">Filtrar Busqueda Socio</h5>
+                <h5 class="card-title">Socios</h5>
                 <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
                     <div class="col-md-4"></div>
                     <div class="col-md-4 user_plan"></div>
@@ -27,6 +27,7 @@
 
                             <th>Email Socio</th>
                             <th>Teléfono</th>
+                            <th>F. Afiliacion</th>
                             <th>Estado</th>
                             {{-- Apoderado : nombre + apellido + DNI --}}
                         </tr>

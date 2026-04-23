@@ -39,6 +39,7 @@ $(function () {
 
         { data: "confirmation_email" },
         { data: "phone_number" },
+        { data: "affiliation" },
         { data: "validado" },
     ],
             columnDefs: [
@@ -53,7 +54,7 @@ $(function () {
                     },
                 },
                 {
-                    targets: 8,
+                    targets: 9,
                     render: function (e, t, a, n) {
                         return e === "Validado"
                             ? "<div class='d-inline-flex' data-bs-toggle='tooltip' data-bs-html='true' title='Validado " +
@@ -262,14 +263,14 @@ $(function () {
                         },
                     ],
                 },
-                {
-                    text: '<i class="mdi mdi-plus me-1"></i> Agregar Socio',
-                    className: 'btn btn-primary waves-effect waves-light',
-                    attr: {
-                        'data-bs-toggle': 'modal',
-                        'data-bs-target': '#addNewCoupon'
-                    }
-                },
+                // {
+                //     text: '<i class="mdi mdi-plus me-1"></i> Agregar Socio',
+                //     className: 'btn btn-primary waves-effect waves-light',
+                //     attr: {
+                //         'data-bs-toggle': 'modal',
+                //         'data-bs-target': '#addNewCoupon'
+                //     }
+                // },
                 {
                     text: '<i class="mdi mdi-plus me-1"></i> Renovar Socio',
                     className: 'btn btn-primary waves-effect waves-light',
@@ -403,8 +404,7 @@ $(function () {
         }, 300);
 
 
-
-    // ---------------- nueva logica
+  // ---------------- nueva logica
     function blockUI() {
         $.blockUI({
             message: '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
@@ -441,28 +441,16 @@ $(function () {
             pattername: {
                 validators: {
                     notEmpty: { message: "Ingresa el apellido paterno" },
-                    regexp: {
-                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-                        message: "Solo se permiten letras"
-                    }
                 }
             },
             mattername: {
                 validators: {
                     notEmpty: { message: "Ingresa el apellido materno" },
-                    regexp: {
-                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-                        message: "Solo se permiten letras"
-                    }
                 }
             },
             names: {
                 validators: {
                     notEmpty: { message: "Ingresa los nombres" },
-                    regexp: {
-                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-                        message: "Solo se permiten letras"
-                    }
                 }
             },
             doc: {
@@ -498,30 +486,9 @@ $(function () {
             //         notEmpty: { message: "Ingresa la fecha de vencimiento" },
             //     },
             // },
-            address: {
-                validators: {
-                    notEmpty: { message: "Ingresa la dirección" }
-                }
-            },
-            phone: {
-                validators: {
-                    notEmpty: {
-                        message: "Ingresa el número de celular"
-                    },
-                    regexp: {
-                        regexp: /^[0-9]+$/, // Solo números
-                        message: "El celular no puede contener letras ni espacios"
-                    }
-                }
-            },
             mail: {
                 validators: {
                     notEmpty: { message: "Ingresa el e-mail" },
-                    emailAddress: { message: "Ingresa un e-mail válido" },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
-                        message: "El formato del e-mail no es válido (Ej: usuario@gmail.com)"
-                    }
                 }
             },
         },
@@ -589,79 +556,6 @@ $(function () {
         today.getFullYear(),
         csrfToken = $('meta[name="csrf-token"]').attr("content");
 
-
-    console.log("El script cargó correctamente");
-
-    // $(document).on("submit", "#partnerForm", function (e) {
-    //     e.preventDefault();
-
-    //     console.log("1. Click en submit detectado");
-
-    //     fv.validate().then(function (status) {
-
-    //         console.log("2. El estado de la validación es:", status); // ESTO ES CLAVE
-
-    //         if (status === 'Valid') {
-    //             console.log("3. Enviando al servidor porque es VÁLIDO");
-    //             let formData = new FormData(f);
-    //             fetch("/be/insertSocio", {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    //                     "Accept": "application/json"
-    //                 },
-    //                 body: formData,
-    //             })
-    //                 .then(response => response.json())
-    //                 .then(data => {
-    //                     Toast.fire({ icon: data.icon, title: data.message });
-    //                     if (data.icon === "success") {
-    //                         $(".modal").modal("hide");
-    //                         fv.resetForm(true);
-    //                     }
-    //                 })
-    //                 .catch(error => console.error("Error:", error));
-    //         } else {
-    //             // Si llega aquí, los mensajes rojos aparecerán bajo los inputs
-    //             console.log("Validación fallida");
-    //             console.log("3. NO DEBERÍA ENVIARSE. Revisa los errores en rojo.");
-    //         }
-    //     });
-    // });
-
-    // fv.on("core.form.valid", function () {
-
-    //     console.log("¡Formulario validado! Iniciando Fetch...");
-
-    //     // blockUI();
-    //     const csrfToken = $('meta[name="csrf-token"]').attr("content");
-    //     let formData = new FormData(f);
-
-    //     fetch("/insertSocio", {
-    //         method: "POST",
-    //         headers: { "X-CSRF-TOKEN": csrfToken },
-    //         body: formData,
-    //     })
-    //         // fetch("http://127.0.0.1:8000//api/insertSocio", { // Usa tu URL real
-    //         //     method: "POST",
-    //         //     body: formData, // El FormData ya sabe que es multipart
-    //         // })
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             Toast.fire({ icon: data.icon, title: data.message });
-    //             if (data.icon === "success") {
-    //                 $("#addNewCoupon").modal("hide");
-    //                 fv.resetForm(true);
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             Toast.fire({ icon: "error", title: "Error al registrar socio" });
-    //             console.error(error);
-    //         })
-    //         .finally(() => { $.unblockUI(); });
-    // });
-
-    //setear fecha automatica
 
     $("#initdate").flatpickr({
         dateFormat: "d-m-Y",
@@ -789,7 +683,6 @@ $(function () {
             },
         },
     });
-
 
     // ------------ logica para renovar un socio
     function formatDateToDMY(dateString) {
@@ -973,7 +866,7 @@ $(function () {
 
                 let client = data;
 
-                $("#hiddenCode").val(client.id_client);
+                $("#hiddenCode").val(client.id_client || '');
 
                 // 2. Mapeo del Socio (QUITAMOS EL [0] y usamos la relación partner)
                 // if (client.partner) {
@@ -984,11 +877,11 @@ $(function () {
 
                 // 3. Mapeo de Nombres (Nombres nuevos de tu tabla)
                 $("#namesRenew").val(`${client.lastname_pat} ${client.names_client}`);
-                $("#docRenew").val(client.number_doc);
+                $("#docRenew").val(client.number_doc || '' );
 
                 // 4. Mapeo de Fecha
                 // Ojo: Si ya viene en formato Y-m-d, asegúrate que formatDateToDMY lo entienda
-                $("#birthdateRenew").val(formatDateToDMY(client.birthday_client));
+                $("#birthdateRenew").val(formatDateToDMY(client.birthday_client || ''));
 
                 // 2. Datos de Socio (Tabla 'client_socio' - Relación 'partner')
 
@@ -1064,97 +957,10 @@ $(function () {
     });
 
     // ------------ logica para editar un socio
+    console.log("Entrando al metodo")
     const ef = document.getElementById("editForm");
 
     const fvEdit = FormValidation.formValidation(ef, {
-        fields: {
-            editpattername: {
-                validators: {
-                    notEmpty: { message: "Ingresa el apellido paterno" },
-                    regexp: {
-                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-                        message: "Solo se permiten letras"
-                    }
-                }
-            },
-            editmattername: {
-                validators: {
-                    notEmpty: { message: "Ingresa el apellido materno" },
-                    regexp: {
-                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-                        message: "Solo se permiten letras"
-                    }
-                }
-            },
-            editnames: {
-                validators: {
-                    notEmpty: { message: "Ingresa los nombres" },
-                    regexp: {
-                        regexp: /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-                        message: "Solo se permiten letras"
-                    }
-                }
-            },
-            editdoc: {
-                validators: {
-                    notEmpty: {
-                        message: "Ingresa el Nº documento del socio",
-                    },
-                },
-            },
-            editbirthdate: {
-                validators: {
-                    notEmpty: {
-                        message: "Ingresa la fecha de nacimiento"
-                    },
-                    date: {
-                        format: 'YYYY-MM-DD',
-                        message: 'El formato debe ser Año-Mes-Día (Ej: 1998-03-25)'
-                    }
-                }
-            },
-            editaffiliation: {
-                validators: {
-                    notEmpty: { message: "Ingresa la ficha de afiliación" }
-                }
-            },
-            editinitdate: {
-                validators: {
-                    notEmpty: { message: "Ingresa la fecha de inicio" },
-                },
-            },
-            enddate: {
-                validators: {
-                    notEmpty: { message: "Ingresa la fecha de vencimiento" },
-                },
-            },
-            address: {
-                validators: {
-                    notEmpty: { message: "Ingresa la dirección" }
-                }
-            },
-            editphone: {
-                validators: {
-                    notEmpty: {
-                        message: "Ingresa el número de celular"
-                    },
-                    regexp: {
-                        regexp: /^[0-9]+$/, // Solo números
-                        message: "El celular no puede contener letras ni espacios"
-                    }
-                }
-            },
-            editmail: {
-                validators: {
-                    notEmpty: { message: "Ingresa el e-mail" },
-                    emailAddress: { message: "Ingresa un e-mail válido" },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
-                        message: "El formato del e-mail no es válido (Ej: usuario@gmail.com)"
-                    }
-                }
-            },
-        },
         plugins: {
             trigger: new FormValidation.plugins.Trigger(),
             bootstrap5: new FormValidation.plugins.Bootstrap5({ eleValidClass: "is-valid" }),
@@ -1257,17 +1063,17 @@ $(function () {
                     return;
                 }
 
-                $("#editaffiliation").val(client.partner.affiliation);
-                $("#editenddate").val(formatDateToDMY(client.partner.dCaduDate));
-                $("#editinitdate").val(formatDateToDMY(client.partner.dEmisDate));
+                $("#editaffiliation").val(client.partner ? client.partner.affiliation : '' );
+                $("#editenddate").val(formatDateToDMY(client.partner ? client.partner.dCaduDate : '' ));
+                $("#editinitdate").val(formatDateToDMY(client.partner ? client.partner.dEmisDate : ''));
                 $("#editCodeHidden").val(data.id_client);
                 $("#editdoc").val(data.number_doc);
                 $("#editnames").val(data.names_client);
                 $("#editpattername").val(data.lastname_pat);
                 $("#editmattername").val(data.lastname_mat);
                 $("#editmail").val(data.email_client);
-                $("#editphone").val(data.phone_client);
-                $("#editaddress").val(data.address_client);
+                $("#editphone").val(client.partner ? data.phone_client : " " );
+                $("#editaddress").val(client.partner ? data.address_client : "");
 
                 // Formatear la fecha de nacimiento
                 if (data.birthday_client) {
@@ -1289,10 +1095,10 @@ $(function () {
                     console.log("¡Apoderado detectado!");
 
                     // Asignación directa usando los nombres exactos de tu log
-                    $("#editproxyPatter").val(data.partner.proxy.proxy_pattername);
-                    $("#editproxyMatter").val(data.partner.proxy.proxy_mattername);
-                    $("#editproxyNames").val(data.partner.proxy.proxy_names);
-                    $("#editproxyDoc").val(data.partner.proxy.proxy_doc);
+                    $("#editproxyPatter").val(data.partner.proxy.proxy_pattername || '');
+                    $("#editproxyMatter").val(data.partner.proxy.proxy_mattername || '');
+                    $("#editproxyNames").val(data.partner.proxy.proxy_names || '');
+                    $("#editproxyDoc").val(data.partner.proxy.proxy_doc || '');
 
                     // Abrir el acordeón a la fuerza
                     $("#EditaccordionOne").addClass("show");

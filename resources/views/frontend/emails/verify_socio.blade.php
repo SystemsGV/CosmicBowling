@@ -413,7 +413,7 @@
                                                                         <br>
                                                                         Tus credenciales como socio son :
                                                                         <p>{{$nTarjNumb}}</p>
-                                                                        <p>{{$fechaNacimiento}}</p>
+                                                                        {{-- <p>{{$fechaNacimiento}}</p> --}}
                                                                 </td>
                                                             </tr>
                                                         </table>

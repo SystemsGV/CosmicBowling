@@ -33,31 +33,6 @@ class Client extends Controller
     */
     public function insertSocio(Request $request)
     {
-            // dd($request->all());
-            Log::info("Ingreso al metodo insentar socio");
-
-            $validator = Validator::make($request->all(), [
-                'doc'       => 'required',
-                'phone'     => 'required|numeric|digits:9', // Solo números, exactamente 9
-                'mail'      => 'required|email',
-                'initdate'  => 'required',
-                'enddate'   => 'required',
-                'birthdate' => 'required',
-            ], [
-                'phone.numeric' => 'El número celular solo debe contener números.',
-                'phone.digits'  => 'El celular debe tener exactamente 9 dígitos.',
-                'mail.email'    => 'El formato del correo es inválido.'
-            ]);
-
-            // Si falla, mandamos un 422 con el primer error que encuentre
-            if ($validator->fails()) {
-                return response()->json([
-                    'icon'    => 'error',
-                    'message' => $validator->errors()->first()
-                ], 200);
-            }
-
-        Log::info("Ingreso al metodo insentar socio");
 
         $dEmisDate = Carbon::parse($request->initdate)->format('Y-m-d');
         // $dCaduDate = Carbon::parse($request->enddate)->format('Y-m-d');
@@ -88,12 +63,12 @@ class Client extends Controller
                 $birthdateForm = Carbon::parse($request->birthdate)->format('Y-m-d');
                 $birthdateDB   = Carbon::parse($client->birthday_client)->format('Y-m-d');
 
-                if ($birthdateForm !== $birthdateDB) {
-                    return response()->json([
-                        'icon'    => 'error',
-                        'message' => 'La fecha de nacimiento no coincide con la registrada.'
-                    ], 200);
-                }
+                // if ($birthdateForm !== $birthdateDB) {
+                //     return response()->json([
+                //         'icon'    => 'error',
+                //         'message' => 'La fecha de nacimiento no coincide con la registrada.'
+                //     ], 200);
+                // }
 
 
 
@@ -199,38 +174,110 @@ class Client extends Controller
                 }
     }
 
-    public function update(Request $request)
+    // public function update(Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         // 1. Formatear fecha
+    //         $birthday = null;
+    //         if ($request->editbirthdate) {
+    //             $birthday = \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d');
+    //         }
+
+    //         // 2. Buscar al Cliente (Tabla Principal)
+    //         $client = FrontendClient::findOrFail($request->editCodeHidden);
+
+    //         // 3. Actualizar datos básicos del Cliente
+    //         $client->update([
+    //             'lastname_pat'    => $request->editpattername,
+    //             'lastname_mat'    => $request->editmattername,
+    //             'names_client'    => $request->editnames,
+    //             'number_doc'      => $request->editdoc,
+    //             'birthday_client' => $birthday,
+    //             'address_client'  => $request->editaddress,
+    //             'phone_client'    => $request->editphone,
+    //             'email_client'    => $request->editmail,
+    //         ]);
+
+    //         // 4. Lógica del Apoderado (Proxy) - Relación N a 1
+    //         $proxyId = null;
+    //         if ($request->filled('editproxyDoc')) {
+    //             $proxy = Proxy::updateOrCreate(
+    //                 ['proxy_doc' => $request->editproxyDoc], // Buscamos por DNI para no duplicar padres
+    //                 [
+    //                     'proxy_pattername' => $request->editproxyPatter, // Ajusta nombres según tu form
+    //                     'proxy_mattername' => $request->editproxyMatter,
+    //                     'proxy_names'      => $request->editproxyNames,
+    //                 ]
+    //             );
+    //             $proxyId = $proxy->proxy_id;
+    //         }
+
+    //         // 5. Actualizar la tabla ClientSocio (Donde vive la FK proxy_id ahora)
+    //         // Usamos la relación 'partner' que definimos en el modelo Client
+    //         if ($client->partner) {
+    //             $client->partner->update([
+    //                 'proxy_id'     => $proxyId,
+    //                 'affiliation'  => $request->editaffiliation,
+    //                 'phone_number' => $request->editphone,
+    //                 'confirmation_email' => $request->editmail,
+    //                 // Mantener sincronizado el cel
+    //             ]);
+    //         }
+
+    //         DB::commit();
+    //         return response()->json(['icon' => 'success', 'message' => 'Datos actualizados correctamente']);
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json([
+    //             'icon' => 'error',
+    //             'message' => 'Error al actualizar: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+   public function update(Request $request)
     {
+        \Log::info('ID recibido: ' . $request->editCodeHidden);
+        \Log::info('ID recibido: ' . $request->editCodeHidden);
+        \Log::info('Todos los datos: ', $request->all());
+
+
+        if (!$request->editCodeHidden) {
+            return response()->json(['icon' => 'error', 'message' => 'ID de cliente no proporcionado'], 400);
+        }
+
         DB::beginTransaction();
         try {
-            // 1. Formatear fecha
-            $birthday = null;
-            if ($request->editbirthdate) {
-                $birthday = \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d');
+            // ← FIX: usar Client en vez de FrontendClient
+            $client = Client::find($request->editCodeHidden);
+
+            if (!$client) {
+                return response()->json(['icon' => 'error', 'message' => 'Cliente no encontrado'], 404);
             }
 
-            // 2. Buscar al Cliente (Tabla Principal)
-            $client = FrontendClient::findOrFail($request->editCodeHidden);
+            $birthday = $request->editbirthdate
+                ? \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d')
+                : null;
 
-            // 3. Actualizar datos básicos del Cliente
             $client->update([
                 'lastname_pat'    => $request->editpattername,
                 'lastname_mat'    => $request->editmattername,
                 'names_client'    => $request->editnames,
                 'number_doc'      => $request->editdoc,
                 'birthday_client' => $birthday,
-                'address_client'  => $request->editaddress,
-                'phone_client'    => $request->editphone,
+                'address_client' => $request->input('editaddress', ''),
+                'phone_client'   => $request->input('editphone', ''),
                 'email_client'    => $request->editmail,
             ]);
 
-            // 4. Lógica del Apoderado (Proxy) - Relación N a 1
             $proxyId = null;
             if ($request->filled('editproxyDoc')) {
                 $proxy = Proxy::updateOrCreate(
-                    ['proxy_doc' => $request->editproxyDoc], // Buscamos por DNI para no duplicar padres
+                    ['proxy_doc' => $request->editproxyDoc],
                     [
-                        'proxy_pattername' => $request->editproxyPatter, // Ajusta nombres según tu form
+                        'proxy_pattername' => $request->editproxyPatter,
                         'proxy_mattername' => $request->editproxyMatter,
                         'proxy_names'      => $request->editproxyNames,
                     ]
@@ -238,17 +285,16 @@ class Client extends Controller
                 $proxyId = $proxy->proxy_id;
             }
 
-            // 5. Actualizar la tabla ClientSocio (Donde vive la FK proxy_id ahora)
-            // Usamos la relación 'partner' que definimos en el modelo Client
-            if ($client->partner) {
-                $client->partner->update([
-                    'proxy_id'     => $proxyId,
-                    'affiliation'  => $request->editaffiliation,
-                    'phone_number' => $request->editphone,
+            // ← FIX: id_client en vez de id
+            $client->partner()->updateOrCreate(
+                ['client_id' => $client->id_client],
+                [
+                    'proxy_id'           => $proxyId,
+                    'affiliation'        => $request->editaffiliation,
+                    'phone_number'       => $request->editphone,
                     'confirmation_email' => $request->editmail,
-                    // Mantener sincronizado el cel
-                ]);
-            }
+                ]
+            );
 
             DB::commit();
             return response()->json(['icon' => 'success', 'message' => 'Datos actualizados correctamente']);
@@ -256,8 +302,8 @@ class Client extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
-                'icon' => 'error',
-                'message' => 'Error al actualizar: ' . $e->getMessage()
+                'icon'    => 'error',
+                'message' => 'Error al procesar: ' . $e->getMessage()
             ], 500);
         }
     }
