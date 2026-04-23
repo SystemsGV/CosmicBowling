@@ -1072,8 +1072,8 @@ $(function () {
                 $("#editpattername").val(data.lastname_pat);
                 $("#editmattername").val(data.lastname_mat);
                 $("#editmail").val(data.email_client);
-                $("#editphone").val(client.partner ? data.phone_client : " " );
-                $("#editaddress").val(client.partner ? data.address_client : "");
+                $("#editphone").val(data.phone_client );
+                $("#editaddress").val(data.address_client);
 
                 // Formatear la fecha de nacimiento
                 if (data.birthday_client) {
