@@ -539,7 +539,7 @@ class Client extends Controller
                 $socioData->save();
             }
 
-            $accessToken->delete();
+            //$accessToken->delete();
 
             return view('frontend.login.verify')->with('status', '¡Verificación exitosa! Ya eres socio.');
         }
