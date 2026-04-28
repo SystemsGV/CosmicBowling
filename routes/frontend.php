@@ -7,6 +7,7 @@ use App\Http\Controllers\Frontend\Cart;
 use App\Http\Controllers\Frontend\Client;
 use App\Http\Controllers\Frontend\Payment;
 use App\Http\Controllers\Frontend\TestView;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,8 @@ Route::controller(Client::class)->group(function () {
   Route::get('/verify', 'verifyEmail');
   Route::get('/recover-password', 'recoverPassword');
   Route::post('/searchPartner', 'search');
-    Route::post('/renewPartner', 'renew');
+  Route::post('/renewPartner', 'renew');
+  Route::post('/login-process', 'loginSocios')->name('client.login.process');
 });
 
 Route::controller(Cart::class)->group(function () {

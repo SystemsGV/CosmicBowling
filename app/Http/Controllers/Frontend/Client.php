@@ -23,9 +23,9 @@ use Illuminate\Support\Facades\DB;
 class Client extends Controller
 {
         public function __construct()
-    {
-        $this->middleware('client.auth')->only(['show']);
-    }
+        {
+            $this->middleware('client.auth')->only(['show']);
+        }
 
        /*
         1. Si el cliente ya existe y quiere ser socio , se ignoran los datos del from y se usa los datos de client mediante la FK que es id cliente (excepto : email al que llega verificacion , telefono )
@@ -174,68 +174,51 @@ class Client extends Controller
                 }
     }
 
-    // public function update(Request $request)
-    // {
-    //     DB::beginTransaction();
-    //     try {
-    //         // 1. Formatear fecha
-    //         $birthday = null;
-    //         if ($request->editbirthdate) {
-    //             $birthday = \Carbon\Carbon::parse($request->editbirthdate)->format('Y-m-d');
-    //         }
+    public function loginSocios(Request $request)
+    {
+        $tarjeta = (string) $request->txt_usuario;
 
-    //         // 2. Buscar al Cliente (Tabla Principal)
-    //         $client = FrontendClient::findOrFail($request->editCodeHidden);
+        // 1. Log del intento
+        Log::info('Datos recibidos:', [
+            'tarjeta' => $tarjeta,
+            'dia_input' => $request->txt_dia,
+            'mes_input' => $request->txt_mes,
+            'anio_input' => $request->txt_anio
+        ]);
 
-    //         // 3. Actualizar datos básicos del Cliente
-    //         $client->update([
-    //             'lastname_pat'    => $request->editpattername,
-    //             'lastname_mat'    => $request->editmattername,
-    //             'names_client'    => $request->editnames,
-    //             'number_doc'      => $request->editdoc,
-    //             'birthday_client' => $birthday,
-    //             'address_client'  => $request->editaddress,
-    //             'phone_client'    => $request->editphone,
-    //             'email_client'    => $request->editmail,
-    //         ]);
 
-    //         // 4. Lógica del Apoderado (Proxy) - Relación N a 1
-    //         $proxyId = null;
-    //         if ($request->filled('editproxyDoc')) {
-    //             $proxy = Proxy::updateOrCreate(
-    //                 ['proxy_doc' => $request->editproxyDoc], // Buscamos por DNI para no duplicar padres
-    //                 [
-    //                     'proxy_pattername' => $request->editproxyPatter, // Ajusta nombres según tu form
-    //                     'proxy_mattername' => $request->editproxyMatter,
-    //                     'proxy_names'      => $request->editproxyNames,
-    //                 ]
-    //             );
-    //             $proxyId = $proxy->proxy_id;
-    //         }
+        $socio = ClientSocio::where('nTarjNumb', $tarjeta)->first();
 
-    //         // 5. Actualizar la tabla ClientSocio (Donde vive la FK proxy_id ahora)
-    //         // Usamos la relación 'partner' que definimos en el modelo Client
-    //         if ($client->partner) {
-    //             $client->partner->update([
-    //                 'proxy_id'     => $proxyId,
-    //                 'affiliation'  => $request->editaffiliation,
-    //                 'phone_number' => $request->editphone,
-    //                 'confirmation_email' => $request->editmail,
-    //                 // Mantener sincronizado el cel
-    //             ]);
-    //         }
+        if (!$socio) {
+            Log::warning('Login fallido: Tarjeta no encontrada', ['tarjeta' => $tarjeta]);
+            return back()->withErrors(['msg' => 'Credenciales incorrectas (Tarjeta no existe)']);
+        }
 
-    //         DB::commit();
-    //         return response()->json(['icon' => 'success', 'message' => 'Datos actualizados correctamente']);
 
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return response()->json([
-    //             'icon' => 'error',
-    //             'message' => 'Error al actualizar: ' . $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+        $client = $socio->client;
+
+        if (!$client) {
+            Log::error('Error integridad: Socio sin cliente asociado', ['socio_id' => $socio->id]);
+            return back()->withErrors(['msg' => 'Error en cuenta de usuario']);
+        }
+
+        $dia = str_pad($request->txt_dia, 2, '0', STR_PAD_LEFT);
+        $mes = str_pad($request->txt_mes, 2, '0', STR_PAD_LEFT);
+        $anio = $request->txt_anio;
+
+        $fechaIngresada = "{$anio}-{$mes}-{$dia}";
+
+        Log::info("Comparando: DB[{$client->birthday_client}] vs Input[{$fechaIngresada}]");
+
+        if (trim($client->birthday_client) === trim($fechaIngresada)) {
+            Auth::login($client);
+            Log::info('Login exitoso:', ['client_id' => $client->id_client]);
+            return redirect()->intended('/Registro');
+        }
+
+        Log::warning('Login fallido: Fecha incorrecta', ['client_id' => $client->id_client]);
+        return back()->withErrors(['msg' => 'Credenciales incorrectas (Fecha)']);
+    }
 
    public function update(Request $request)
     {
