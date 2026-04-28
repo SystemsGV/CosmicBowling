@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,3 +21,7 @@ Route::get('/', function () {
 Route::get('/socios', function () {
     return view('frontend.socios');
 })->name('socios');
+
+Route::post('/login-process', function (Request $request) {
+    return "Llegó al backend!";
+});

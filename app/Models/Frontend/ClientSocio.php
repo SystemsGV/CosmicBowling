@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Models\Frontend; // <--- ESTO ES LO QUE IMPORTA
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use app\Http\Controllers\Frontend\Client;
+use App\Models\Frontend\Client;
 
 class ClientSocio extends Model
 {
