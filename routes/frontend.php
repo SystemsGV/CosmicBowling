@@ -32,12 +32,14 @@ Route::controller(Client::class)->group(function () {
   Route::get('/Iniciar_sesion', 'index')->name('client.login');
   Route::get('/Registrate', 'create')->name('client.register');
   Route::get('/Perfil', 'show')->name('client.profile');
-  Route::get('/Registro', 'create')->name('registro');
   Route::get('/verify', 'verifyEmail');
   Route::get('/recover-password', 'recoverPassword');
   Route::post('/searchPartner', 'search');
   Route::post('/renewPartner', 'renew');
+
+  Route::get('/Registro', 'create')->name('registro');
   Route::post('/login-process', 'loginSocios')->name('client.login.process');
+  Route::get('/perfilSocio', 'profile')->name('client.profile')->middleware('auth:client');
 });
 
 Route::controller(Cart::class)->group(function () {
