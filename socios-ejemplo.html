@@ -1,5 +1,4 @@
 
-text/x-generic socios.php ( PHP script text )
 <?php
 
 //include("inc.var.php");
@@ -39,7 +38,8 @@ function formatDateTime($charCurrent,$charReplace,$date,$no_show_hour=0){
 <!doctype html>
 <html lang="es">
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
     <!-- Required meta tags -->
 
@@ -53,6 +53,7 @@ function formatDateTime($charCurrent,$charReplace,$date,$no_show_hour=0){
     <link rel="shortcut icon" href="imgclub/favicon.ico">
     <title>Socios Granja Villa</title>
 </head>
+
 <style type="text/css">
     @font-face {
         font-family: 'riffic_freebold';
@@ -114,6 +115,7 @@ function formatDateTime($charCurrent,$charReplace,$date,$no_show_hour=0){
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 
+    <!-- barra de navegacion -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -153,8 +155,11 @@ function formatDateTime($charCurrent,$charReplace,$date,$no_show_hour=0){
             </div>
         </div>
     </nav>
+
     <div class="container">
+
         <div class="row justify-content-center align-items-center">
+            <!-- informacion general -->
             <div class="col-sm-8">
                 <div class="card">
                     <div class="card-body">
@@ -210,6 +215,8 @@ function formatDateTime($charCurrent,$charReplace,$date,$no_show_hour=0){
                     </div>
                 </div>
             </div>
+
+            <!--  -->
             <div>
                 <div class="card info">
                     <div class="card-body">
@@ -246,6 +253,7 @@ function formatDateTime($charCurrent,$charReplace,$date,$no_show_hour=0){
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-30833338-1']);
