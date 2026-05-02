@@ -139,6 +139,45 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
+
+    <script>
+        function imprimir(cuponId, divId) {
+            // 1. Abre la ventana PRIMERO (dentro del click, el navegador lo permite)
+            var ventana = window.open('', 'PRINT', 'height=400,width=800');
+
+            var names = document.getElementById('names_cli').value;
+            var code = document.getElementById('code_cli').value;
+            var img = document.querySelector('#' + divId + ' img').outerHTML;
+
+            ventana.document.write('<html><body style="text-align:center; padding:20px;">');
+            ventana.document.write(img);
+            ventana.document.write('<h2>' + names + ' - ' + code + '</h2>');
+            ventana.document.write('</body></html>');
+            ventana.document.close();
+            ventana.focus();
+            ventana.onload = function() {
+                ventana.print();
+            }
+
+            // 2. Registra en BD después (no bloquea la impresión)
+            fetch("{{ route('client.imprimir') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        cupon_id: cuponId
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.icon === 'success') {
+                        location.reload(); // recarga para desactivar el botón
+                    }
+                });
+        }
+    </script>
 @endsection()
 
 @section('styles')
