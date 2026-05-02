@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
-
+// PrintCupon
 use App\Http\Controllers\Controller;
 use App\Mail\RecoverClient;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
 use App\Models\Frontend\ClientSocio;
+use App\Models\Frontend\PrintCupon;
 use App\Models\Frontend\Proxy;
 use App\Models\Frontend\LogPartnet;
 use Carbon\Carbon;
@@ -223,12 +224,15 @@ class Client extends Controller
         return back()->withErrors(['msg' => 'Credenciales incorrectas (Fecha)']);
     }
 
-    public function create()
+    public function renovarVista()
     {
-        if (auth()->guard('client')->check()) {
-            return redirect()->route('home.index');
-        }
-        return view('frontend.login.register');
+        $clientId = Auth::guard('client')->id();
+
+        // Buscamos al socio con su relación 'partner' (por si la usas en la vista)
+        $socio = FrontendClient::with('partner')->find($clientId);
+
+        // Pasamos el objeto $socio a la vista 'renovar'
+        return view('frontend.client.renovar', compact('socio'));
     }
 
     public function profile()
@@ -247,6 +251,72 @@ class Client extends Controller
         return view('frontend.client.profile_socios', compact('socio'));
     }
 
+    public function show()
+    {
+        $clientId = Auth::guard('client')->id();
+       $socio = FrontendClient::with('partner')->find($clientId);
+
+        if (!$socio) {
+            return redirect()->route('login')->with('error', 'No se encontró el perfil.');
+        }
+
+        log::info("Datos del socio : " . $socio);
+
+        // Retornamos la vista con el objeto cliente
+        return view('frontend.client.profile_socios', compact('socio'));
+    }
+
+
+
+    public function promociones()
+    {
+        $client = Auth::guard('client')->user();
+
+        // Busca qué cupones ya imprimió este socio
+        $cuponesImpresos = PrintCupon::where('client_id', $client->id_client)
+            ->pluck('cupon_id')
+            ->toArray();
+
+        return view('frontend.client.promociones', compact('client', 'cuponesImpresos'));
+    }
+
+    public function imprimirCupon(Request $request)
+    {
+        $client = Auth::guard('client')->user();
+
+        // Verifica que no lo haya imprimido ya
+        $yaImprimio = PrintCupon::where('client_id', $client->id_client)
+            ->where('cupon_id', $request->cupon_id)
+            ->exists();
+
+        if ($yaImprimio) {
+            return response()->json(['icon' => 'error', 'message' => 'Ya imprimiste este cupón']);
+        }
+
+        // Guarda el registro
+        PrintCupon::create([
+            'client_id'   => $client->id_client,
+            'cupon_id'    => $request->cupon_id,
+            'fecha_print' => now()->toDateString(),
+            'estado'      => 0,
+        ]);
+
+        return response()->json(['icon' => 'success', 'message' => 'Cupón registrado']);
+    }
+
+
+
+
+
+
+
+    public function create()
+    {
+        if (auth()->guard('client')->check()) {
+            return redirect()->route('home.index');
+        }
+        return view('frontend.login.register');
+    }
 
     public function update(Request $request)
     {
@@ -350,15 +420,7 @@ class Client extends Controller
         return view('frontend.login.index');
     }
 
-    public function show()
-    {
-        $title = "Perfil";
-        $client = Auth::guard('client')->user();
 
-        $reservations = Cart::getReservationsByClient($client->id_client);
-
-        return view('frontend.client.profile', compact('client', 'reservations', 'title'));
-    }
 
     public function store(Request $request)
     {

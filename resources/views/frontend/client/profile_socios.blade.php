@@ -17,7 +17,7 @@
     {{-- Estilos --}}
     <style>
         body {
-            background: url("{{ asset('imgclub/Pantalla.jpg') }}") no-repeat center center fixed;
+            background: url("{{ asset('frontend/img/socios/fondo_socios.png') }}") no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -33,6 +33,20 @@
             /* Un poco de transparencia para que se vea el fondo */
             border: none;
             border-radius: 15px;
+        }
+
+        .card-custom-bg {
+            /* Fondo blanco con 90% de opacidad */
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            /* Un ligero desenfoque al fondo para que se vea más moderno (opcional) */
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            border: none;
+        }
+
+        /* Para que los textos resalten mejor sobre el blanco */
+        .info-list p {
+            color: #333 !important;
         }
     </style>
 
@@ -104,7 +118,7 @@
 
             <!-- Columna de Información del Socio -->
             <div class="col-lg-4 mb-4">
-                <div class="shadow border-primary">
+                <div class="shadow border-primary card-custom-bg">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-4">
                             {{-- <img src="{{ asset('imgclub/pen.png') }}" height="40" width="40" class="me-3"> --}}

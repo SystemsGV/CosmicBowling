@@ -122,6 +122,11 @@
             animation: spinner .75s linear infinite;
         }
 
+        header.navbar {
+            background-color: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
         [data-bs-theme="dark"] .page-spinner {
             background-color: rgba(255, 255, 255, .25);
         }
@@ -186,6 +191,7 @@
 
 
 <!-- Body -->
+
 <body>
 
     <!-- Google Tag Manager (noscript) -->
@@ -209,8 +215,8 @@
         <header class="navbar navbar-expand-lg fixed-top">
             <div class="container">
                 <!-- Navbar brand (Logo) -->
-                {{-- href="{{ route('home.index') }}" --}}
-                <a class="navbar-brand pe-sm-3" >
+                {{--  --}}
+                <a class="navbar-brand pe-sm-3">
                     <span class="text-primary flex-shrink-0 me-2">
                         <img src="{{ asset('frontend/img/app-icons/logo.svg') }}" width="95" height="92"
                             alt="Logo Cosmic Bowling">
@@ -274,15 +280,15 @@
 
                 <!-- Navbar collapse (Main navigation) -->
                 <nav class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
+                    <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 220px;">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('client.profile')}}">Datos del socio</a>
+                            <a class="nav-link" href="{{ route('client.profileSocio') }}">Datos del socio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">Renovar Membresia</a>
+                            <a class="nav-link" href="{{ route('client.renovar')}}">Renovar Membresia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">Promociones</a>
+                            <a class="nav-link" href="{{ route('client.promociones')}}">Promociones</a>
                         </li>
                         @if (Auth::guard('client')->check())
                             @php
@@ -293,7 +299,7 @@
                                 <!-- Mostrar el enlace de cuenta cuando no está autenticado -->
                                 <a class="nav-link" href="{{ route('client.login') }}"
                                     role="button
-                            aria-label="Account">
+                                    aria-label="Account">
                                     <i class="ai-user fs-lg me-2"></i> Iniciar Sesión
                                 </a>
                             </li>

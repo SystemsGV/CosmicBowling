@@ -39,7 +39,12 @@ Route::controller(Client::class)->group(function () {
 
   Route::get('/Registro', 'create')->name('registro');
   Route::post('/login-process', 'loginSocios')->name('client.login.process');
-  Route::get('/perfilSocio', 'profile')->name('client.profile')->middleware('auth:client');
+  Route::get('/perfilSocio', 'profile')->name('client.profileSocio')->middleware('auth:client');
+  Route::get('/renovarVista', 'renovarVista')->name('client.renovar')->middleware('auth:client'); // C:\laragon\www\cosmicbowling\resources\views\frontend\client\renovar.blade.php
+
+  Route::get('/promociones', 'promociones')->name('client.promociones')->middleware('auth:client');
+  Route::post('/promociones/imprimir', 'imprimirCupon')->name('client.imprimir')->middleware('auth:client');
+
 });
 
 Route::controller(Cart::class)->group(function () {
