@@ -272,8 +272,14 @@ class Client extends Controller
     {
         $client = Auth::guard('client')->user();
 
+        $mesActual = now()->month; // Supongamos que es 5
+        $anioActual = now()->year;
+
         // Busca qué cupones ya imprimió este socio
         $cuponesImpresos = PrintCupon::where('client_id', $client->id_client)
+            // CORRECCIÓN: Pasa la variable directamente
+            ->where('mes', $mesActual)
+            ->where('anio', $anioActual)
             ->pluck('cupon_id')
             ->toArray();
 
@@ -284,9 +290,15 @@ class Client extends Controller
     {
         $client = Auth::guard('client')->user();
 
+        $mesActual = now()->month;
+        $anioActual = now()->year;
+
         // Verifica que no lo haya imprimido ya
         $yaImprimio = PrintCupon::where('client_id', $client->id_client)
             ->where('cupon_id', $request->cupon_id)
+            // CORRECCIÓN: Pasa la variable directamente
+            ->where('mes', $mesActual)
+            ->where('anio', $anioActual)
             ->exists();
 
         if ($yaImprimio) {
@@ -298,6 +310,8 @@ class Client extends Controller
             'client_id'   => $client->id_client,
             'cupon_id'    => $request->cupon_id,
             'fecha_print' => now()->toDateString(),
+            'mes'         => $mesActual, // No olvides guardar el mes y año si tu tabla los pide
+            'anio'        => $anioActual,
             'estado'      => 0,
         ]);
 

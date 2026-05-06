@@ -79,7 +79,7 @@
                 <div class="card card-custom-bg p-3">
                     {{-- public\img\cupones\cupon_1.jpg --}}
                     <div class="img-cupon-container">
-                        <img src="{{ url('img/cupones/cupon_1.jpg') }}" alt="Cupón 1">
+                        <img src="{{ url('img/cupones/cupon_052026_01.jpg') }}" alt="Cupón 1">
                     </div>
 
                     @if (in_array(1, $cuponesImpresos))
@@ -87,7 +87,8 @@
                             Ya imprimiste este cupón
                         </button>
                     @else
-                        <button class="btn btn-primary btn-lg w-100" onclick="imprimir(1, 'cupon1')">
+                        <button class="btn btn-primary btn-lg w-100"
+                            onclick="imprimir(1, '{{ url('img/cupones/cupon_052026_01.jpg') }}')">
                             Imprimir Cupón
                         </button>
                     @endif
@@ -98,15 +99,16 @@
             <div class="col-lg-10 mb-5">
                 <div class="card card-custom-bg p-3">
                     <div class="img-cupon-container">
-                        <img src="{{ url('img/cupones/cupon_2.jpg') }}" alt="Cupón 1">
+                        <img src="{{ url('img/cupones/cupon_052026_02.jpg') }}" alt="Cupón 1">
                     </div>
 
                     @if (in_array(2, $cuponesImpresos))
-                        <button class="btn btn-secondary btn-lg w-100" disabled>
+                        <button class="btn btn-secondary btn-lg w-100 " disabled>
                             Ya imprimiste este cupón
                         </button>
                     @else
-                        <button class="btn btn-primary btn-lg w-100" onclick="imprimir(2, 'cupon2')">
+                        <button class="btn btn-primary btn-lg w-100"
+                            onclick="imprimir(2, '{{ url('img/cupones/cupon_052026_02.jpg') }}')">
                             Imprimir Cupón
                         </button>
                     @endif
@@ -114,8 +116,21 @@
             </div>
 
             {{-- Datos ocultos para la impresión --}}
+
             <input type="hidden" id="names_cli" value="{{ $client->names_client }} {{ $client->lastname_pat }}">
-            <input type="hidden" id="code_cli" value="{{ $client->partner->nTarjNumb ?? '' }}">
+
+
+
+            <input type="hidden" id="code_cli" value="{{ $client->number_doc ?? '' }}">
+
+
+            <div class="col-lg-10 mb-5 text-white">
+                <strong>
+                    * Revise su impresora antes de imprimir, recuerde seguir todas las indicaciones detalladas en cada cupón
+                    para que puedan ser validados el día de su visita, si el cupón carece de fecha de vencimiento o no está
+                    impreso en forma completa, no tendrá validez.
+                </strong>
+            </div>
 
 
         </div>
@@ -141,25 +156,42 @@
     </script>
 
     <script>
-        function imprimir(cuponId, divId) {
-            // 1. Abre la ventana PRIMERO (dentro del click, el navegador lo permite)
-            var ventana = window.open('', 'PRINT', 'height=400,width=800');
-
+        function imprimir(cuponId, imgUrl) {
+            var ventana = window.open('', 'PRINT', 'height=400,width=600');
             var names = document.getElementById('names_cli').value;
             var code = document.getElementById('code_cli').value;
-            var img = document.querySelector('#' + divId + ' img').outerHTML;
 
-            ventana.document.write('<html><body style="text-align:center; padding:20px;">');
-            ventana.document.write(img);
-            ventana.document.write('<h2>' + names + ' - ' + code + '</h2>');
+            // Agregamos estilos CSS específicos para la impresión
+            var estilos = `
+            <style>
+                body { text-align: center; font-family: sans-serif; margin: 0; padding: 10px; }
+                img { max-width: 70%; height: auto; display: block; margin: 0 auto; }
+                h2 { font-size: 20px; margin: 5px 0; }
+                @media print {
+                    @page { size: auto; margin: 5mm; }
+                    body { margin: 0; }
+                }
+            </style>
+        `;
+            ventana.document.write('<html><head>' + estilos + '</head><body>');
+            ventana.document.write('<img src="' + imgUrl + '">');
+            ventana.document.write('<h2>Nombre y Apellido: ' + names + '</h2>');
+            ventana.document.write('<br>');
+            ventana.document.write('<h2>Documento: ' + code + '</h2>');
             ventana.document.write('</body></html>');
+
             ventana.document.close();
             ventana.focus();
+
+            // Usamos un pequeño timeout para asegurar que la imagen cargó antes de imprimir
             ventana.onload = function() {
-                ventana.print();
+                setTimeout(function() {
+                    ventana.print();
+                    ventana.close(); // Se cierra sola después de imprimir
+                }, 500);
             }
 
-            // 2. Registra en BD después (no bloquea la impresión)
+            // Tu lógica de fetch sigue igual...
             fetch("{{ route('client.imprimir') }}", {
                     method: 'POST',
                     headers: {
@@ -172,9 +204,7 @@
                 })
                 .then(r => r.json())
                 .then(data => {
-                    if (data.icon === 'success') {
-                        location.reload(); // recarga para desactivar el botón
-                    }
+                    if (data.icon === 'success') location.reload();
                 });
         }
     </script>

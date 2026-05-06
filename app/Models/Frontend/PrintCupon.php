@@ -18,6 +18,9 @@ class PrintCupon extends Model
         'cupon_id',
         'fecha_print',
         'estado',
+
+        'mes',
+        'anio',
     ];
 
     // Relación hacia Client
