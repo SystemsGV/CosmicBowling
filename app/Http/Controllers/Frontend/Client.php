@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
-
+// PrintCupon
 use App\Http\Controllers\Controller;
 use App\Mail\RecoverClient;
 use Illuminate\Http\Request;
 use App\Models\Frontend\Client as FrontendClient;
 use App\Models\Frontend\ClientSocio;
+use App\Models\Frontend\PrintCupon;
 use App\Models\Frontend\Proxy;
 use App\Models\Frontend\LogPartnet;
 use Carbon\Carbon;
@@ -211,16 +212,121 @@ class Client extends Controller
         Log::info("Comparando: DB[{$client->birthday_client}] vs Input[{$fechaIngresada}]");
 
         if (trim($client->birthday_client) === trim($fechaIngresada)) {
-            Auth::login($client);
+           Auth::guard('client')->login($client);
+
             Log::info('Login exitoso:', ['client_id' => $client->id_client]);
-            return redirect()->intended('/Registro');
+
+            // Usa el nombre de la ruta para estar seguros
+            return redirect()->route('client.profile');
         }
 
         Log::warning('Login fallido: Fecha incorrecta', ['client_id' => $client->id_client]);
         return back()->withErrors(['msg' => 'Credenciales incorrectas (Fecha)']);
     }
 
-   public function update(Request $request)
+    public function renovarVista()
+    {
+        $clientId = Auth::guard('client')->id();
+
+        // Buscamos al socio con su relación 'partner' (por si la usas en la vista)
+        $socio = FrontendClient::with('partner')->find($clientId);
+
+        // Pasamos el objeto $socio a la vista 'renovar'
+        return view('frontend.client.renovar', compact('socio'));
+    }
+
+    public function profile()
+    {
+
+       $clientId = Auth::guard('client')->id();
+       $socio = FrontendClient::with('partner')->find($clientId);
+
+        if (!$socio) {
+            return redirect()->route('login')->with('error', 'No se encontró el perfil.');
+        }
+
+        log::info("Datos del socio : " . $socio);
+
+        // Retornamos la vista con el objeto cliente
+        return view('frontend.client.profile_socios', compact('socio'));
+    }
+
+    public function show()
+    {
+        $clientId = Auth::guard('client')->id();
+       $socio = FrontendClient::with('partner')->find($clientId);
+
+        if (!$socio) {
+            return redirect()->route('login')->with('error', 'No se encontró el perfil.');
+        }
+
+        log::info("Datos del socio : " . $socio);
+
+        // Retornamos la vista con el objeto cliente
+        return view('frontend.client.profile_socios', compact('socio'));
+    }
+
+
+
+    public function promociones()
+    {
+        $client = Auth::guard('client')->user();
+
+        $mesActual = now()->month; // Supongamos que es 5
+        $anioActual = now()->year;
+
+        // Busca qué cupones ya imprimió este socio
+        $cuponesImpresos = PrintCupon::where('client_id', $client->id_client)
+            // CORRECCIÓN: Pasa la variable directamente
+            ->where('mes', $mesActual)
+            ->where('anio', $anioActual)
+            ->pluck('cupon_id')
+            ->toArray();
+
+        return view('frontend.client.promociones', compact('client', 'cuponesImpresos'));
+    }
+
+    public function imprimirCupon(Request $request)
+    {
+        $client = Auth::guard('client')->user();
+
+        $mesActual = now()->month;
+        $anioActual = now()->year;
+
+        // Verifica que no lo haya imprimido ya
+        $yaImprimio = PrintCupon::where('client_id', $client->id_client)
+            ->where('cupon_id', $request->cupon_id)
+            // CORRECCIÓN: Pasa la variable directamente
+            ->where('mes', $mesActual)
+            ->where('anio', $anioActual)
+            ->exists();
+
+        if ($yaImprimio) {
+            return response()->json(['icon' => 'error', 'message' => 'Ya imprimiste este cupón']);
+        }
+
+        // Guarda el registro
+        PrintCupon::create([
+            'client_id'   => $client->id_client,
+            'cupon_id'    => $request->cupon_id,
+            'fecha_print' => now()->toDateString(),
+            'mes'         => $mesActual, // No olvides guardar el mes y año si tu tabla los pide
+            'anio'        => $anioActual,
+            'estado'      => 0,
+        ]);
+
+        return response()->json(['icon' => 'success', 'message' => 'Cupón registrado']);
+    }
+
+    public function create()
+    {
+        if (auth()->guard('client')->check()) {
+            return redirect()->route('home.index');
+        }
+        return view('frontend.login.register');
+    }
+
+    public function update(Request $request)
     {
         \Log::info('ID recibido: ' . $request->editCodeHidden);
         \Log::info('ID recibido: ' . $request->editCodeHidden);
@@ -320,24 +426,6 @@ class Client extends Controller
         }
 
         return view('frontend.login.index');
-    }
-
-    public function show()
-    {
-        $title = "Perfil";
-        $client = Auth::guard('client')->user();
-
-        $reservations = Cart::getReservationsByClient($client->id_client);
-
-        return view('frontend.client.profile', compact('client', 'reservations', 'title'));
-    }
-
-    public function create()
-    {
-        if (auth()->guard('client')->check()) {
-            return redirect()->route('home.index');
-        }
-        return view('frontend.login.register');
     }
 
     public function store(Request $request)
@@ -464,21 +552,30 @@ class Client extends Controller
         ], 200);
     }
 
+    // public function logout(Request $request)
+    // {
+    //     // Elimina los tokens si estás usando tokens para autenticación
+    //     if ($request->user()) {
+    //         $request->user()->tokens()->delete();
+    //     }
+
+    //     // Cierra la sesión
+    //     Auth::guard('client')->logout();
+
+    //     // Invalidar la sesión
+    //     $request->session()->invalidate();
+    //     $request->session()->regenerateToken();
+
+    //     return response()->json(['message' => 'Successfully logged out'], 200);
+    // }
+
     public function logout(Request $request)
     {
-        // Elimina los tokens si estás usando tokens para autenticación
-        if ($request->user()) {
-            $request->user()->tokens()->delete();
-        }
-
-        // Cierra la sesión
         Auth::guard('client')->logout();
-
-        // Invalidar la sesión
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        return redirect()->route('home.index');
     }
 
     public function verifyEmail(Request $request)
@@ -600,7 +697,7 @@ class Client extends Controller
             // $dCaduDate = Carbon::parse($request->initdate)->addYear()->format('Y-m-d');
 
                 \Log::info('Fechas recibidas:', [
-                    'renewInitdate' => $request->renewInitdate,
+                     'renewInitdate' => $request->renewInitdate,
                     'renewEnddate'  => $request->renewEnddate,
                 ]);
 

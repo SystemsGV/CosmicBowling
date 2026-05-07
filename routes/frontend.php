@@ -32,12 +32,20 @@ Route::controller(Client::class)->group(function () {
   Route::get('/Iniciar_sesion', 'index')->name('client.login');
   Route::get('/Registrate', 'create')->name('client.register');
   Route::get('/Perfil', 'show')->name('client.profile');
-  Route::get('/Registro', 'create')->name('registro');
   Route::get('/verify', 'verifyEmail');
   Route::get('/recover-password', 'recoverPassword');
   Route::post('/searchPartner', 'search');
   Route::post('/renewPartner', 'renew');
+
+  Route::get('/Registro', 'create')->name('registro');
   Route::post('/login-process', 'loginSocios')->name('client.login.process');
+  Route::get('/perfilSocio', 'profile')->name('client.profileSocio')->middleware('auth:client');
+  Route::get('/renovarVista', 'renovarVista')->name('client.renovar')->middleware('auth:client'); // C:\laragon\www\cosmicbowling\resources\views\frontend\client\renovar.blade.php
+
+  Route::get('/promociones', 'promociones')->name('client.promociones')->middleware('auth:client');
+  Route::post('/promociones/imprimir', 'imprimirCupon')->name('client.imprimir')->middleware('auth:client');
+  Route::post('/logout', 'logout')->name('client.logout')->middleware('auth:client');
+
 });
 
 Route::controller(Cart::class)->group(function () {

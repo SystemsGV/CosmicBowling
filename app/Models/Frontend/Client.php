@@ -37,6 +37,11 @@ class Client extends Authenticatable
         'remember_token'
     ];
 
+    // Cupones impresos por este cliente
+    public function cupones()
+    {
+        return $this->hasMany(PrintCupon::class, 'client_id', 'id_client');
+    }
 
     public function partner()
     {
