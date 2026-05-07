@@ -44,6 +44,7 @@ Route::controller(Client::class)->group(function () {
 
   Route::get('/promociones', 'promociones')->name('client.promociones')->middleware('auth:client');
   Route::post('/promociones/imprimir', 'imprimirCupon')->name('client.imprimir')->middleware('auth:client');
+  Route::post('/logout', 'logout')->name('client.logout')->middleware('auth:client');
 
 });
 

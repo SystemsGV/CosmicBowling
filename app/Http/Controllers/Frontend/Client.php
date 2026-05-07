@@ -318,12 +318,6 @@ class Client extends Controller
         return response()->json(['icon' => 'success', 'message' => 'Cupón registrado']);
     }
 
-
-
-
-
-
-
     public function create()
     {
         if (auth()->guard('client')->check()) {
@@ -433,8 +427,6 @@ class Client extends Controller
 
         return view('frontend.login.index');
     }
-
-
 
     public function store(Request $request)
     {
@@ -560,21 +552,30 @@ class Client extends Controller
         ], 200);
     }
 
+    // public function logout(Request $request)
+    // {
+    //     // Elimina los tokens si estás usando tokens para autenticación
+    //     if ($request->user()) {
+    //         $request->user()->tokens()->delete();
+    //     }
+
+    //     // Cierra la sesión
+    //     Auth::guard('client')->logout();
+
+    //     // Invalidar la sesión
+    //     $request->session()->invalidate();
+    //     $request->session()->regenerateToken();
+
+    //     return response()->json(['message' => 'Successfully logged out'], 200);
+    // }
+
     public function logout(Request $request)
     {
-        // Elimina los tokens si estás usando tokens para autenticación
-        if ($request->user()) {
-            $request->user()->tokens()->delete();
-        }
-
-        // Cierra la sesión
         Auth::guard('client')->logout();
-
-        // Invalidar la sesión
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        return redirect()->route('home.index');
     }
 
     public function verifyEmail(Request $request)

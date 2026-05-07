@@ -79,7 +79,7 @@
                 <div class="card card-custom-bg p-3">
                     {{-- public\img\cupones\cupon_1.jpg --}}
                     <div class="img-cupon-container">
-                        <img src="{{ url('img/cupones/cupon_052026_01.jpg') }}" alt="Cupón 1">
+                        <img src="{{ url('img/cupones/cupon_1.jpg') }}" alt="Cupón 1">
                     </div>
 
                     @if (in_array(1, $cuponesImpresos))
@@ -88,7 +88,7 @@
                         </button>
                     @else
                         <button class="btn btn-primary btn-lg w-100"
-                            onclick="imprimir(1, '{{ url('img/cupones/cupon_052026_01.jpg') }}')">
+                            onclick="imprimir(1, '{{ url('img/cupones/cupon_1.jpg') }}')">
                             Imprimir Cupón
                         </button>
                     @endif
@@ -99,7 +99,7 @@
             <div class="col-lg-10 mb-5">
                 <div class="card card-custom-bg p-3">
                     <div class="img-cupon-container">
-                        <img src="{{ url('img/cupones/cupon_052026_02.jpg') }}" alt="Cupón 1">
+                        <img src="{{ url('img/cupones/cupon_2.jpg') }}" alt="Cupón 1">
                     </div>
 
                     @if (in_array(2, $cuponesImpresos))
@@ -108,7 +108,7 @@
                         </button>
                     @else
                         <button class="btn btn-primary btn-lg w-100"
-                            onclick="imprimir(2, '{{ url('img/cupones/cupon_052026_02.jpg') }}')">
+                            onclick="imprimir(2, '{{ url('img/cupones/cupon_2.jpg') }}')">
                             Imprimir Cupón
                         </button>
                     @endif
@@ -166,7 +166,7 @@
             <style>
                 body { text-align: center; font-family: sans-serif; margin: 0; padding: 10px; }
                 img { max-width: 70%; height: auto; display: block; margin: 0 auto; }
-                h2 { font-size: 20px; margin: 5px 0; }
+                h2 { font-size: 20px; margin: 15px 0; }
                 @media print {
                     @page { size: auto; margin: 5mm; }
                     body { margin: 0; }
@@ -175,9 +175,10 @@
         `;
             ventana.document.write('<html><head>' + estilos + '</head><body>');
             ventana.document.write('<img src="' + imgUrl + '">');
+            ventana.document.write('<br>');
             ventana.document.write('<h2>Nombre y Apellido: ' + names + '</h2>');
             ventana.document.write('<br>');
-            ventana.document.write('<h2>Documento: ' + code + '</h2>');
+            ventana.document.write('<h2>N° de Documento: ' + code + '</h2>');
             ventana.document.write('</body></html>');
 
             ventana.document.close();
