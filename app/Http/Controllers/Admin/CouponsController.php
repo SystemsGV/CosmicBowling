@@ -7,6 +7,7 @@ use App\Models\Admin\Categories;
 use App\Models\Admin\Coupons;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CouponsController extends Controller
 {
@@ -83,6 +84,14 @@ class CouponsController extends Controller
         }
     }
 
+    public function agregarCupon()
+{
+    Log::info("Entrando en el metodo correcto agregar cupon");
+
+    $data['title'] = "Cupones";
+    $data['categories'] = Categories::with('subcategories')->get();
+    return view('admin.coupon.agregar', $data);
+}
 
     public function codeCoupon()
     {

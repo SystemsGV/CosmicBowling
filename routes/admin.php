@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('createCoupon', 'create');
         Route::post('updateCoupon', 'update');
         Route::get('CodeCoupon', 'codeCoupon');
+        Route::get('agregarCupon', 'agregarCupon')->name('clients.agregarCupon');
     });
 
     Route::controller(HolidaysController::class)->group(function ($route) {
@@ -95,6 +96,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('renewPartner', 'renew');
         Route::post('updatePartner', 'update');
         Route::post('insertSocio', 'insert');
+
+
     });
 
     Route::controller(OrdersController::class)->group(function ($route) {

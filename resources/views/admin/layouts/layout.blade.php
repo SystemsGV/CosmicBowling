@@ -150,11 +150,33 @@
                             </ul>
                         </li>
 
-                        <li class="menu-item">
+                        {{-- <li class="menu-item">
                             <a href="{{ route('coupons.index') }}" class="menu-link">
                                 <i class="menu-icon tf-icons mdi mdi mdi-sale"></i>
                                 <div data-i18n="Coupons">Cupones</div>
                             </a>
+                        </li> --}}
+
+                        <li class="menu-item">
+
+                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                <i class="menu-icon tf-icons mdi mdi-account-supervisor-circle"></i>
+                                <div data-i18n="Cupones">Cupones</div>
+                            </a>
+
+                            <ul class="menu-sub">
+                                <li class="menu-item">
+                                    <a href="{{ route('coupons.index') }}" class="menu-link">
+                                        <i class="menu-icon tf-icons mdi mdi mdi-sale"></i>
+                                        <div data-i18n="Coupons">Cupones</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{ route('clients.agregarCupon') }}" class="menu-link">
+                                        <div data-i18n="Agregar cupones">Agregar cupones</div>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
 
@@ -198,6 +220,7 @@
                                 </li>
                             </ul>
                         </li>
+
 
 
                         <!-- Reports -->
